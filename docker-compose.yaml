@@ -20,7 +20,6 @@ services:
 
   fantapronostico-db:
     image: postgres:14-alpine
-    container_name: fp2024-db
     restart: always
     command: postgres
     volumes:
@@ -35,7 +34,6 @@ services:
   fantapronostico-mail:
     platform: linux/amd64
     image: mailhog/mailhog
-    container_name: 'mailhog'
     ports:
       - "1025:1025"
       - "8025:8025"

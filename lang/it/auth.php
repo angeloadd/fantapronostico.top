@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'failed' => 'Non abbiamo trovato un account con queste credenziali.',
+    'password' => 'Non abbiamo trovato un account con queste credenziali.',
+    'throttle' => 'Troppi tentativi di login. Ti preghiamo di riprovare tra :seconds secondi.',
+
+    'login' => [
+        'title' => 'Accedi - FP2024',
+        'nav' => 'Accedi',
+        'btn' => 'Accedi',
+    ],
+    'register' => [
+        'title' => 'Iscriviti - FP2024',
+        'nav' => 'Iscriviti',
+        'btn' => 'Crea nuovo account',
+    ],
+    'verify_email' => [
+        'title' => 'Verifica Email - FP2024',
+        'salutation' => 'Benvenuto :username',
+        'heading' => 'Verifica la tua email!',
+        'paragraph' => 'Per poter partecipare al gioco devi verificare la tua email. Abbiamo inviato un link alla email che hai fornito durante la registrazione: :email.',
+        'paragraph2' => 'Se non hai ricevuto niente puoi chiedere un reinvio cliccando sul link qui sotto.',
+        'btn' => 'Invia link di verifica',
+    ],
+
+];
