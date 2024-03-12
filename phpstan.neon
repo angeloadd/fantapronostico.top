@@ -1,0 +1,23 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+        - database/
+        - config/
+        - routes/
+        - resources/
+
+    # Level 9 is the highest level
+    level: 9
+
+    ignoreErrors:
+        - message: '#Cannot cast mixed to .+#'
+          path: %currentWorkingDirectory%/config
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
+#
+#    checkMissingIterableValueType: false
