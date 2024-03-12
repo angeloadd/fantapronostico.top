@@ -16,6 +16,10 @@ parameters:
     ignoreErrors:
         - message: '#Cannot cast mixed to .+#'
           path: %currentWorkingDirectory%/config
+        - message: '#Undefined variable: \$this#'
+          path: %currentWorkingDirectory%/routes/console.php
+        - message: '#Variable \$this in PHPDoc tag @var does not exist.#'
+          path: %currentWorkingDirectory%/routes/console.php
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
