@@ -41,7 +41,7 @@ final class LoginActionTest extends TestCase
     {
         $this->createUser();
 
-        $response = $this->post('api_login', [
+        $response = $this->post('login', [
             'email' => self::USER_EMAIL,
             'password' => self::USER_PASSWORD,
         ]);
@@ -54,7 +54,7 @@ final class LoginActionTest extends TestCase
         $user = $this->createUser();
         $this->verifyUserEmail($user);
 
-        $response = $this->post('api_login', [
+        $response = $this->post('login', [
             'email' => self::USER_EMAIL,
             'password' => self::USER_PASSWORD,
         ]);
@@ -64,7 +64,7 @@ final class LoginActionTest extends TestCase
 
     public function test_wrong_credentials(): void
     {
-        $response = $this->post('api_login', [
+        $response = $this->post('login', [
             'email' => self::USER_EMAIL,
             'password' => self::USER_PASSWORD,
         ]);
@@ -80,14 +80,14 @@ final class LoginActionTest extends TestCase
     #[DataProvider('badRequestProvider')]
     public function test_validation_errors(array $input, array $errors): void
     {
-        $response = $this->post('api_login', $input);
+        $response = $this->post('login', $input);
         $response->assertSessionHasErrors($errors);
     }
 
     public function test_is_rate_limited(): void
     {
         for ($i = 0; $i < 6; $i++) {
-            $response = $this->post('api_login', ['email' => 'ciao@example.com', 'password' => 'password']);
+            $response = $this->post('login', ['email' => 'ciao@example.com', 'password' => 'password']);
         }
         $response->assertSessionHasErrors('rate');
     }
