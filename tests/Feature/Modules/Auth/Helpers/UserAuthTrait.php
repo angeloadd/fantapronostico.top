@@ -8,7 +8,7 @@ use App\Modules\Auth\Models\User;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Hash;
 
-trait CreateUserTrait
+trait UserAuthTrait
 {
     private const USER_NAME = 'john';
 
@@ -30,6 +30,19 @@ trait CreateUserTrait
         $user->email_verified_at = new DateTimeImmutable();
 
         $user->save();
+
+        return $user;
+    }
+
+    private function loginUser(): User
+    {
+        $user = $this->createUser();
+        $response = $this->post('login', [
+            'email' => self::USER_EMAIL,
+            'password' => self::USER_PASSWORD,
+        ]);
+
+        $response->assertRedirect();
 
         return $user;
     }

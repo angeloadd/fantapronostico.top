@@ -6,15 +6,12 @@ namespace Tests\Feature\Modules\Auth;
 
 use App\Mail\EmailVerificationLink;
 use Illuminate\Support\Facades\Mail;
+use Tests\Feature\Modules\Auth\Helpers\UserAuthTrait;
 use Tests\TestCase;
 
 final class AuthFeatureTest extends TestCase
 {
-    private const USER_NAME = 'John';
-
-    private const USER_EMAIL = 'john.doe@gmail.com';
-
-    private const USER_PASSWORD = '123213123';
+    use UserAuthTrait;
 
     public function test_a_user_can_register_and_receives_a_mail(): void
     {

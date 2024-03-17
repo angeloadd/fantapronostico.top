@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Modules\Auth\Controllers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Feature\Modules\Auth\Helpers\CreateUserTrait;
+use Tests\Feature\Modules\Auth\Helpers\UserAuthTrait;
 use Tests\TestCase;
 
 final class LoginActionTest extends TestCase
 {
-    use CreateUserTrait;
+    use UserAuthTrait;
 
     /**
      * @return iterable<array<int, array<int|string, int|string>>>
