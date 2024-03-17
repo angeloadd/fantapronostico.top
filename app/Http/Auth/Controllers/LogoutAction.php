@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api\v1\Auth;
+namespace App\Http\Auth\Controllers;
 
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-final readonly class LogoutApiAction
+final readonly class LogoutAction
 {
     public function __construct(private StatefulGuard $auth)
     {

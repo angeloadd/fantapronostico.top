@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api\v1\Auth;
+namespace App\Http\Auth\Controllers;
 
-use App\Http\Requests\RegisterRequest;
+use App\Http\Auth\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
-final readonly class RegisterApiAction
+final readonly class RegisterAction
 {
     public function __construct(
         private StatefulGuard $auth

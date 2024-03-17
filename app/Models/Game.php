@@ -61,7 +61,7 @@ final class Game extends Model
     ];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['home_team', 'away_team'];
 

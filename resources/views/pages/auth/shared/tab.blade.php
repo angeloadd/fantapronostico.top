@@ -4,7 +4,7 @@
     class="tab fp2024-title text-lg
     @if(Route::currentRouteName() === $name)
         tab-active disabled cursor-pointer
-   @endif"
+    @endif"
 >
     {{$text}}
 </a>

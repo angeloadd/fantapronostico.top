@@ -22,15 +22,15 @@ final class EmailVerificationLink extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly User $notifiable)
+    public function __construct(private readonly User $user)
     {
         $validityIntervalInMinutes = Config::get('auth.verification.expire', 60);
         $this->url = URL::temporarySignedRoute(
             'verification.verify',
             60 * (is_int($validityIntervalInMinutes) ? $validityIntervalInMinutes : 60),
             [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
+                'id' => $user->getKey(),
+                'hash' => sha1($user->getEmailForVerification()),
             ]
         );
     }
@@ -38,7 +38,7 @@ final class EmailVerificationLink extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: [$this->notifiable->email],
+            to: [$this->user->email],
             subject: 'Verifica la tua mail',
         );
     }
@@ -49,7 +49,7 @@ final class EmailVerificationLink extends Mailable
             html: 'mails.email-verification-link',
             with: [
                 'url' => $this->url,
-                'user' => $this->notifiable,
+                'user' => $this->user,
             ]
         );
     }
