@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Auth\Controllers;
+namespace Tests\Feature\Modules\Auth\Controllers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\Feature\Auth\Helpers\CreateUserTrait;
+use Tests\Feature\Modules\Auth\Helpers\CreateUserTrait;
 use Tests\TestCase;
 
 final class LoginActionTest extends TestCase
 {
     use CreateUserTrait;
 
+    /**
+     * @return iterable<array<int, array<int|string, int|string>>>
+     */
     public static function badRequestProvider(): iterable
     {
         yield 'missing email and password' => [
@@ -70,6 +73,10 @@ final class LoginActionTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
+    /**
+     * @param  array<int, string|int>  $input
+     * @param  array<int, string|int>  $errors
+     */
     #[DataProvider('badRequestProvider')]
     public function test_validation_errors(array $input, array $errors): void
     {

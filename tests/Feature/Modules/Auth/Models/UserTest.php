@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Models;
+namespace Tests\Feature\Modules\Auth\Models;
 
-use App\Models\User;
+use App\Modules\Auth\Models\User;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -24,7 +24,7 @@ final class UserTest extends TestCase
         $user->name = $attributes['name'];
         $user->email = $attributes['email'];
         $user->password = $attributes['password'];
-        $user->email_verified_at = $attributes['email_verified_at']->format('Y-m-d H:i:s');
+        $user->email_verified_at = $attributes['email_verified_at'];
 
         $user->save();
 

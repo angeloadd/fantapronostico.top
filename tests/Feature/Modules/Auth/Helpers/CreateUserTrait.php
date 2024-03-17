@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Auth\Helpers;
+namespace Tests\Feature\Modules\Auth\Helpers;
 
-use App\Models\User;
+use App\Modules\Auth\Models\User;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Hash;
 

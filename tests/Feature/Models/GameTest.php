@@ -15,6 +15,9 @@ use Tests\TestCase;
 
 final class GameTest extends TestCase
 {
+    /**
+     * @return iterable<array<int, string>>
+     */
     public static function provideStatus(): iterable
     {
         yield 'not started' => ['not_started'];
@@ -29,7 +32,7 @@ final class GameTest extends TestCase
         $game = FactoryHelper::makeGame($tournament);
 
         self::assertSame(
-            $tournament->games->first()->id,
+            $tournament->games->first()?->id,
             $game->id
         );
     }
@@ -46,8 +49,8 @@ final class GameTest extends TestCase
         $game->save();
         $game->refresh();
 
-        self::assertSame($home->id, $game->home_team->id);
-        self::assertSame($away->id, $game->away_team->id);
+        self::assertSame($home->id, $game->home_team?->id);
+        self::assertSame($away->id, $game->away_team?->id);
     }
 
     public function test_a_game_can_have_players(): void

@@ -34,8 +34,8 @@ final class PlayerTest extends TestCase
         $clubTeam->refresh();
         $player->refresh();
 
-        self::assertSame($nationalTeam->id, $player->national->id);
-        self::assertSame($clubTeam->id, $player->club->id);
+        self::assertSame($nationalTeam->id, $player->national?->id);
+        self::assertSame($clubTeam->id, $player->club?->id);
     }
 
     public function test_a_player_can_take_part_to_a_tournament(): void
@@ -54,8 +54,8 @@ final class PlayerTest extends TestCase
             1,
             $player->tournaments
                 ->first()
-                ->players
-                ->filter(static fn (Player $tournamentPlayer): bool => $tournamentPlayer->id === $player->id)
+                ?->players
+                ->filter(static fn (Player $tournamentPlayer): bool => $tournamentPlayer->id === $player->id) ?? []
         );
     }
 
@@ -76,8 +76,8 @@ final class PlayerTest extends TestCase
             1,
             $player->games
                 ->first()
-                ->players
-                ->filter(static fn (Player $gamePlayer): bool => $gamePlayer->id === $player->id)
+                ?->players
+                ->filter(static fn (Player $gamePlayer): bool => $gamePlayer->id === $player->id) ?? []
         );
     }
 
@@ -102,7 +102,7 @@ final class PlayerTest extends TestCase
 
         self::assertSame(
             $gameGoal->game_id,
-            $player->games->filter(static fn (Game $gameForPlayer): bool => $gameForPlayer->id === $game->id)->first()->id
+            $player->games->filter(static fn (Game $gameForPlayer): bool => $gameForPlayer->id === $game->id)->first()?->id
         );
     }
 

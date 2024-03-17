@@ -24,8 +24,8 @@ final class TeamTest extends TestCase
         $tournament1->refresh();
         $tournament2->refresh();
 
-        self::assertEquals($nationalTeam->tournaments[0]->id, $tournament1->id);
-        self::assertEquals($nationalTeam->tournaments[1]->id, $tournament2->id);
+        self::assertEquals($nationalTeam->tournaments[0]?->id, $tournament1->id);
+        self::assertEquals($nationalTeam->tournaments[1]?->id, $tournament2->id);
     }
 
     public function test_a_team_can_have_multiple_players_for_national_and_club(): void
@@ -48,11 +48,11 @@ final class TeamTest extends TestCase
         $player2->refresh();
         $player3->refresh();
 
-        self::assertSame($player1->id, $nationalTeam->players[0]->id);
-        self::assertSame($player2->id, $nationalTeam->players[1]->id);
+        self::assertSame($player1->id, $nationalTeam->players[0]?->id);
+        self::assertSame($player2->id, $nationalTeam->players[1]?->id);
         self::assertCount(2, $nationalTeam->players);
-        self::assertSame($player2->id, $clubTeam->players[0]->id);
-        self::assertSame($player3->id, $clubTeam->players[1]->id);
+        self::assertSame($player2->id, $clubTeam->players[0]?->id);
+        self::assertSame($player3->id, $clubTeam->players[1]?->id);
         self::assertCount(2, $clubTeam->players);
     }
 
@@ -96,14 +96,14 @@ final class TeamTest extends TestCase
         $nationalTeam1->refresh();
         $nationalTeam2->refresh();
 
-        self::assertSame($game1->home_team->id, $nationalTeam1->id);
-        self::assertSame($game1->away_team->id, $nationalTeam2->id);
-        self::assertSame($game2->home_team->id, $nationalTeam2->id);
-        self::assertSame($game2->away_team->id, $nationalTeam1->id);
-        self::assertSame($game3->home_team->id, $nationalTeam1->id);
-        self::assertSame($game3->away_team->id, $nationalTeam2->id);
-        self::assertSame($game4->home_team->id, $nationalTeam2->id);
-        self::assertSame($game4->away_team->id, $nationalTeam1->id);
+        self::assertSame($game1->home_team?->id, $nationalTeam1->id);
+        self::assertSame($game1->away_team?->id, $nationalTeam2->id);
+        self::assertSame($game2->home_team?->id, $nationalTeam2->id);
+        self::assertSame($game2->away_team?->id, $nationalTeam1->id);
+        self::assertSame($game3->home_team?->id, $nationalTeam1->id);
+        self::assertSame($game3->away_team?->id, $nationalTeam2->id);
+        self::assertSame($game4->home_team?->id, $nationalTeam2->id);
+        self::assertSame($game4->away_team?->id, $nationalTeam1->id);
     }
 
     public function test_a_team_is_persisted_with_correct_properties(): void

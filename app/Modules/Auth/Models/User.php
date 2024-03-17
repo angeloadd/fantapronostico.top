@@ -6,6 +6,7 @@ namespace App\Modules\Auth\Models;
 
 use App\Mail\EmailVerificationLink;
 use App\Modules\Auth\Database\Factory\UserFactory;
+use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Mail;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property Carbon|null $email_verified_at
+ * @property Carbon|DateTimeImmutable|null $email_verified_at
  * @property mixed $password
  * @property string|null $remember_token
  * @property string|null $two_factor_secret
