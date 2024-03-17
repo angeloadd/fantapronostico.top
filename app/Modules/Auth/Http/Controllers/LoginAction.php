@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Auth\Controllers;
+namespace App\Modules\Auth\Http\Controllers;
 
-use App\Http\Auth\Requests\LoginRequest;
-use App\Models\User;
+use App\Modules\Auth\Http\Requests\LoginRequest;
+use App\Modules\Auth\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Routing\UrlGenerator;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Modules\Auth\Models;
 
 use App\Mail\EmailVerificationLink;
-use Database\Factories\UserFactory;
+use App\Modules\Auth\Database\Factory\UserFactory;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * App\Models\User
+ * App\Modules\Auth\Models\User
  *
  * @property int $id
  * @property string $name
@@ -79,6 +79,11 @@ final class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     public function sendEmailVerificationNotification(): void
     {

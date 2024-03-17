@@ -7,7 +7,7 @@ namespace App\Models;
 use App\Models\Exceptions\ClubAndNationalTeamsCannotBeTheSameException;
 use App\Models\Exceptions\ClubTeamCannotBeNationalException;
 use App\Models\Exceptions\NationalTeamCannotBeClubException;
-use Database\Factories\PlayerFactory;
+use App\Modules\Auth\Database\Factory\PlayerFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

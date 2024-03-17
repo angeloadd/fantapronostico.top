@@ -14,7 +14,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
     }
 
     /**
@@ -23,6 +22,7 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPagesNamespace();
+
         Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');
     }
 

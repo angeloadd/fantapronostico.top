@@ -135,22 +135,22 @@ z"/>
                         @auth
                             <li>
 
-                            <details>
-                                <summary>
-                                    {{Auth::user()->name}}
-                                </summary>
-                                <ul class="p-2 w-40 rounded bg-base-300 text-neutral">
-                                    <li>
-                                        <form action="{{route('logout_api')}}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">
-                                                Logout
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </details>
+                                <details>
+                                    <summary>
+                                        {{Auth::user()->name}}
+                                    </summary>
+                                    <ul class="p-2 w-40 rounded bg-base-300 text-neutral">
+                                        <li>
+                                            <form action="{{route('api.logout')}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">
+                                                    Logout
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </details>
                             </li>
                         @else
                             <a href="{{route('register')}}" class="btn btn-accent hover:bg-base-300 hover:text-accent">Register</a>

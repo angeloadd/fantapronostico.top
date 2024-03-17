@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
-use App\Models\User;
+use App\Modules\Auth\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;

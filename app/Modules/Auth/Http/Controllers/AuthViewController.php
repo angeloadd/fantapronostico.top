@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Auth\Controllers;
+namespace App\Modules\Auth\Http\Controllers;
 
+use App\Modules\Auth\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,13 +14,15 @@ final class AuthViewController
 {
     public function __invoke(Request $request): Response|RedirectResponse
     {
-        if ('verify-email' === $request->route()?->getName() && Auth::user() && null !== Auth::user()->email_verified_at) {
+        /** @var ?User $user */
+        $user = Auth::user();
+        if ('verify-email' === $request->route()?->getName() && $user && null !== $user->email_verified_at) {
             return redirect(route('home'));
         }
 
         return new Response(
             view(
-                'pages.auth.main',
+                'auth::main',
                 ['pageName' => ltrim($request->getPathInfo(), '/')]
             )->render(),
             200

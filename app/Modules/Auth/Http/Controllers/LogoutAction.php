@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Auth\Controllers;
+namespace App\Modules\Auth\Http\Controllers;
 
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;

@@ -1,6 +1,6 @@
 <x-auth::shared.auth>
     <x-auth::shared.form
-        action="{{route('api_register')}}"
+        action="{{route('api.register')}}"
         method="POST"
         prefix="register"
         :formControls="[

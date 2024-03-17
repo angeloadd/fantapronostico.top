@@ -1,6 +1,6 @@
 <x-auth::shared.auth>
     <x-auth::shared.form
-        action="{{route('api_login')}}"
+        action="{{route('api.login')}}"
         method="POST"
         prefix="login"
         :formControls="[
