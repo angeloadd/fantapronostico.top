@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Modules\Auth\Models;
 
 use App\Mail\EmailVerificationLink;
+use App\Models\Bet;
+use App\Models\Champion;
 use App\Modules\Auth\Database\Factory\UserFactory;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -84,6 +88,16 @@ final class User extends Authenticatable implements MustVerifyEmail
     public static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+
+    public function bets(): HasMany
+    {
+        return $this->hasMany(Bet::class);
+    }
+
+    public function champion(): HasOne
+    {
+        return $this->hasOne(Champion::class);
     }
 
     public function sendEmailVerificationNotification(): void

@@ -1,6 +1,6 @@
 <x-layouts.app>
     <x-partials.drawer.drawer>
-        <div class="hero bg-base-200 col-span-2 row-span-2">
+        <div class="hero bg-base-200 col-span-2 row-span-12-span-2">
             <div class="hero-content text-center">
                 <div class="max-w-md">
                     <h1 class="text-5xl font-bold">Hello there</h1>
@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class="overflow-x-auto col-span-1 row-span-10">
+        <div class="overflow-x-auto col-span-1 row-span-12-span-10">
             <table class="table">
                 <!-- head -->
                 <thead>

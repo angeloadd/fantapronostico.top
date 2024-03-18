@@ -1,12 +1,11 @@
 import daisyui from "daisyui";
 import * as themes from "daisyui/src/theming/themes";
 
-/** @type {import('tailwindcss').Config} */
 export default {
 	content: [
+		"./app/Modules/**/Views/**/*.blade.php",
 		"./resources/**/*.blade.php",
 		"./resources/**/*.js",
-		"./resources/**/*.vue",
 	],
 	theme: {
 		extend: {},

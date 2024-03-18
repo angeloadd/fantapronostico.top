@@ -1,9 +1,9 @@
 <div class="flex w-full justify-center items-center">
-    <div class="drawer text-neutral bg-accent w-[80%] rounded-2xl p-2">
+    <div class="drawer text-neutral bg-accent w-[80%] rounded-mdxl p-2">
         <input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
         <div class="drawer-content flex flex-col items-center justify-center">
             <!-- Navbar -->
-            <div class="w-full navbar bg-base-300 rounded-2xl">
+            <div class="w-full navbar bg-base-300 rounded-mdxl">
                 <div class="flex-none lg:hidden">
                     <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
@@ -160,7 +160,7 @@ z"/>
                 </div>
             </div>
             <!-- Page content here -->
-            <div class="text-neutral grid grid-cols-3 grid-row-12">
+            <div class="text-neutral grid grid-cols-3 grid-row-span-12-12">
                 {{$slot}}
             </div>
         </div>

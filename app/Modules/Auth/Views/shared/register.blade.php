@@ -1,4 +1,4 @@
-<x-auth::shared.auth>
+<x-auth::shared.nav>
     <x-auth::shared.form
         action="{{route('api.register')}}"
         method="POST"
@@ -22,4 +22,4 @@
         ]"
         btnText="{{__('auth.register.btn')}}"
     />
-</x-auth::shared.auth>
+</x-auth::shared.nav>

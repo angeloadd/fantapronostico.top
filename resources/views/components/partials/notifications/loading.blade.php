@@ -1,12 +1,10 @@
-<span id="{{$id}}" class="loading
-
-
-    loading-dots
-    @switch($size ?? 'sm')
-        @case('md') loading-md
-        @case('lg') loading-lg
-        @case('xs') loading-xs
-        @default loading-sm
-    @endswitch
-    htmx-indicator">
-</span>
+@php $size = $size ?? 'lg' @endphp
+<span id="{{$id}}"
+     @class([
+        'loading loading-dots htmx-indicator',
+        'loading-sm' => $size === 'sm',
+        'loading-md' => $size === 'md',
+        'loading-lg' => $size === 'lg',
+        'loading-xs' => $size === 'xs',
+     ])
+></span>

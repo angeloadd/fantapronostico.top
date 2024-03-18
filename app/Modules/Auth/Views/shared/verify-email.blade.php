@@ -1,4 +1,4 @@
-<div class="w-full space-y-1 flex flex-col justify-center items-center">
+<div class="flex flex-col justify-center items-center w-full space-y-1">
     <h2 class="text-xl">
         {{__('auth.verify_email.salutation', ['username' => Auth::user()->name])}}
     </h2>
@@ -6,7 +6,7 @@
     <p class="text-center text-lg">
         {{__('auth.verify_email.paragraph', ['email' => Auth::user()->email])}}
     </p>
-    <p class="lg:px-20 py-5 text-center text-sm">
+    <p class="py-5 lg:px-20 text-center text-sm">
         {{__('auth.verify_email.paragraph2', ['email' => Auth::user()->email])}}
     </p>
     <button class="btn btn-primary text-base-100">{{__('auth.verify_email.btn')}}</button>

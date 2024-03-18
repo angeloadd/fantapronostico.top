@@ -6,5 +6,5 @@
             x-bind:checked="$store.theme.isDarkMode()"
             x-on:change="$store.theme.toggle()"
     />
-    <label for="themeModeToggle" class="text-3xl" x-data x-text="$store.theme.getIcon()"></label>
+    <label for="themeModeToggle" class="text-xl" x-data x-text="$store.theme.getIcon()"></label>
 </div>

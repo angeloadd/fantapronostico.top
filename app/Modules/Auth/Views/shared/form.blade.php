@@ -10,7 +10,7 @@
         />
     @endforeach
     <div class="form-control mt-6">
-        <button class="btn btn-primary text-base-100 fp2024-title">{{$btnText}}</button>
+        <button class="btn btn-neutral text-base-100 fp2024-title">{{$btnText}}</button>
     </div>
 </form>
 @error('rate')
