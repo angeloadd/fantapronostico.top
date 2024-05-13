@@ -19,7 +19,7 @@
                             @if($gameInBar->game_date < today())
                             @elseif(isset($gameInBar->home, $gameInBar->away))
                                 <li>
-                                    <a class="dropdown-item text-center @if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif fs-3" href="{{route('bet.index', ['game' => $gameInBar])}}">
+                                    <a class="dropdown-item text-center @if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif text-3xl" href="{{route('bet.index', ['game' => $gameInBar])}}">
                                         {{$gameInBar->home_team}} - {{$gameInBar->away_team}}
                                     </a>
                                 </li>
@@ -30,7 +30,7 @@
                         @foreach($games as $gameInBar)
                             @if($gameInBar->game_date < today() && isset($gameInBar->home, $gameInBar->away))
                                 <li>
-                                    <a class="dropdown-item text-center fs-3 @if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('bet.index', ['game' => $gameInBar])}}">
+                                    <a class="dropdown-item text-center text-3xl @if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('bet.index', ['game' => $gameInBar])}}">
                                         {{$gameInBar->home_team}} - {{$gameInBar->away_team}}
                                     </a>
                                 </li>

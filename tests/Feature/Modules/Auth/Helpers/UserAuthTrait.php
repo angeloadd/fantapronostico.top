@@ -6,14 +6,13 @@ namespace Tests\Feature\Modules\Auth\Helpers;
 
 use App\Modules\Auth\Models\User;
 use DateTimeImmutable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 trait UserAuthTrait
 {
     private const USER_NAME = 'john';
-
     private const USER_EMAIL = 'john.doe@example.com';
-
     private const USER_PASSWORD = '123123123';
 
     private function createUser(?string $email = null, ?string $name = null, ?string $password = null): User
@@ -28,7 +27,6 @@ trait UserAuthTrait
     private function verifyUserEmail(User $user): User
     {
         $user->email_verified_at = new DateTimeImmutable();
-
         $user->save();
 
         return $user;
@@ -37,12 +35,7 @@ trait UserAuthTrait
     private function loginUser(): User
     {
         $user = $this->createUser();
-        $response = $this->post('login', [
-            'email' => self::USER_EMAIL,
-            'password' => self::USER_PASSWORD,
-        ]);
-
-        $response->assertRedirect();
+        Auth::login($user);
 
         return $user;
     }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Champion
@@ -16,24 +18,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $user_id
  * @property int $team_id
  * @property int $player_id
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Champion newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Champion newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Champion query()
- * @method static \Illuminate\Database\Eloquent\Builder|Champion whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Champion whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Champion wherePlayerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Champion whereTeamId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Champion whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Champion whereUserId($value)
- *
- * @mixin \Eloquent
+ * @method static Builder|Champion newModelQuery()
+ * @method static Builder|Champion newQuery()
+ * @method static Builder|Champion query()
+ * @method static Builder|Champion whereCreatedAt($value)
+ * @method static Builder|Champion whereId($value)
+ * @method static Builder|Champion wherePlayerId($value)
+ * @method static Builder|Champion whereTeamId($value)
+ * @method static Builder|Champion whereUpdatedAt($value)
+ * @method static Builder|Champion whereUserId($value)
  *
  * @property-read Player $player
  * @property-read Team $team
  * @property-read User $user
+ *
+ * @mixin Eloquent
  */
 final class Champion extends Model
 {
@@ -63,7 +65,7 @@ final class Champion extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Modules\Auth\Models\User::class);
     }
 
     public function team(): BelongsTo

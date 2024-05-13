@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Models;
 
-use App\Mail\EmailVerificationLink;
+use App\Modules\Auth\Mail\EmailVerificationLink;
 use App\Models\Bet;
 use App\Models\Champion;
 use App\Modules\Auth\Database\Factory\UserFactory;
@@ -12,6 +12,7 @@ use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -53,6 +54,10 @@ use Illuminate\Support\Facades\Mail;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereTwoFactorRecoveryCodes($value)
  * @method static Builder|User whereTwoFactorSecret($value)
+ *
+ * @property-read Collection<int, Bet> $bets
+ * @property-read int|null $bets_count
+ * @property-read Champion|null $champion
  *
  * @mixin Eloquent
  */

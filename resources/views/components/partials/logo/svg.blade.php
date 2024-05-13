@@ -6,7 +6,11 @@ $secondary = $secondary ?? '#00aacc';
 
 <svg
     xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:svgjs="http://svgjs.dev/svgjs"
     viewBox="0 0 12.31170173917893 1.9674686545655855"
+    width="100%"
+    height="100%"
 >
     <g transform="matrix(1,0,0,1,0.37513432728279295,0.6222343272827927)">
         <g fill="{{$primary}}" fill-rule="nonzero">

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Modules\Auth\Database\Factory\GameFactory;
+use Database\Factories\GameFactory;
+use DateTimeInterface;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -45,12 +46,20 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Game whereTournamentId($value)
  * @method static Builder|Game whereUpdatedAt($value)
  * @method static Builder|Game whereStartedAt($value)
+ * @method static Builder|Game fromLatest()
+ * @method static Builder|Game lastThreeGames(\DateTimeInterface $now)
  *
  * @mixin Eloquent
  */
 final class Game extends Model
 {
     use HasFactory;
+
+    private const FINAL = 'final';
+
+    private const GROUP = 'group';
+
+    public mixed $timestamp;
 
     protected $fillable = [
         'id',
@@ -65,9 +74,19 @@ final class Game extends Model
      */
     protected $appends = ['home_team', 'away_team'];
 
-    protected $casts = [
-        'started_at' => 'datetime',
-    ];
+    public static function scopeLastThreeGames($query, DateTimeInterface $now): Builder
+    {
+        return $query->fromLatest()
+            ->where('started_at', '<', $now)
+            ->limit(3);
+    }
+
+    public function casts(): array
+    {
+        return [
+            'started_at' => 'datetime',
+        ];
+    }
 
     /**
      * @return BelongsToMany<Player>
@@ -111,5 +130,26 @@ final class Game extends Model
         return Attribute::make(
             get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => (bool) $team->pivot->is_away)->first()
         );
+    }
+
+    public function isFirstGame(): bool
+    {
+        return self::first()->id === $this->id;
+    }
+
+    public function isFinal(): bool
+    {
+        return str_contains(self::FINAL, mb_strtolower($this->stage));
+    }
+
+    public function isGroupStage(): bool
+    {
+        return str_contains(self::GROUP, mb_strtolower($this->stage));
+    }
+
+    public function scopeFromLatest($query): void
+    {
+        $query->orderBy('started_at', 'desc')
+            ->orderBy('id', 'desc');
     }
 }

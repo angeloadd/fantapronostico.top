@@ -9,5 +9,14 @@
     <p class="py-5 lg:px-20 text-center text-sm">
         {{__('auth.verify_email.paragraph2', ['email' => Auth::user()->email])}}
     </p>
-    <button class="btn btn-primary text-base-100">{{__('auth.verify_email.btn')}}</button>
+    <button
+        hx-post="{{route('api.notification')}}"
+        hx-target=".toast"
+        hx-swap="afterbegin transition:true"
+        hx-indicator="#notification"
+        class="btn btn-primary text-base-100"
+    >
+        {{__('auth.verify_email.btn')}}
+    </button>
+    <x-partials.notifications.loading id="notification"/>
 </div>

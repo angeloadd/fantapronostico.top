@@ -12,7 +12,7 @@ final class GameRepository implements GameRepositoryInterface
 {
     public function getNextGameByDateTime(DateTimeInterface $dateTime): ?Game
     {
-        $game = Game::where('game_date', '>', $dateTime->getTimestamp())
+        $game = Game::where('started_at', '>', $dateTime)
             ->first();
 
         return $game instanceof Game ? $game : null;
@@ -20,7 +20,7 @@ final class GameRepository implements GameRepositoryInterface
 
     public function nextGameExists(DateTimeInterface $dateTime): bool
     {
-        return Game::where('game_date', '>', $dateTime->getTimestamp())->exists();
+        return Game::where('started_at', '>', $dateTime)->exists();
     }
 
     public function getAll(): Collection

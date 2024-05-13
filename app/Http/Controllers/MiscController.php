@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Helpers\Ranking\RankingCalculatorInterface;
-use App\Models\User;
+use App\Modules\Auth\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 
 final class MiscController extends Controller
 {
-    public function __construct(private RankingCalculatorInterface $calculator)
+    public function __construct(private readonly RankingCalculatorInterface $calculator)
     {
     }
 

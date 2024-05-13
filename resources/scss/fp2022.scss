@@ -12,10 +12,7 @@ aside::-webkit-scrollbar {
     top: 0.5rem;
     right: 0;
     width: 3rem;
-    border-top-left-radius: 30%;
-    border-bottom-left-radius: 30%;
-    border-top-right-radius: 0%;
-    border-bottom-right-radius: 0%;
+    border-radius: 30% 0 0 30%;
     z-index: 2;
     opacity: 0.5;
 }
@@ -28,7 +25,7 @@ aside::-webkit-scrollbar {
 .next-match-header-custom {
     transform: translateY(-2rem);
     transition: 0.4s ease-in-out;
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.2));
+    //background: linear-gradient(to top, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.2));
 }
 
 .next-match-header-custom:hover {

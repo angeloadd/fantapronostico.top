@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\FirstLogMiddleware;
 use App\Http\Middleware\ModMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'first.log' => FirstLogMiddleware::class,
             'mod' => ModMiddleware::class,
             'superAdmin' => AdminMiddleware::class,
         ]);

@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Auth;
 final class HomeController extends Controller
 {
     public function __construct(
-        private RankingCalculatorInterface $calculator,
-        private GameRepositoryInterface $gameRepository,
-        private TimeManagementServiceInterface $timeManagementService,
+        private readonly RankingCalculatorInterface $calculator,
+        private readonly GameRepositoryInterface $gameRepository,
+        private readonly TimeManagementServiceInterface $timeManagementService,
     ) {
     }
 
@@ -32,8 +32,8 @@ final class HomeController extends Controller
         $nextGame = $this->gameRepository->getNextGameByDateTime($this->timeManagementService->now());
         if (isset($nextGame) &&
             Auth::user() &&
-            Game::where('game_date', $nextGame->timestamp)->count() > 1 &&
-            null !== $nextGame?->bets?->where('user_id', Auth::user()->id)?->first()
+            Game::where('started_at', $nextGame->timestamp)->count() > 1 &&
+            null !== $nextGame->bets?->where('user_id', Auth::user()->id)?->first()
         ) {
             $nextGame = $this->gameRepository->getNextGameByOtherGame($nextGame);
         }

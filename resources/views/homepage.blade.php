@@ -1,8 +1,8 @@
-<x-layout>
+<x-layouts.with-drawer>
         <div class="row flex justify-center items-center">
             <div class="col-12 col-sm-6">
                 @if($isDeadlineForChampionBetPassed)
-                    <a class="flex justify-center text-decoration-none text-base-100 fs-3 title-font w-100 rounded-pill border border-1 bg-primary border-primary text-success shadow-lg py-3 px-4"
+                    <a class="flex justify-center text-decoration-none text-3xl title-font w-100 rounded-pill border border-1 bg-primary border-primary text-success shadow-lg py-3 px-4"
                        href="{{route('champion.create')}}">
                         <img class="img-fluid" width="25px" src="{{Vite::asset('resources/img/coppaWorldCup.png')}}"
                              alt="cup">
@@ -21,7 +21,7 @@
             <div class="col 12 col-md-6">
                 <div class="row flex flex-col items-center">
                     <x-homepage._card>
-                        <div class="card-header shadow-lg bg-danger text-base-100 mx-3 standing-header-custom rounded-md border-danger text-center fs-3 title-font">Ultimi Risultati</div>
+                        <div class="card-header shadow-lg bg-danger text-base-100 mx-3 standing-header-custom rounded-md border-danger text-center text-3xl title-font">Ultimi Risultati</div>
                         <div class="pt-0 card-body flex flex-col justify-content-evenly items-center">
                             @foreach($lastThreeGames as $game)
                                 <a class="btn btn-danger text-base-100 my-1 flex justify-content-evenly items-center" href="{{route('bet.index', compact('game'))}}" role="button">
@@ -57,4 +57,4 @@
                 </div>
             </div>
         </div>
-</x-layout>
+</x-layouts.with-drawer>

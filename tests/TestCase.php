@@ -10,4 +10,9 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
+    public function makeTestUrl(?string $uri = null): string
+    {
+        return config('app.url').$uri;
+    }
 }

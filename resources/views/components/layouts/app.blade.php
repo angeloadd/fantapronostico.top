@@ -20,6 +20,7 @@
     </head>
     <body>
         {{ $slot }}
+        <div class="toast"></div>
         @stack('scripts')
     </body>
 </html>

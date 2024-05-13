@@ -74,8 +74,8 @@ final class LoginActionTest extends TestCase
     }
 
     /**
-     * @param  array<int, string|int>  $input
-     * @param  array<int, string|int>  $errors
+     * @param array<int, string|int> $input
+     * @param array<int, string|int> $errors
      */
     #[DataProvider('badRequestProvider')]
     public function test_validation_errors(array $input, array $errors): void
@@ -89,6 +89,7 @@ final class LoginActionTest extends TestCase
         for ($i = 0; $i < 6; $i++) {
             $response = $this->post('login', ['email' => 'ciao@example.com', 'password' => 'password']);
         }
+
         $response->assertSessionHasErrors('rate');
     }
 }

@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Auth;
 
 final class ChampionController extends Controller
 {
-    const ONE_HOUR_IN_SECONDS = 60 * 60;
+    public const ONE_HOUR_IN_SECONDS = 60 * 60;
 
     public function __construct()
     {
-        $this->middleware(['auth', 'first.log']);
+        $this->middleware(['auth']);
     }
 
     public function create(): Renderable|RedirectResponse

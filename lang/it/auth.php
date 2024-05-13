@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+$appName = ucfirst(config('app.name'));
+
 return [
 
     /*
@@ -20,12 +22,12 @@ return [
     'throttle' => 'Troppi tentativi di login. Ti preghiamo di riprovare tra :seconds secondi.',
 
     'login' => [
-        'title' => 'Accedi - FP2024',
+        'title' => 'Accedi - '. $appName,
         'nav' => 'Accedi',
         'btn' => 'Accedi',
     ],
     'register' => [
-        'title' => 'Iscriviti - FP2024',
+        'title' => 'Iscriviti - ' . $appName,
         'nav' => 'Iscriviti',
         'btn' => 'Crea nuovo account',
     ],
@@ -34,7 +36,7 @@ return [
         'salutation' => 'Benvenuto :username',
         'heading' => 'Verifica la tua email!',
         'paragraph' => 'Per poter partecipare al gioco devi verificare la tua email. Abbiamo inviato un link alla email che hai fornito durante la registrazione: :email.',
-        'paragraph2' => 'Se non hai ricevuto niente puoi chiedere un reinvio cliccando sul link qui sotto.',
+        'paragraph2' => 'Se non hai ricevuto niente clicca sul link qui sotto.',
         'btn' => 'Invia link di verifica',
     ],
 

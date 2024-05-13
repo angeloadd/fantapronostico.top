@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Mail;
+namespace App\Modules\Auth\Mail;
 
 use App\Modules\Auth\Models\User;
 use Illuminate\Bus\Queueable;
@@ -26,7 +26,7 @@ final class EmailVerificationLink extends Mailable
     {
         $validityIntervalInMinutes = Config::get('auth.verification.expire', 60);
         $this->url = URL::temporarySignedRoute(
-            'verification.verify',
+            'email.verified',
             60 * (is_int($validityIntervalInMinutes) ? $validityIntervalInMinutes : 60),
             [
                 'id' => $user->getKey(),

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use App\Modules\Auth\Models\User;
 
 /**
  * App\Models\Bet
@@ -26,8 +27,8 @@ use Illuminate\Support\Carbon;
  * @property int $game_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Game   $game
- * @property-read User   $user
+ * @property-read Game $game
+ * @property-read User $user
  *
  * @method static BetFactory factory(...$parameters)
  * @method static Builder|Bet newModelQuery()
@@ -43,6 +44,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Bet whereSign($value)
  * @method static Builder|Bet whereUpdatedAt($value)
  * @method static Builder|Bet whereUserId($value)
+ *
+ * @property-read mixed $away_scorer_name
+ * @property-read mixed $home_scorer_name
  *
  * @mixin Eloquent
  */
@@ -84,7 +88,7 @@ final class Bet extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Modules\Auth\Models\User::class);
     }
 
     public function game()

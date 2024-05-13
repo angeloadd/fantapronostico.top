@@ -6,7 +6,7 @@ namespace App\Repository\Bet;
 
 use App\Models\Bet;
 use App\Models\Game;
-use App\Models\User;
+use App\Modules\Auth\Models\User;
 use Illuminate\Support\Collection;
 
 final class BetRepository implements BetRepositoryInterface

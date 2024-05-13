@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.with-drawer>
     <x-_champion_card>
         <div class="card-body pt-0">
             <div class="w-full justify-center items-center px-0 px-md-3">
@@ -52,4 +52,4 @@
             </div>
         </div>
     </x-_champion_card>
-</x-layout>
+</x-layouts.with-drawer>

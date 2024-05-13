@@ -26,8 +26,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', static fn () => view('pages.home'))->name('home');
-
 Route::group([], static function (Router $r): void {
     $routesFromModules = glob(__DIR__ . '/../app/Modules/*/Http/Routes/*.php');
     if ( ! $routesFromModules) {
@@ -101,4 +99,4 @@ Route::put('pannello/controllo/vincitore/modifica', [GameModController::class, '
 Route::get('classifica', [UserController::class, 'officialStanding'])->name('standing');
 
 Route::get('albo', [MiscController::class, 'albo'])->name('albo');
-Route::get('statistiche/{user}', [MiscController::class, 'statistics'])->name('statistics')->middleware(['auth', 'first.log']);
+Route::get('statistiche/{user}', [MiscController::class, 'statistics'])->name('statistics')->middleware(['auth']);

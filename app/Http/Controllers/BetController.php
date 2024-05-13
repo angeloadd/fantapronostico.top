@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Auth;
 final class BetController extends Controller
 {
     public function __construct(
-        private TimeManagementServiceInterface $timeManagementService,
-        private BetRepositoryInterface $betRepository,
-        private GameRepositoryInterface $gameRepository,
+        private readonly TimeManagementServiceInterface $timeManagementService,
+        private readonly BetRepositoryInterface $betRepository,
+        private readonly GameRepositoryInterface $gameRepository,
     ) {
-        $this->middleware(['auth', 'first.log']);
+        $this->middleware(['auth']);
     }
 
     public function nextGame(): Renderable|RedirectResponse
@@ -47,7 +47,7 @@ final class BetController extends Controller
 
     public function index(Game $game): Renderable|RedirectResponse
     {
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return view(
                 'bet.index',
                 [
@@ -65,12 +65,12 @@ final class BetController extends Controller
 
     public function show(Game $game): Renderable|RedirectResponse
     {
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return redirect(route('bet.index', compact('game')))
                 ->with('error_message', 'La partita è iniziata');
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->game_date)) {
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -93,7 +93,7 @@ final class BetController extends Controller
     public function create(Game $game): Renderable|RedirectResponse
     {
         // controllo per display pronostici con sort per ordinarli
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return redirect(route('bet.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -106,7 +106,7 @@ final class BetController extends Controller
         }
 
         //Controllo per non anticipare troppo i pronostici
-        if ($this->timeManagementService->isGameNotPredictableYet($game->game_date)) {
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -128,7 +128,7 @@ final class BetController extends Controller
     public function store(BetRequest $request, Game $game): RedirectResponse
     {
         // Controllo per limite di tempo
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return redirect(route('bet.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
@@ -138,7 +138,7 @@ final class BetController extends Controller
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->game_date)) {
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
@@ -171,7 +171,7 @@ final class BetController extends Controller
         $game = $bet->game;
 
         //Controllo per modifica oltre tempo limite
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return redirect(route('bet.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -184,7 +184,7 @@ final class BetController extends Controller
         }
 
         //Controllo per non anticipare troppo i pronostici
-        if ($this->timeManagementService->isGameNotPredictableYet($game->game_date)) {
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -204,7 +204,7 @@ final class BetController extends Controller
         $game = $bet->game;
 
         // Controllo per caricamento pronostico oltre il limite
-        if ($this->timeManagementService->isGameInThePast($game->game_date)) {
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return redirect(route('bet.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
@@ -214,7 +214,7 @@ final class BetController extends Controller
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->game_date)) {
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }

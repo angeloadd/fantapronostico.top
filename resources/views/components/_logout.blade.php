@@ -1,22 +1,20 @@
-<div class="modal fade" id="logOutModal" tabindex="-1" aria-labelledby="logOutModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="logOutModalLabel">Logout</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
+<dialog class="modal" id="logOutModal" tabindex="-1" aria-labelledby="logOutModalLabel" aria-hidden="true">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Logout</h3>
+        <p class="py-4">
             Sei sicuro di voler fare logout?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-info text-dark" data-bs-dismiss="modal">Chiudi</button>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+        </p>
+        <div class="modal-action">
+            <form action="{{ route('api.logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn text-base-100 btn-primary">
-                    Logout
-                </button>
+                @method('DELETE')
+            <!-- if there is a button in form, it will close the modal -->
+                <button type="submit" class="btn btn-error text-base-100">Logout</button>
+            </form>
+            <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn btn-base-300">Chiudi</button>
             </form>
         </div>
-        </div>
     </div>
-</div>
+</dialog>

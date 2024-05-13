@@ -51,21 +51,21 @@
                     Segno
                 </div>
                 <div
-                    class="col-span-5 bg-light my-1 p-2 rounded-md fs-3 flex items-center justify-center">
+                    class="col-span-5 bg-light my-1 p-2 rounded-md text-3xl flex items-center justify-center">
                     {{$userBet->sign}}
                 </div>
                 <div class="col-span-5 bg-light flex justify-center items-center my-1 p-2 rounded-md">
                     Risultato {{$game->home_team}}
                 </div>
                 <div
-                    class="col-span-5 bg-light my-1 p-2 rounded-md fs-3 flex items-center justify-center">
+                    class="col-span-5 bg-light my-1 p-2 rounded-md text-3xl flex items-center justify-center">
                     {{$userBet->home_result}}
                 </div>
                 <div class="col-span-5 bg-light flex justify-center items-center my-1 p-2 rounded-md">
                     Risultato {{$game->away_team}}
                 </div>
                 <div
-                    class="col-span-5 bg-light my-1 p-2 rounded-md fs-3 flex items-center justify-center">
+                    class="col-span-5 bg-light my-1 p-2 rounded-md text-3xl flex items-center justify-center">
                     {{$userBet->away_result}}
                 </div>
 

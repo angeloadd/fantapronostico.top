@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.with-drawer>
     <x-slot name="style">
         <style>
             body {
@@ -38,4 +38,4 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-layouts.with-drawer>

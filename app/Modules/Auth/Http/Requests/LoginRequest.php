@@ -8,6 +8,9 @@ use Illuminate\Foundation\Http\FormRequest;
 
 final class LoginRequest extends FormRequest
 {
+    public const EMAIL = 'email';
+    public const PASSWORD = 'password';
+
     public function authorize(): bool
     {
         return true;
@@ -19,18 +22,18 @@ final class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            self::EMAIL => ['required', 'string'],
+            self::PASSWORD => ['required', 'string'],
         ];
     }
 
     public function email(): string
     {
-        return $this->string('email')->toString();
+        return $this->string(self::EMAIL)->toString();
     }
 
     public function password(): string
     {
-        return $this->string('password')->toString();
+        return $this->string(self::PASSWORD)->toString();
     }
 }

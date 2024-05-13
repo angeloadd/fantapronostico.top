@@ -6,6 +6,7 @@ namespace App\Modules\Auth\Http\Controllers;
 
 use App\Modules\Auth\Http\Requests\RegisterRequest;
 use App\Modules\Auth\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -25,14 +26,12 @@ final readonly class RegisterAction
             RegisterRequest::PASSWORD => Hash::make($request->password()),
         ]);
 
+        event(new Registered($user));
+
         $user->sendEmailVerificationNotification();
 
         $this->auth->login($user, true);
 
-        if ($this->auth->user() instanceof User && null === $this->auth->user()->email_verified_at) {
-            return new RedirectResponse(route('verify-email'));
-        }
-
-        return new RedirectResponse(route('home'));
+        return redirect(route('verify-email'));
     }
 }
