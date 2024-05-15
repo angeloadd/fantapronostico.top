@@ -9,7 +9,7 @@ final class Constants
     public const DATE_FORMAT = 'd-m-Y H:i:s.u';
 
     //'18-12-2022 18:00'
-    public const FINAL_DATE = 1671382800;
+    public const FINAL_DATE = 1815536019;
 
     //18-12-2022 23:59:59
     public const WINNER_DECLARATION_DATE = 1671404399;

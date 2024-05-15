@@ -1,6 +1,6 @@
 <div class="drawer lg:drawer-open w-full">
     <input class="drawer-toggle" type="checkbox" id="sidebarBtn"/>
-    <div class="drawer-content">
+    <div class="drawer-content h-screen flex justify-center items-center">
         <label for="sidebarBtn" aria-label="close sidebar" class="lg:hidden btn btn-neutral rounded-none btn-gear-custom">
             <img src="{{Vite::asset('resources/img/sidebar/bars.svg')}}" alt="sidebar burger button">
         </label>

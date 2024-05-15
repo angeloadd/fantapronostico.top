@@ -17,6 +17,9 @@
 
         <!-- Styles -->
         @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+        @isset($style)
+            {{ $style }}
+        @endisset
     </head>
     <body>
         {{ $slot }}
