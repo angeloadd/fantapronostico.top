@@ -23,7 +23,6 @@ final class LoginUserCommandHandlerTest extends TestCase
 
     private AuthServiceInterface&MockObject $authService;
 
-
     private LoginUserCommand $command;
 
     protected function setUp(): void
@@ -46,7 +45,7 @@ final class LoginUserCommandHandlerTest extends TestCase
     {
         $this->rateLimiter->method('tooManyAttempts')->willReturn(false);
         $this->authService->method('attemptLogin')
-            ->with('email','password')
+            ->with('email', 'password')
             ->willReturn(true);
         $this->authService->method('isEmailVerified')
             ->willReturn(true);

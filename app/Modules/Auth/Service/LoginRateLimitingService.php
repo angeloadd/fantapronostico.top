@@ -27,7 +27,7 @@ final readonly class LoginRateLimitingService implements RateLimiterInterface
     {
         $tooManyAttempts = $this->limiter->tooManyAttempts($this->throttleKey(), 5);
 
-        if($tooManyAttempts){
+        if ($tooManyAttempts) {
             $this->dispatcher->dispatch(new Lockout($this->request));
         }
 
@@ -53,6 +53,6 @@ final readonly class LoginRateLimitingService implements RateLimiterInterface
     {
         $email = $this->request->input('email');
 
-        return Str::transliterate((is_string($email) ? strtolower($email) . '|' : '') . $this->request->ip());
+        return Str::transliterate((is_string($email) ? mb_strtolower($email) . '|' : '') . $this->request->ip());
     }
 }

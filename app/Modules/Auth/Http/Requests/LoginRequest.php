@@ -9,6 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 final class LoginRequest extends FormRequest
 {
     public const EMAIL = 'email';
+
     public const PASSWORD = 'password';
 
     public function authorize(): bool

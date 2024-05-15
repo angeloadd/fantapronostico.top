@@ -24,6 +24,6 @@ final readonly class AuthService implements AuthServiceInterface
             throw AuthenticatedUserCouldNotBeFoundException::create();
         }
 
-        return $this->auth->user()->email_verified_at !== null;
+        return null !== $this->auth->user()->email_verified_at;
     }
 }

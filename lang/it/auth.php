@@ -22,7 +22,7 @@ return [
     'throttle' => 'Troppi tentativi di login. Ti preghiamo di riprovare tra :seconds secondi.',
 
     'login' => [
-        'title' => 'Accedi - '. $appName,
+        'title' => 'Accedi - ' . $appName,
         'nav' => 'Accedi',
         'btn' => 'Accedi',
     ],

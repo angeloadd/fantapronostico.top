@@ -11,7 +11,8 @@ use Illuminate\Http\RedirectResponse;
 
 final readonly class LoginAction
 {
-    public function __construct(private LoginUserCommandHandler $loginAction) {
+    public function __construct(private LoginUserCommandHandler $loginAction)
+    {
     }
 
     public function __invoke(LoginRequest $request): RedirectResponse

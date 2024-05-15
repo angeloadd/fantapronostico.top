@@ -10,8 +10,6 @@ use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Http\Controllers\HomeController;
-use App\Modules\Shared\Service\RedirectionService;
-use App\Modules\Shared\Service\RedirectionServiceInterface;
 use App\Repository\Bet\BetRepository;
 use App\Repository\Bet\BetRepositoryInterface;
 use App\Repository\Game\GameRepository;

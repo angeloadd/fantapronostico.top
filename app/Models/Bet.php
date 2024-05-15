@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Helpers\ValueObject\ScoreMapper;
+use App\Modules\Auth\Models\User;
 use Database\Factories\BetFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +13,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use App\Modules\Auth\Models\User;
 
 /**
  * App\Models\Bet
@@ -88,7 +88,7 @@ final class Bet extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Modules\Auth\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function game()

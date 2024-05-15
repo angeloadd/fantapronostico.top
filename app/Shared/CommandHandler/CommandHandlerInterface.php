@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\CommandHandler;
 
 /**
@@ -9,9 +11,8 @@ namespace App\Shared\CommandHandler;
 interface CommandHandlerInterface
 {
     /**
-     * @param T $command
-     *
+     * @param  T  $command
      * @return null|V
      */
-    public function handle(CommandInterface $command): null|CommandResponseInterface;
+    public function handle(CommandInterface $command): ?CommandResponseInterface;
 }

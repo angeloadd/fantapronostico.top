@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Auth\Command\Service\AuthService;
 
 use App\Modules\Auth\Service\AuthService;
+use App\Modules\Auth\UseCase\Shared\Exception\AuthenticatedUserCouldNotBeFoundException;
 use DateTimeImmutable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -34,6 +35,7 @@ final class AuthServiceTest extends TestCase
         $this->auth->method('attempt')->willReturn(true);
         $this->assertTrue($this->subject->attemptLogin('email', 'password'));
     }
+
     public function test_attemptLogin_should_return_false_when_login_fails(): void
     {
         $this->auth->method('attempt')->willReturn(false);
@@ -46,9 +48,17 @@ final class AuthServiceTest extends TestCase
         $this->user->email_verified_at = new DateTimeImmutable();
         $this->assertTrue($this->subject->isEmailVerified());
     }
+
     public function test_isEmailVerified_should_return_false_when_email_is_not_verified(): void
     {
         $this->auth->method('user')->willReturn($this->user);
         $this->assertFalse($this->subject->isEmailVerified());
+    }
+
+    public function test_isEmailVerified_throws_when_user_is_not_available_after_login(): void
+    {
+        $this->auth->method('user')->willReturn(null);
+        $this->expectException(AuthenticatedUserCouldNotBeFoundException::class);
+        $this->subject->isEmailVerified();
     }
 }

@@ -12,7 +12,9 @@ final class AuthViewsControllerTest extends TestCase
     use UserAuthTrait;
 
     public const LOGIN_ENDPOINT = '/login';
+
     public const VERIFY_EMAIL_ENDPOINT = '/verify-email';
+
     public const REGISTER_ENDPOINT = '/register';
 
     public function test_a_user_can_visit_login_if_not_authenticated(): void

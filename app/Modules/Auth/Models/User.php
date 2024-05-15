@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Models;
 
-use App\Modules\Auth\Mail\EmailVerificationLink;
 use App\Models\Bet;
 use App\Models\Champion;
 use App\Modules\Auth\Database\Factory\UserFactory;
+use App\Modules\Auth\Mail\EmailVerificationLink;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

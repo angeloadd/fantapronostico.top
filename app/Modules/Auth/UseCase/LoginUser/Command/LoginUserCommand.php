@@ -9,6 +9,7 @@ use App\Shared\CommandHandler\CommandInterface;
 final readonly class LoginUserCommand implements CommandInterface
 {
     public const EMAIL = 'email';
+
     public const PASSWORD = 'password';
 
     public function __construct(public string $email, public string $password)

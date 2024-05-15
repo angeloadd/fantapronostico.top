@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Hash;
 trait UserAuthTrait
 {
     private const USER_NAME = 'john';
+
     private const USER_EMAIL = 'john.doe@example.com';
+
     private const USER_PASSWORD = '123123123';
 
     private function createUser(?string $email = null, ?string $name = null, ?string $password = null): User

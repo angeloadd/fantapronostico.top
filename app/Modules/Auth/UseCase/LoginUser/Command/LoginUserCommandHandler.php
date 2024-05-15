@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Modules\Auth\UseCase\LoginUser\Command;
 
 use App\Modules\Auth\Service\AuthServiceInterface;
-use App\Modules\Auth\UseCase\LoginUser\Exception\RateLimitExceededException;
+use App\Modules\Auth\Service\RateLimiterInterface;
 use App\Modules\Auth\UseCase\LoginUser\Exception\EmailNotVerifiedException;
 use App\Modules\Auth\UseCase\LoginUser\Exception\LoginAttemptFailedException;
-use App\Modules\Auth\Models\User;
-use App\Modules\Auth\Service\RateLimiterInterface;
+use App\Modules\Auth\UseCase\LoginUser\Exception\RateLimitExceededException;
 use App\Shared\CommandHandler\CommandHandlerInterface;
 use App\Shared\CommandHandler\CommandInterface;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Session\Session;
 
 /**
@@ -28,7 +26,7 @@ final readonly class LoginUserCommandHandler implements CommandHandlerInterface
     }
 
     /**
-     * @param LoginUserCommand $command
+     * @param  LoginUserCommand  $command
      */
     public function handle(CommandInterface $command): null
     {
@@ -36,7 +34,7 @@ final readonly class LoginUserCommandHandler implements CommandHandlerInterface
             throw RateLimitExceededException::create($this->limiter->availableInSeconds());
         }
 
-        if (!$this->auth->attemptLogin($command->email, $command->password)) {
+        if ( ! $this->auth->attemptLogin($command->email, $command->password)) {
             $this->limiter->increment();
 
             throw LoginAttemptFailedException::create();
@@ -46,7 +44,7 @@ final readonly class LoginUserCommandHandler implements CommandHandlerInterface
         $this->limiter->clear();
 
         // TODO cypress or integration for redirect to intended after email verification
-        if (!$this->auth->isEmailVerified()) {
+        if ( ! $this->auth->isEmailVerified()) {
             throw EmailNotVerifiedException::create();
         }
 
