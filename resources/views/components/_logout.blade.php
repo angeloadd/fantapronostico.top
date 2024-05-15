@@ -5,10 +5,8 @@
             Sei sicuro di voler fare logout?
         </p>
         <div class="modal-action">
-            <form action="{{ route('api.logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                @method('DELETE')
-            <!-- if there is a button in form, it will close the modal -->
                 <button type="submit" class="btn btn-error text-base-100">Logout</button>
             </form>
             <form method="dialog">

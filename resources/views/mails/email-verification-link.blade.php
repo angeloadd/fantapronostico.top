@@ -2,7 +2,7 @@
     <table class="bg-base-100 rounded-t-lg p-10 block">
         <tr>
             <td>
-                <h2 class="pb-4 font-bold text-[#13525F]">Ciao {{$user->name}}!</h2>
+                <h2 class="pb-4 font-bold text-[#13525F]">Ciao {{$username}}!</h2>
                 <p>Please click the button below to verify your email address.</p>
             </td>
         </tr>

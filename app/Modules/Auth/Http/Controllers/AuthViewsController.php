@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 
 final class AuthViewsController
 {
-    public function __invoke(Request $request, ?Authenticatable $user): Response
+    public function __invoke(Request $request): Response
     {
         return $this->makeResponse(ltrim($request->getPathInfo(), '/'));
     }

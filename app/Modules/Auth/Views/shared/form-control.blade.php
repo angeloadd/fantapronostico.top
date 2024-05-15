@@ -7,7 +7,7 @@
         @isset($placeholder) placeholder="{{$placeholder}}" @endisset
         class="input input-bordered @error($name) border-error @enderror"
         required
-        @if('password' !== $type) value="{{old($name, '')}}" @endif
+        @if('password' !== $type) value="{{old($name, '') ?? $value ?? ''}}" @endif
     />
     @error($name)
         @foreach($errors->get($name) as $error)

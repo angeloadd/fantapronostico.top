@@ -25,6 +25,101 @@
                 margin: 0;
                 padding: 0
             }
+
+            .min-h-screen {
+                min-height: 100vh;
+            }
+
+            .block {
+                display: block;
+            }
+
+            .bg-base-300 {
+                --tw-bg-opacity: 1;
+                background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+            }
+
+            .text-base-100 {
+                --tw-text-opacity: 1;
+                color: var(--fallback-b1, oklch(var(--b1)/var(--tw-text-opacity)));
+            }
+
+                .p-4 {
+                padding: 1rem/* 16px */;
+            }
+
+            .py-10 {
+                padding-top: 2.5rem/* 40px */;
+                padding-bottom: 2.5rem/* 40px */;
+            }
+
+            .px-2 {
+                padding-left: 0.5rem/* 8px */;
+                padding-right: 0.5rem/* 8px */;
+            }
+
+            @media (min-width: 1024px) {
+                .lg\:px-64 {
+                    padding-left: 16rem /* 256px */;
+                    padding-right: 16rem /* 256px */;
+                }
+            }
+
+            @media (min-width: 768px) {
+                .md\:px-32 {
+                    padding-left: 8rem /* 128px */;
+                    padding-right: 8rem /* 128px */;
+                }
+            }
+
+            @media (min-width: 640px) {
+                .sm\:px-16 {
+                    padding-left: 4rem /* 64px */;
+                    padding-right: 4rem /* 64px */;
+                }
+            }
+
+            .footer {
+                display: grid;
+                width: 100%;
+                grid-auto-flow: row;
+                place-items: start;
+                column-gap: 1rem/* 16px */;
+                row-gap: 2.5rem/* 40px */;
+                font-size: 0.875rem/* 14px */;
+                line-height: 1.25rem/* 20px */;
+            }
+            .footer > * {
+                display: grid;
+                place-items: start;
+                gap: 0.5rem/* 8px */;
+            }
+            @media (min-width: 48rem) {
+                .footer {
+                    grid-auto-flow: column;
+                }
+                .footer-center {
+                    grid-auto-flow: row dense;
+                }
+            }
+
+            .items-center {
+                align-items: center;
+            }
+
+            .-mt-1 {
+                margin-top: -0.25rem/* -4px */;
+            }
+
+            .rounded-b-lg {
+                border-bottom-right-radius: 0.5rem/* 8px */;
+                border-bottom-left-radius: 0.5rem/* 8px */;
+            }
+
+            .bg-\[\#00AACC\] {
+                --tw-bg-opacity: 1;
+                background-color: rgb(0 170 204 / var(--tw-bg-opacity));
+            }
         </style>
     </head>
     <body>

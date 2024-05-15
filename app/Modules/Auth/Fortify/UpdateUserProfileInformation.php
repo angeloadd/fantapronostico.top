@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Fortify;
+namespace App\Modules\Auth\Fortify;
 
 use App\Modules\Auth\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

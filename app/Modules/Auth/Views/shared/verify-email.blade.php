@@ -10,11 +10,11 @@
         {{__('auth.verify_email.paragraph2', ['email' => Auth::user()->email])}}
     </p>
     <button
-        hx-post="{{route('api.notification')}}"
+        hx-post="{{route('send-email-verification-link')}}"
         hx-target=".toast"
         hx-swap="afterbegin transition:true"
         hx-indicator="#notification"
-        class="btn btn-primary text-base-100"
+        class="btn btn-neutral text-base-100"
     >
         {{__('auth.verify_email.btn')}}
     </button>

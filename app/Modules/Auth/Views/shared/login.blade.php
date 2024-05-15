@@ -1,6 +1,6 @@
 <x-auth::shared.nav>
     <x-auth::shared.form
-        action="{{route('api.login')}}"
+        action="{{route('login')}}"
         method="POST"
         prefix="login"
         :formControls="[
@@ -16,5 +16,6 @@
         ],
     ]"
         btnText="{{__('auth.login.btn')}}"
+        passwordReset="true"
     />
 </x-auth::shared.nav>

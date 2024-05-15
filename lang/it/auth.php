@@ -25,6 +25,7 @@ return [
         'title' => 'Accedi - ' . $appName,
         'nav' => 'Accedi',
         'btn' => 'Accedi',
+        'request_password_reset' => 'Password dimenticata?',
     ],
     'register' => [
         'title' => 'Iscriviti - ' . $appName,
@@ -39,5 +40,13 @@ return [
         'paragraph2' => 'Se non hai ricevuto niente clicca sul link qui sotto.',
         'btn' => 'Invia link di verifica',
     ],
-
+    'request_password_reset' => [
+        'title' => 'Password Dimenticata - ' . $appName,
+        'paragraph' => 'Inserisci la tua e-mail e ti invieremo un link per reimpostare la tua password.',
+        'btn' => 'Invia Link',
+    ],
+    'reset_password' => [
+        'title' => 'Reimposta Password - ' . $appName,
+        'btn' => 'Reimposta Password',
+    ]
 ];

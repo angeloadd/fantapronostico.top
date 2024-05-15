@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
-$serviceProviders = [];
+use App\Modules\Auth\ServiceProviders\AuthServiceProvider;
+use App\Modules\Auth\ServiceProviders\FortifyServiceProvider;
+use App\Providers\AppServiceProvider;
 
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Modules\Auth\ServiceProviders\FortifyServiceProvider::class,
-    App\Modules\Auth\ServiceProviders\AuthServiceProvider::class,
+    AppServiceProvider::class,
+    AuthServiceProvider::class,
+    FortifyServiceProvider::class,
 ];

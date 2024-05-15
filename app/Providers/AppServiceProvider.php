@@ -16,9 +16,12 @@ use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
+use App\Shared\RouteMeta\RouteConfig;
+use App\Shared\RouteMeta\RouteMeta;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -52,8 +55,8 @@ final class AppServiceProvider extends ServiceProvider
 
         Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');
 
-        Paginator::useBootstrap();
         View::share('finalDate', Constants::FINAL_DATE);
+        View::share('routeMeta', new RouteMeta());
 
         if ( ! Collection::hasMacro('sortByMulti')) {
             Collection::macro(

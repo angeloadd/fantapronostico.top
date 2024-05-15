@@ -132,7 +132,7 @@ return [
     |
     */
 
-    'views' => false,
+    'views' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -146,7 +146,12 @@ return [
     */
 
     'features' => [
+        Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
     ],
+
+    'redirects' => [
+        'register' => 'api/email/verify',
+    ]
 ];

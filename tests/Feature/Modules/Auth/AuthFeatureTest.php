@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Auth;
 
-use App\Modules\Auth\Mail\EmailVerificationLink;
+use App\Modules\Auth\Mail\VerificationLinkEmail;
 use Illuminate\Support\Facades\Mail;
 use Tests\Feature\Modules\Auth\Helpers\UserAuthTrait;
 use Tests\TestCase;
@@ -27,6 +27,6 @@ final class AuthFeatureTest extends TestCase
             'name' => self::USER_NAME,
             'email' => self::USER_EMAIL,
         ]);
-        Mail::assertSent(EmailVerificationLink::class);
+        Mail::assertSent(VerificationLinkEmail::class);
     }
 }

@@ -7,7 +7,8 @@ namespace App\Modules\Auth\Models;
 use App\Models\Bet;
 use App\Models\Champion;
 use App\Modules\Auth\Database\Factory\UserFactory;
-use App\Modules\Auth\Mail\EmailVerificationLink;
+use App\Modules\Auth\Mail\VerificationLinkEmail;
+use App\Modules\Auth\Mail\PasswordResetLinkEmail;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,7 +22,9 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 /**
  * App\Modules\Auth\Models\User
@@ -103,10 +106,5 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function champion(): HasOne
     {
         return $this->hasOne(Champion::class);
-    }
-
-    public function sendEmailVerificationNotification(): void
-    {
-        Mail::send(new EmailVerificationLink($this));
     }
 }
