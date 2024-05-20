@@ -1,19 +1,5 @@
 <x-layouts.with-drawer>
-    <x-slot name="style">
-        <style>
-            body {
-                margin:0;
-                padding:0;
-                overflow: auto;
-            }
-        </style>
-    </x-slot>
-
-    <div class="pyro">
-        <div class="before"></div>
-        <div class="after"></div>
-    </div>
-
+    <x-partials.fireworks.fireworks/>
     <div
         class="w-full flex flex-col items-center container-homepage-custom min-h-screen px-0">
         <div class="mb-5">

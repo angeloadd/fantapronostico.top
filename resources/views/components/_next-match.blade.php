@@ -28,12 +28,12 @@
         <div class="col-6 flex flex-col jsutify-content-center items-start pe-0">
             <p class="m-1 text-info">Si disputerà il</p>
             <p class="m-1 text-primary text-xl">
-                {{$nextGame->game_date->format('d ')}}
-                {{ucfirst($nextGame->game_date->monthName)}}
-                {{$nextGame->game_date->format(' Y')}}
+                {{$nextGame->started_at->format('d ')}}
+                {{ucfirst($nextGame->started_at->monthName)}}
+                {{$nextGame->started_at->format(' Y')}}
             </p>
             <p class="m-1 text-primary text-xl">
-                ore {{$nextGame->game_date->format('H:i')}}
+                ore {{$nextGame->started_at->format('H:i')}}
             </p>
         </div>
         <div class="col-6 flex flex-col justify-center aling-items-center">

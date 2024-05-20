@@ -19,7 +19,7 @@ final class GameMapperCollection
                         'id' => $item['fixture']['id'],
                         'home_team' => TeamMapperCollection::teamNameMapper($item['teams']['home']['name']),
                         'away_team' => TeamMapperCollection::teamNameMapper($item['teams']['away']['name']),
-                        'game_date' => $item['fixture']['timestamp'],
+                        'started_at' => $item['fixture']['timestamp'],
                         'type' => self::getGameType($item['league']['round']),
                     ];
                 },

@@ -14,6 +14,12 @@
             'type' => 'password',
             'placeholder' => 'Password',
         ],
+        [
+            'name' => 'remember',
+            'type' => 'hidden',
+            'placeholder' => 'Remember',
+            'value' => '1',
+        ],
     ]"
         btnText="{{__('auth.login.btn')}}"
         passwordReset="true"

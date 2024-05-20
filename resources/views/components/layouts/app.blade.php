@@ -13,7 +13,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=crimson-text:400i,600i|open-sans:600|roboto:400|inter:400,700" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=crimson-text:400i,600i|open-sans:700|roboto:400:700|inter:400,700" rel="stylesheet" />
 
         <!-- Styles -->
         @vite(['resources/scss/app.scss', 'resources/js/app.js'])
@@ -22,6 +22,17 @@
         @endisset
     </head>
     <body>
+{{--        @if($isDeadlineForChampionBetPassed)--}}
+{{--        here should go the notifications --}}
+{{--            <div class="flex justify-center items-center">--}}
+{{--                <a class="flex justify-center text-decoration-none text-3xl title-font w-100 rounded-pill border border-1 bg-primary border-primary text-success shadow-lg py-3 px-4"--}}
+{{--                   href="{{route('champion.create')}}">--}}
+{{--                    <img class="img-fluid" width="25px" src="{{Vite::asset('resources/img/coppaWorldCup.png')}}"--}}
+{{--                         alt="cup">--}}
+{{--                    <span class="flex text-center justify-center items-center px-3">Vincente e Capocannoniere</span>--}}
+{{--                </a>--}}
+{{--            </div>--}}
+{{--        @endif--}}
         {{ $slot }}
         <div class="toast"></div>
         @stack('scripts')

@@ -10,18 +10,15 @@ use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Http\Controllers\HomeController;
-use App\Repository\Bet\BetRepository;
-use App\Repository\Bet\BetRepositoryInterface;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
+use App\Repository\Prediction\PredictionRepository;
+use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
-use App\Shared\RouteMeta\RouteConfig;
 use App\Shared\RouteMeta\RouteMeta;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,7 +38,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->when(HomeController::class)
             ->needs('$winnerDeclarationDate')
             ->give(Constants::WINNER_DECLARATION_DATE);
-        $this->app->bind(BetRepositoryInterface::class, BetRepository::class);
+        $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TimeManagementServiceInterface::class, TimeManagementService::class);
     }

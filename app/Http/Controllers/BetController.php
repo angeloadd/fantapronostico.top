@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BetRequest;
-use App\Models\Bet;
 use App\Models\Game;
-use App\Repository\Bet\BetRepositoryInterface;
+use App\Models\Prediction;
 use App\Repository\Game\GameRepositoryInterface;
+use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +18,7 @@ final class BetController extends Controller
 {
     public function __construct(
         private readonly TimeManagementServiceInterface $timeManagementService,
-        private readonly BetRepositoryInterface $betRepository,
+        private readonly PredictionRepositoryInterface $betRepository,
         private readonly GameRepositoryInterface $gameRepository,
     ) {
         $this->middleware(['auth']);
@@ -161,7 +161,7 @@ final class BetController extends Controller
         return back()->with('message', 'Pronostico inserito con successo');
     }
 
-    public function edit(Bet $bet): RedirectResponse|Renderable
+    public function edit(Prediction $bet): RedirectResponse|Renderable
     {
         // controllo per accesso a pronostici diversi dal proprio
         if (Auth::user()->id !== $bet->user_id) {
@@ -194,7 +194,7 @@ final class BetController extends Controller
         return view('bet.edit', compact('bet', 'game'));
     }
 
-    public function update(BetRequest $request, Bet $bet): RedirectResponse
+    public function update(BetRequest $request, Prediction $bet): RedirectResponse
     {
         // controllo per accesso a pronostici diversi dal proprio
         if (Auth::user()->id !== $bet->user_id) {

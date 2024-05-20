@@ -7,16 +7,6 @@ aside::-webkit-scrollbar {
     right: 0;
 }
 
-.btn-gear-custom {
-    position: fixed;
-    top: 0.5rem;
-    right: 0;
-    width: 3rem;
-    border-radius: 30% 0 0 30%;
-    z-index: 2;
-    opacity: 0.5;
-}
-
 .sidebar-custom {
     z-index: 3;
     position: fixed;
@@ -33,13 +23,7 @@ aside::-webkit-scrollbar {
 }
 
 .standing-header-custom {
-    transform: translateY(-0.5rem);
-    transition: 0.4s ease-in-out;
     background: linear-gradient(to top, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.2));
-}
-
-.standing-header-custom:hover {
-    transform: translateY(-1.5rem);
 }
 
 /* Chrome, Safari, Edge, Opera */

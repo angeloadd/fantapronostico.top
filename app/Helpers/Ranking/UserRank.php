@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
-use App\Models\Bet;
 use App\Models\Game;
-use App\Models\Player;
-use App\Models\Team;
+use App\Models\Prediction;
+use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
 use Carbon\Carbon;
 
@@ -35,7 +34,7 @@ final class UserRank
 
     private int $numberOfScorers;
 
-    public function __construct(private User $user)
+    public function __construct(private readonly User $user)
     {
         $this->total = 0;
         $this->numberOfResults = 0;
@@ -62,8 +61,11 @@ final class UserRank
 
     public function calculateResultsV2(): void
     {
-        $result = $this->user->bets->reduce(
-            static function (array $acc, Bet $bet) {
+        if (null === $this->user->predictions) {
+            return;
+        }
+        $result = $this->user->predictions->reduce(
+            static function (array $acc, Prediction $bet) {
                 $game = $bet->game;
 
                 if (isset($game->home_result, $game->away_result) &&
@@ -129,7 +131,7 @@ final class UserRank
         $this->finalBetTotal = $result['finalTotal'];
     }
 
-    public function calculateResultOfTheBet(Bet $bet): int
+    public function calculateResultOfTheBet(Prediction $bet): int
     {
         $game = $bet->game;
         $result = 0;
@@ -198,8 +200,8 @@ final class UserRank
 
     private function calculateResults(): void
     {
-        $this->numberOfResults = $this->user->bets->reduce(
-            static function (int $result, Bet $bet) {
+        $this->numberOfResults = $this->user->predictions->reduce(
+            static function (int $result, Prediction $bet) {
                 $game = $bet->game;
 
                 if (isset($game->home_result, $game->away_result) &&
@@ -217,8 +219,8 @@ final class UserRank
 
     private function calculateSigns(): void
     {
-        $this->numberOfSigns = $this->user->bets->reduce(
-            static function (int $result, Bet $bet) {
+        $this->numberOfSigns = $this->user->predictions->reduce(
+            static function (int $result, Prediction $bet) {
                 $sign = $bet->game->sign;
 
                 return isset($sign) && $sign === $bet->sign ? $result + self::SIGN_POINTS : $result;
@@ -229,8 +231,8 @@ final class UserRank
 
     private function calculateScorers(): void
     {
-        $this->numberOfScorers = $this->user->bets->reduce(
-            static function (int $result, Bet $bet) {
+        $this->numberOfScorers = $this->user->predictions->reduce(
+            static function (int $result, Prediction $bet) {
                 $game = $bet->game;
                 if (in_array(
                     $bet->home_score,
@@ -257,7 +259,7 @@ final class UserRank
     private function getFinalBetInfo(): void
     {
         $final = Game::where('type', 'final')->first();
-        $bet = Bet::where('game_id', $final?->id)
+        $bet = Prediction::where('game_id', $final?->id)
             ->where('user_id', $this->user->id)
             ->first();
 
@@ -272,8 +274,8 @@ final class UserRank
 
     private function getChampionInfo(): void
     {
-        $winner = Team::where('winner', true)->first();
-        $topScorer = Player::where('top_scorer', true)->get();
+        $winner = Tournament::first()->teams->where('is_winner', true)->first();
+        $topScorer = Tournament::first()->players->where('is_top_scorer', true)->first();
         $champion = $this->user->champion;
         if ($champion && $champion->team_id === $winner?->id) {
             $this->winnerTeam = true;
@@ -292,7 +294,7 @@ final class UserRank
             $this->topScorerTot();
     }
 
-    private function calculateFinalTotal(?Game $final, Bet $bet): void
+    private function calculateFinalTotal(?Game $final, Prediction $bet): void
     {
         if ( ! isset($final, $final->home_result, $final->away_result, $final->sign)) {
             $this->finalBetTotal = 0;

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -21,7 +22,7 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int $tournament_id
- * @property string $started_at
+ * @property Carbon $started_at
  * @property string $stage
  * @property string $status
  * @property Carbon|null $created_at
@@ -48,6 +49,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Game whereStartedAt($value)
  * @method static Builder|Game fromLatest()
  * @method static Builder|Game lastThreeGames(\DateTimeInterface $now)
+ *
+ * @property-read Collection<int, GameGoal> $goals
+ * @property-read int|null $goals_count
+ * @property-read Collection<int, Prediction> $predictions
+ * @property-read int|null $predictions_count
  *
  * @mixin Eloquent
  */
@@ -88,12 +94,22 @@ final class Game extends Model
         ];
     }
 
+    public function goals(): HasMany
+    {
+        return $this->hasMany(GameGoal::class);
+    }
+
     /**
      * @return BelongsToMany<Player>
      */
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(Player::class);
+    }
+
+    public function predictions(): HasMany
+    {
+        return $this->hasMany(Prediction::class);
     }
 
     /**
@@ -151,5 +167,29 @@ final class Game extends Model
     {
         $query->orderBy('started_at', 'desc')
             ->orderBy('id', 'desc');
+    }
+
+    public function getScoreParsed(string $type): array
+    {
+        $goals = $this->goals->filter(
+            function (GameGoal $goal) use ($type) {
+                return $goal->player->national_id === $this->{$type . '_team'}->id ||
+                    $goal->player->club_id === $this->{$type . '_team'}->id;
+            }
+        )->map(
+            static function (GameGoal $goal) {
+                if ($goal->is_autogoal) {
+                    return 'AutoGol';
+                }
+
+                return $goal->player->displayed_name;
+            }
+        )->toArray();
+
+        if (0 === count($goals)) {
+            $goals[] = 'NoGoal';
+        }
+
+        return $goals;
     }
 }

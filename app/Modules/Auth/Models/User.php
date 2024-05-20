@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Models;
 
-use App\Models\Bet;
 use App\Models\Champion;
+use App\Models\Prediction;
 use App\Modules\Auth\Database\Factory\UserFactory;
-use App\Modules\Auth\Mail\VerificationLinkEmail;
-use App\Modules\Auth\Mail\PasswordResetLinkEmail;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -22,9 +20,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 
 /**
  * App\Modules\Auth\Models\User
@@ -58,15 +53,18 @@ use Illuminate\Support\Facades\URL;
  * @method static Builder|User whereTwoFactorRecoveryCodes($value)
  * @method static Builder|User whereTwoFactorSecret($value)
  *
- * @property-read Collection<int, Bet> $bets
- * @property-read int|null $bets_count
+ * @property-read Collection<int, Prediction> $predictions
+ * @property-read int|null $predictions_count
  * @property-read Champion|null $champion
+ * @property-read Collection<int, Prediction> $bets
+ * @property-read int|null $bets_count
  *
  * @mixin Eloquent
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * @var array<int, string>
@@ -100,7 +98,7 @@ final class User extends Authenticatable implements MustVerifyEmail
 
     public function bets(): HasMany
     {
-        return $this->hasMany(Bet::class);
+        return $this->hasMany(Prediction::class);
     }
 
     public function champion(): HasOne

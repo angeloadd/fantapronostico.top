@@ -46,7 +46,7 @@ final class FetchGameEventsCommand extends Command
             /** @var Game $game */
             foreach ($games as $game) {
                 /** @var Carbon $date */
-                $date = $game->game_date;
+                $date = $game->started_at;
                 if ($date->addHour()->addMinutes(70)->gte(now())) {
                     continue;
                 }

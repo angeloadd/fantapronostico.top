@@ -153,5 +153,5 @@ return [
 
     'redirects' => [
         'register' => 'api/email/verify',
-    ]
+    ],
 ];

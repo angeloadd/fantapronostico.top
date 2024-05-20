@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Auth\ServiceProviders;
 
 use App\Modules\Auth\Fortify\CreateNewUser;
@@ -13,16 +15,15 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
-use phpDocumentor\Reflection\Types\Static_;
 
-class FortifyServiceProvider extends ServiceProvider
+final class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -36,18 +37,17 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
+        RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
 
-        Fortify::loginView(static fn() => view('auth::index', ['pageName' => RouteMeta::LOGIN]));
-        Fortify::registerView(static fn() => view('auth::index', ['pageName' => RouteMeta::REGISTER]));
-        Fortify::requestPasswordResetLinkView(static fn() => view('auth::index', ['pageName' => RouteMeta::REQUEST_PASSWORD_RESET]));
-        Fortify::resetPasswordView(static fn(Request $request) => view('auth::index', ['pageName' => RouteMeta::RESET_PASSWORD]));
-        Fortify::verifyEmailView(static fn() => view('auth::index', ['pageName' => RouteMeta::VERIFY_EMAIL]));}
+        Fortify::loginView(static fn () => view('auth::index', ['pageName' => RouteMeta::LOGIN]));
+        Fortify::registerView(static fn () => view('auth::index', ['pageName' => RouteMeta::REGISTER]));
+        Fortify::requestPasswordResetLinkView(static fn () => view('auth::index', ['pageName' => RouteMeta::REQUEST_PASSWORD_RESET]));
+        Fortify::resetPasswordView(static fn (Request $request) => view('auth::index', ['pageName' => RouteMeta::RESET_PASSWORD]));
+        Fortify::verifyEmailView(static fn () => view('auth::index', ['pageName' => RouteMeta::VERIFY_EMAIL]));
+    }
 }

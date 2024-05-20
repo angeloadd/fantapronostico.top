@@ -32,8 +32,8 @@ final class HomeController extends Controller
         $nextGame = $this->gameRepository->getNextGameByDateTime($this->timeManagementService->now());
         if (isset($nextGame) &&
             Auth::user() &&
-            Game::where('started_at', $nextGame->timestamp)->count() > 1 &&
-            null !== $nextGame->bets?->where('user_id', Auth::user()->id)?->first()
+            Game::where('started_at', $nextGame->started_at)->count() > 1 &&
+            null !== $nextGame->predictions?->where('user_id', Auth::user()->id)?->first()
         ) {
             $nextGame = $this->gameRepository->getNextGameByOtherGame($nextGame);
         }

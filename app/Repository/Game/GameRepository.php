@@ -36,7 +36,7 @@ final class GameRepository implements GameRepositoryInterface
     public function getPreviousGameByOtherGame(Game $game): ?Game
     {
         $gamesFromDb = Game::orderBy('id')
-            ->where('game_date', $game->timestamp)->get();
+            ->where('started_at', $game->started_at)->get();
 
         if (0 === $gamesFromDb->count()) {
             return null;
@@ -46,13 +46,13 @@ final class GameRepository implements GameRepositoryInterface
             return $gamesFromDb->first();
         }
 
-        return Game::fromLatest()->where('game_date', '<', $game->timestamp)->first();
+        return Game::fromLatest()->where('started_at', '<', $game->started_at)->first();
     }
 
     public function getNextGameByOtherGame(Game $game): ?Game
     {
         $gamesFromDb = Game::orderBy('id')
-            ->where('game_date', $game->timestamp)->get();
+            ->where('started_at', $game->started_at)->get();
 
         if (0 === $gamesFromDb->count()) {
             return null;
@@ -62,7 +62,7 @@ final class GameRepository implements GameRepositoryInterface
             return $gamesFromDb->last();
         }
 
-        return Game::where('game_date', '>', $game->timestamp)->first();
+        return Game::where('started_at', '>', $game->started_at)->first();
     }
 
     public function getLastThreeGames(DateTimeInterface $dateTime): Collection

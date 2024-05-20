@@ -48,5 +48,5 @@ return [
     'reset_password' => [
         'title' => 'Reimposta Password - ' . $appName,
         'btn' => 'Reimposta Password',
-    ]
+    ],
 ];

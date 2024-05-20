@@ -34,7 +34,7 @@ final class MiscController extends Controller
             'statistics.show',
             array_merge(
                 [
-                    'userBets' => $user->bets->sortByDesc(static fn ($bet) => $bet->game->game_date)->values(),
+                    'userBets' => $user->predictions->sortByDesc(static fn ($bet) => $bet->game->started_at)->values(),
                 ],
                 $rank
             )
