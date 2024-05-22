@@ -13,7 +13,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=crimson-text:400i,600i|open-sans:700|roboto:400:700|inter:400,700" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=crimson-text:400i,600i|open-sans:700|roboto:400,700,900|inter:400,700" rel="stylesheet" />
 
         <!-- Styles -->
         @vite(['resources/scss/app.scss', 'resources/js/app.js'])

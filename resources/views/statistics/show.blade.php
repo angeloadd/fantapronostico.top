@@ -10,31 +10,31 @@
                         @endif
                     </h5>
                     <ul class="list-group-horizontal py-3">
-                        <li class="list-group-item">
+                        <li class="">
                             <div class="w-full p-0 justify-center">
                                 <div class="row justify-around">
                                     <div class="col-1 title-font flex justify-around items-center text-xl">
                                         #
                                     </div>
-                                    <div class="col-span-3 title-font flex justify-around items-center text-xl">
+                                    <div class="title-font flex justify-around items-center text-xl">
                                         Nome
                                     </div>
                                     <div class="col-2 title-font flex justify-around items-center text-xl">
                                         Punti
                                     </div>
-                                    <div class="col-2 title-font hidden d-sm-flex justify-around items-center text-xl">
+                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
                                         Esatti
                                     </div>
-                                    <div class="col-2 title-font hidden d-sm-flex justify-around items-center text-xl">
+                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
                                         Segni
                                     </div>
-                                    <div class="col-2 title-font hidden d-sm-flex justify-around items-center text-xl">
+                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
                                         Gol
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item rounded-lg @if(Auth::user()?->id === $userRank->user()->id) bg-secondary white-text @else white-bg main-text @endif">
+                        <li class=" rounded-lg @if(Auth::user()?->id === $userRank->user()->id) bg-secondary white-text @else white-bg main-text @endif">
                             <div class="w-full p-0 justify-center ">
                                 <div class="row justify-around">
                                     <div class="col-1 flex justify-center items-center text-2xl">
@@ -54,19 +54,19 @@
                                             <span class="rounded-pill badge @if(Auth::user()?->id !== $userRank->user()->id) main-text @endif">{{$userPosition+1}}</span>
                                         @endif
                                     </div>
-                                    <div class="col-span-3 flex justify-center text-center items-center text-2xl">
+                                    <div class="flex justify-center text-center items-center text-2xl">
                                         {{$userRank->user()->full_name}}
                                     </div>
                                     <div class="col-2 flex justify-center items-center text-2xl">
                                         {{$userRank->total()}}
                                     </div>
-                                    <div class="col-2 hidden d-sm-flex justify-center items-center text-2xl">
+                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->results()}}
                                     </div>
-                                    <div class="col-2 hidden d-sm-flex justify-center items-center text-2xl">
+                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->signs()}}
                                     </div>
-                                    <div class="col-2 hidden d-sm-flex justify-center items-center text-2xl">
+                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->scorers()}}
                                     </div>
                                 </div>
@@ -92,15 +92,15 @@
                             {{continue;}}
                         @endphp
                     @endif
-                    <ul class="list-group list-group-horizontal row">
-                        <li class="list-group-item col-4 @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
+                    <ul class="  row">
+                        <li class=" col-4 @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
                             <div class="container px-0 px-xl-5">
                                 <div class="row">
-                                    <div class="col-12 col-lg-8 border rounded-lg">
+                                    <div class="col-lg-8 border rounded-lg">
                                         <p class="m-0 text-center">{{$bet->game->home_team}} - {{$bet->game->away_team}}</p>
                                         <p class="m-0 text-center">Risultato 90/120: <br class="md:hidden">{{$bet->game->home_result}} - {{$bet->game->away_result}} ({{$bet->game->sign}})</p>
                                     </div>
-                                    <div class="col-12 col-lg-4 flex justify-center items-center">
+                                    <div class="col-lg-4 flex justify-center items-center">
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-success p-0 p-lg-1 dropdown-toggle fs-6" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Cartellino
@@ -108,7 +108,7 @@
                                             <div class="dropdown-menu">
                                                 <div class="w-full w-100">
                                                     <div class="row">
-                                                        <ul class="col-12 list-unstyled">
+                                                        <ul class="list-unstyled">
                                                             <li class="w-100 text-center">{{$bet->game->home_team}}</li>
                                                             @foreach($bet->game->getScoreParsed('home') as  $scorer)
                                                                 <li class="fs-6 w-100 text-center">
@@ -118,7 +118,7 @@
                                                                 </li>
                                                             @endforeach
                                                         </ul>
-                                                        <ul class="col-12 list-unstyled">
+                                                        <ul class="list-unstyled">
                                                             <li class="w-100 text-center">{{$bet->game->away_team}}</li>
                                                             @foreach($bet->game->getScoreParsed('away') as $scorer)
                                                                 <li class="fs-6 w-100 text-center">
@@ -137,13 +137,13 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item col-4 flex justify-center items-center text-center @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
+                        <li class=" col-4 flex justify-center items-center text-center @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
                             {{$bet->sign}} ({{$bet->home_result}}-{{$bet->away_result}})
                             <br>
                             {{$bet->home_scorer_name}} / {{$bet->away_scorer_name}}
 
                         </li>
-                        <li class="list-group-item col-4 flex justify-center items-center @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
+                        <li class=" col-4 flex justify-center items-center @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
                             @if($bet->game->timestamp > time() && auth()->user()->id === $userRank->user()->id)
                                 <a class="btn btn-danger text-base-100" role="button" href="{{route('bet.index', ['game' => $bet->game])}}">
                                     Modifica

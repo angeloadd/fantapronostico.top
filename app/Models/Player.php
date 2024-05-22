@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * App\Models\Player
@@ -123,4 +124,41 @@ final class Player extends Model
             }
         });
     }
+
+    public static function getInfoForAll(): array
+    {
+        return self::playersNamesAndIdsAndTeams(self::all());
+    }
+
+    public static function namesByTeam(int $teamId): array
+    {
+        return self::playersNamesAndIdsAndTeams(self::where('team_id', $teamId)->get());
+    }
+
+    public static function playersNamesAndIdsAndTeams($players): array
+    {
+        return Cache::remember('updatedPlayers', Carbon::create('tomorrow at 4:00'),
+            static function () use ($players) {
+                return $players->map(
+                    static function (Player $player): array {
+                        return [
+                            'id' => $player->id,
+                            'team_id' => $player->national_id,
+                            'name' => $player->getDisplayableName(),
+                        ];
+                    }
+                )->sortBy('team_id')->toArray();
+            }
+        );
+    }
+
+    public function getDisplayableName(): string
+    {
+        $name = self::where('last_name', $this->last_name)->get()->count() > 1 ?
+            $this->displayed_name :
+            $this->last_name;
+
+        return empty(trim($name)) ? $this->last_name : $name;
+    }
+
 }

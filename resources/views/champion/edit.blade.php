@@ -3,7 +3,7 @@
         <div class="card-body pt-0">
             <div class="w-full justify-center items-center">
                 <div class="justify-center items-center row-span-12">
-                    <div class="col-12 flex items-center flex-col jsutify-content-center">
+                    <div class="flex items-center flex-col jsutify-content-center">
                         <h2 class="card-title text-dark display-6 title-font">Pronostico</h2>
                     </div>
                 </div>
@@ -12,17 +12,17 @@
                 @csrf
                 <div class="justify-center items-center flex-col w-full px-1">
                     <div
-                        class="mb-3 px-2 row-span-12 justify-center items-center border border-1 border-info rounded-md shadow-lg pb-3">
-                        <div class="text-dark w-100 text-center col-12 my-3">
+                        class="mb-3 px-2justify-center items-center border border-1 border-info rounded-md shadow-lg pb-3">
+                        <div class="text-dark w-100 text-center my-3">
                             Inserisci Pronostico
                         </div>
                         <label
-                            class="form-label col-12 col-md-2 px-0 flex justify-center items-center"
+                            class="form-label px-0 flex justify-center items-center"
                             for="winner">
                             Vincente @error('winner') <strong class="text-danger">*</strong> @enderror
                         </label>
                         <div
-                            class="col-12 col-md-4 px-md-2 px-0 flex justify-center items-center position-relative"
+                            class="md:px-2 px-0 flex justify-center items-center position-relative"
                         >
                             <select name="winner"
                                     id="winner"
@@ -36,12 +36,12 @@
                             </select>
                         </div>
                         <label
-                            class="order-md-last form-label col-12 col-md-2 px-0 flex justify-center items-center"
+                            class="order-md-last form-label px-0 flex justify-center items-center"
                             for="topScorer">
                             Capocannoniere @error('winner') <strong class="text-danger">*</strong> @enderror
                         </label>
                         <div
-                            class="col-12 col-md-4 px-md-2 px-0 flex justify-center items-center position-relative"
+                            class="md:px-2 px-0 flex justify-center items-center position-relative"
                         >
                             <select name="topScorer" id="topScorer"
                                     class="w-100 acc-border rounded-md text-center form-select">
@@ -62,7 +62,7 @@
                         </span>
                     @endif
                     <div class="row-span-12">
-                        <div class="col-12 justify-around flex items-center">
+                        <div class="justify-around flex items-center">
                             <button type="submit" class="btn btn-warning text-dark">Pronostica</button>
                             <button type="reset" class="btn btn-primary text-base-100">Resetta</button>
                         </div>

@@ -26,12 +26,12 @@
                                 <div
                                     class="mb-3 row justify-center items-center border border-info border-1 pb-4 px-2 rounded-md shadow-lg">
                                     <label for="homeTeam"
-                                           class="col-12 form-label text-dark flex items-center justify-center">
+                                           class="form-label text-dark flex items-center justify-center">
                                         <p class="m-0 text-center">
                                             Vincitrice Europeo 2020
                                         </p>
                                     </label>
-                                    <div class="col-12 col-md-4 px-0">
+                                    <div class="px-0">
                                         <input type="text" value="" name="champion_team"
                                                class="result-input form-control text-dark @error('champion_team') px-3 is-invalid @enderror"
                                                id="homeTeam">
@@ -42,12 +42,12 @@
                             <div
                                 class="mb-3 row justify-center items-center border border-info border-1 pb-4 px-2 rounded-md shadow-lg">
                                 <label for="numberOfTopScorer"
-                                       class="col-12 px-0 form-label text-dark flex items-center justify-center">
+                                       class="px-0 form-label text-dark flex items-center justify-center">
                                     <p class="m-0 text-center">
                                         Numero di Capocannonieri
                                     </p>
                                 </label>
-                                <div class="col-12 col-md-2 px-md-2 px-0">
+                                <div class="md:px-2 px-0">
                                     <input type="number" min="0"
                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                            name="number_of_scorers"
@@ -65,13 +65,13 @@
 
                             <div
                                 class="mb-3 px-2 row justify-center items-center border border-1 border-info rounded-md shadow-lg pb-3">
-                                <div class="text-dark w-100 text-center col-12 my-3">Input
+                                <div class="text-dark w-100 text-center my-3">Input
                                     Capocannoniere/i @error('sign')<span
                                         class="text-danger text-bold text-xl">*</span>@enderror </div>
                                 <ul class="list-unstyled col-12" id="topScorer"></ul>
                             </div>
                             <div class="row">
-                                <div class="col-12 justify-around flex items-center">
+                                <div class="justify-around flex items-center">
                                     <button type="submit" class="btn btn-danger text-base-100">Inserisci Info</button>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                     <label class="form-label px-0 flex justify-center items-center" for="topScorerPlayer${i}">
                         Capocannoniere ${i}
                     </label>
-                    <div class="px-md-2 px-0 flex justify-center items-center position-relative" id="topScorerPlayer${i}Container">
+                    <div class="md:px-2 px-0 flex justify-center items-center position-relative" id="topScorerPlayer${i}Container">
                         <input type="text" name="top_scorer${i}" class="result-input form-control text-dark @error('top_scorer') px-3 is-invalid @enderror" id="topScorerPlayer${i}">
                     </div>
                     @error('topScorerPlayer')

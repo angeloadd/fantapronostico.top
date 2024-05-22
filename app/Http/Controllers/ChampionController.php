@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Constants;
 use App\Http\Requests\ChampionRequest;
 use App\Models\Champion;
+use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
 use Carbon\Carbon;
@@ -16,8 +17,6 @@ use Illuminate\Support\Facades\Auth;
 
 final class ChampionController extends Controller
 {
-    public const ONE_HOUR_IN_SECONDS = 60 * 60;
-
     public function __construct()
     {
         $this->middleware(['auth']);
@@ -161,6 +160,7 @@ final class ChampionController extends Controller
 
     private function competitionStarted(): bool
     {
-        return now()->unix() >= (Constants::FIRST_GAME_SART_TIMESTAMP - self::ONE_HOUR_IN_SECONDS);
+        $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')->first()->started_at->unix();
+        return now()->unix() >= $firstGameStartedAtTimestamp;
     }
 }

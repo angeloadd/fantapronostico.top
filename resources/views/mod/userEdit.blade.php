@@ -20,7 +20,7 @@
         @endif
 
         <div class="row">
-            <div class="col-12 flex justify-center items-center">
+            <div class="flex justify-center items-center">
                 <div class="container">
                     <div class="row justify-center">
                         <div class="col-md-8">
@@ -31,12 +31,12 @@
                                         @csrf
                                         @method('PUT')
                                         <div class="mb-3 row mb-0">
-                                            <div class="col-12 col-sm-6 flex justify-center">
+                                            <div class="col-sm-6 flex justify-center">
                                                 <button type="submit" class="btn btn-success text-base-100">
                                                     Resetta Utente
                                                 </button>
                                             </div>
-                                            <div class="col-12 col-sm-6 mt-2 mt-sm-0 flex justify-center">
+                                            <div class="col-sm-6 mt-2 mt-sm-0 flex justify-center">
                                                 <button type="button" class="btn btn-danger text-base-100"
                                                         data-bs-toggle="modal" data-bs-target="#deleteUser">
                                                     Cancella Utente

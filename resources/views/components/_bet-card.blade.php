@@ -4,7 +4,7 @@
         <div class="container px-0 py-0">
             <div class=" p-0 justify-around">
                 <div
-                    class="col-span-5 md:col-span-3 md:order-1 flex flex-col justify-center items-center py-3">
+                    class="col-span-5 md:md:order-1 flex flex-col justify-center items-center py-3">
                     <p class="title-font text-2xl m-1">{{$game->home_team->name}}</p>
                     <img src="{{$game->home_team->logo}}" class="img-fluid" width="120" height="80" alt="">
                 </div>
@@ -13,25 +13,25 @@
                     VS
                 </div>
                 <div
-                    class="col-span-5 md:col-span-3 order-md-3 flex flex-col justify-center items-center py-3">
+                    class="col-span-5 md:order-md-3 flex flex-col justify-center items-center py-3">
                     <p class="title-font text-2xl m-1">{{$game->away_team->name}}</p>
                     <img src="{{$game->away_team->logo}}" class="img-fluid" width="120" height="80" alt="">
                 </div>
                 @if(time() < $game->started_at->unix())
-                    <div class="col-12 text-base-100 text-center my-3 text-xl">
+                    <div class="text-base-100 text-center my-3 text-xl">
                         Inizio Incontro il
                         <x-_displaydate :date="$game->started_at"/>
                     </div>
-                    <div class="col-12 col-md-6 order-md-2 flex items-center justify-center">
+                    <div class="col-md-6 order-md-2 flex items-center justify-center">
                         <x-_countdown :date="$game->started_at"/>
                     </div>
                 @else
-                    <div class="col-12 col-md-6 order-md-2 text-base-100 my-3 text-xl flex justify-center items-center flex-col">
+                    <div class="col-md-6 order-md-2 text-base-100 my-3 text-xl flex justify-center items-center flex-col">
                         Incontro disputato il
                         <x-_displaydate :date="$game->started_at"/>
                         <div class="container px-5 mt-3">
                             <div class="">
-                                <div class="col-12 border rounded-lg mb-3">
+                                <div class="border rounded-lg mb-3">
                                     <p class="m-0 w-100 text-center">{{$game->home_team->name}} - {{$game->away_team->name}}</p>
                                     <p class="m-0 w-100 text-center">Risultato 90/120:
                                         <br class="md:hidden">{{$game->home_result}} - {{$game->away_result}} ({{$game->sign}})

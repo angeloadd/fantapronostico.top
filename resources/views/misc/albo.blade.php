@@ -1,10 +1,7 @@
 <x-layouts.with-drawer>
     <x-partials.fireworks.fireworks/>
         <div class="w-full h-full">
-            <div class="bg-yellow-500 sm:px-20  sm:pt-16 min-h-32 w-full flex justify-between items-end p-6 shadow-lg text-base-100 bg-gradient-to-b from-neutral/30 via-transparent">
-                <h1 class="text-2xl sm:text-4xl font-bold">Albo d'Oro</h1>
-                <img class="h-32" src="{{Vite::asset('resources/img/albo.png')}}" alt="corona d'alloro dorata">
-            </div>
+            <x-partials.header.header text="albo d'oro" classes="pb-16" bgColor="bg-yellow-500" alt="corona d'alloro dorata" img="laurel_crown.png"/>
             <ul class="pt-16 timeline timeline-vertical text-xl sm:text-3xl">
                     <li>
                         <time class="timeline-start">2024</time>

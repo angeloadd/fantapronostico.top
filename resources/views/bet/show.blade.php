@@ -9,39 +9,39 @@
     @endif
     <x-_bet-card :game="$game">
         <div class="card-body">
-            <ul class="list-group list-group-horizontal row-span-12">
-                <li class="list-group-item col-6 col-sm-2 title-font text-bold">Nome Giocatore</li>
-                <li class="list-group-item hidden d-sm-inline lg:hidden col-1 title-font text-bold">
+            <ul class="  row-span-12">
+                <li class=" col-6 col-sm-2 title-font text-bold">Nome Giocatore</li>
+                <li class=" hidden d-sm-inline lg:hidden col-1 title-font text-bold">
                     1 X 2
                 </li>
-                <li class="list-group-item hidden d-lg-inline col-1 title-font text-bold">
+                <li class=" hidden d-lg-inline col-1 title-font text-bold">
                     Segno
                 </li>
-                <li class="list-group-item hidden d-sm-inline col-2 title-font text-bold">
+                <li class=" hidden d-sm-inline col-2 title-font text-bold">
                     Risultato {{$game->home_team}} vs {{$game->away_team}}
                 </li>
-                <li class="list-group-item col-2 hidden d-sm-inline title-font text-bold">
+                <li class=" col-2 hidden d-sm-inline title-font text-bold">
                     Gol/Nogol {{$game->home_team}}
                 </li>
-                <li class="list-group-item col-2 hidden d-sm-inline title-font text-bold">
+                <li class=" col-2 hidden d-sm-inline title-font text-bold">
                     Gol/Nogol {{$game->away_team}}
                 </li>
-                <li class="list-group-item col-6 col-sm-3 title-font text-bold">Ultimo Update</li>
+                <li class=" col-6 col-sm-3 title-font text-bold">Ultimo Update</li>
             </ul>
-            <ul class="list-group list-group-horizontal row-span-12 my-1">
-                <li class="list-group-item col-6 col-sm-2 bg-primary border-info text-base-100">
+            <ul class=" my-1">
+                <li class=" col-6 col-sm-2 bg-primary border-info text-base-100">
                     <a class="text-decoration-none text-base-100"
                        href="{{route('statistics', ['user' => $userBet->user])}}">
                         {{$userBet->user->full_name}}
                     </a>
                 </li>
-                <li class="list-group-item hidden d-sm-inline col-1 bg-primary border-info text-base-100">{{$userBet->sign}}</li>
-                <li class="list-group-item hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->home_result}}
+                <li class=" hidden d-sm-inline col-1 bg-primary border-info text-base-100">{{$userBet->sign}}</li>
+                <li class=" hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->home_result}}
                     a {{$userBet->away_result}}
                 </li>
-                <li class="list-group-item hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->home_scorer_name}}</li>
-                <li class="list-group-item hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->away_scorer_name}}</li>
-                <li class="list-group-item col-6 col-sm-3 bg-primary border-info text-base-100"
+                <li class=" hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->home_scorer_name}}</li>
+                <li class=" hidden d-sm-inline col-2 bg-primary border-info text-base-100">{{$userBet->away_scorer_name}}</li>
+                <li class=" col-6 col-sm-3 bg-primary border-info text-base-100"
                     title="ore {{(new Carbon\Carbon($userBet->updated_at))->format('H:i')}} e {{(new Carbon\Carbon($userBet->updated_at))->format('u')}} millisecondi">
                     {{(new Carbon\Carbon($userBet->updated_at))->format('d/m/Y - H:i:s')}}
                 </li>

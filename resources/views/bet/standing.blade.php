@@ -1,9 +1,6 @@
 <x-layouts.with-drawer>
     <div class="w-full h-screen overflow-y-scroll">
-        <div class="bg-purple-500/90 sm:px-20 min-h-32 w-full flex justify-between items-end p-6 shadow-lg text-base-100 bg-gradient-to-b from-neutral/30 via-transparent">
-            <h1 class="text-2xl sm:text-4xl font-bold">Classifica</h1>
-            <img class="translate-y-3.5 h-32" src="{{Vite::asset('resources/assets/images/podium.svg')}}" alt="">
-        </div>
+        <x-partials.header.header text="classifica" imgClasses="translate-y-5" bgColor="bg-purple-500/90" alt="podium" img="podium.svg"/>
         <div class="overflow-x-auto">
             <table class="table">
                 <thead>
@@ -60,5 +57,4 @@
             </table>
         </div>
     </div>
-
 </x-layouts.with-drawer>

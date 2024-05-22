@@ -1,74 +1,46 @@
-<x-layout>
+<x-layouts.with-drawer>
     <x-_champion_card>
-        <div class="card-body pt-0">
-            <div class="w-full justify-center items-center">
-                <div class="justify-center items-center row-span-12">
-                    <div class="col-12 flex items-center flex-col jsutify-content-center">
-                        <h2 class="card-title text-dark display-6 title-font">Pronostico</h2>
-                    </div>
-                </div>
-            </div>
+        <div class="sm:w-full sm:flex sm:justify-center sm:items-center px-2 sm:px-0 py-10">
             <form action="{{route('champion.store')}}" method="POST">
                 @csrf
-                <div class="justify-center items-center flex-col w-full px-1">
-                    <div
-                        class="mb-3 px-2 row-span-12 justify-center items-center border border-1 border-info rounded-md shadow-lg pb-3">
-                        <div class="text-dark w-100 text-center col-12 my-3">
-                            Inserisci Pronostico
-                        </div>
-                        <label
-                            class="form-label col-12 col-md-2 px-0 flex justify-center items-center"
-                            for="winner">
-                            Vincente @error('winner') <strong class="text-danger">*</strong> @enderror
-                        </label>
-                        <div
-                            class="col-12 col-md-4 px-md-2 px-0 flex justify-center items-center position-relative"
-                        >
-                            <select name="winner"
-                                    id="winner"
-                                    class="w-100 acc-border rounded-md text-center form-select"
-                            >
-                                <option value="" selected>-- Seleziona un'opzione --</option>
-                                @foreach($teams as $team)
-
-                                    <option value="{{$team->id}}">{{$team->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <label
-                            class="order-md-last form-label col-12 col-md-2 px-0 flex justify-center items-center"
-                            for="topScorer">
-                            Capocannoniere @error('winner') <strong class="text-danger">*</strong> @enderror
-                        </label>
-                        <div
-                            class="col-12 col-md-4 px-md-2 px-0 flex justify-center items-center position-relative"
-                        >
-                            <select name="topScorer" id="topScorer"
-                                    class="w-100 acc-border rounded-md text-center form-select">
-                                <option value="" selected>-- Seleziona un'opzione --</option>
-                                @foreach($players as $player)
-                                    <option value="{{$player['id']}}">
-                                        {{$teams->where(static fn ($team) => $team->id === $player['team_id'])->first()->name}}
-                                        - {{$player['name']}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    @if(session('errors'))
-                        <span class="text-danger flex justify-content-start items-center mb-2" role="alert">
-                            <strong>I campi contrassegnati con * sono richiesti</strong>
-                        </span>
-                    @endif
-                    <div class="row-span-12">
-                        <div class="col-12 justify-around flex items-center">
-                            <button type="submit" class="btn btn-warning text-dark">Pronostica</button>
-                            <button type="reset" class="btn btn-primary text-base-100">Resetta</button>
-                        </div>
-                    </div>
+                <div class="form-control max-w-md">
+                    <label for="winner" class="label">
+                    </label>
+                    @error('winner')
+                    <span class="text-error text-sm">Campo richiesto</span>
+                    @enderror
+                    <select name="winner"
+                            id="winner"
+                            class="select select-bordered bg-white @error('winner') border-error @enderror"
+                    >
+                        <option value="" @empty(old('winner')) selected @endif>-- Seleziona Squadra Vincente --</option>
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}" @if(old('winner') === (string) $team->id) selected @endif>{{$team->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-control max-w-md">
+                    <label for="topScorer" class="label"></label>
+                            @error('topScorer')
+                            <span class="text-error text-sm">Campo richiesto</span>
+                            @enderror
+                        <select name="topScorer"
+                            id="topScorer"
+                            class="select select-bordered bg-white  @error('topScorer') border-error @enderror"
+                    >
+                        <option value="" @empty(old('topScorer')) selected @endif>-- Seleziona Capocannoniere --</option>
+                        @foreach($players as $player)
+                            <option value="{{$player['id']}}" @if(old('topScorer') === (string) $player['id']) selected @endif>
+                                {{$player['name']}} -
+                                {{$teams->where(static fn ($team) => $team->id === $player['team_id'])->first()->name}}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-control mt-6 max-w-md">
+                    <button type="submit" class="btn btn-warning text-base-100 fp2024-title">Pronostica</button>
                 </div>
             </form>
         </div>
     </x-_champion_card>
-
-</x-layout>
+</x-layouts.with-drawer>

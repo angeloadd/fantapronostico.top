@@ -2,7 +2,7 @@
     <div class="w-full px-0 py-0">
         <div class="row-span-12 p-0 justify-around">
             <div
-                class="col-span-5 col-md-4 md:order-1 flex flex-col jsutify-content-center items-center py-3">
+                class="col-span-5 md:order-1 flex flex-col jsutify-content-center items-center py-3">
                 <p class="title-font text-2xl m-1">{{$nextGame->home->name}}</p>
                 <img src="{{$nextGame->home->logo}}" class="img-fluid" width="120" height="80"
                      alt="{{$nextGame->home->name}}-Flag">
@@ -12,12 +12,12 @@
                 VS
             </div>
             <div
-                class="col-span-5 col-md-4 order-md-3 flex flex-col jsutify-content-center items-center py-3">
+                class="col-span-5 order-md-3 flex flex-col jsutify-content-center items-center py-3">
                 <p class="title-font text-2xl m-1">{{$nextGame->away->name}}</p>
                 <img src="{{$nextGame->away->logo}}" class="img-fluid" width="120" height="80"
                      alt="{{$nextGame->away->name}}-Flag">
             </div>
-            <div class="col-12 w-100 text-base-100 text-center my-3 text-xl">
+            <div class="w-100 text-base-100 text-center my-3 text-xl">
                 Prossimo Incontro
             </div>
         </div>

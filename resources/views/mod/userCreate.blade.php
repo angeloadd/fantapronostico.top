@@ -20,7 +20,7 @@
         @endif
 
         <div class="row">
-            <div class="col-12 flex  justify-center items-center">
+            <div class="flex  justify-center items-center">
                 <div class="container">
                     <div class="row justify-center">
                         <div class="col-md-8">
@@ -33,7 +33,7 @@
 
                                         <div class="mb-3 row">
                                             <label for="name"
-                                                   class="col-md-4 col-form-label text-md-right">Nome</label>
+                                                   class="col-form-label text-md-right">Nome</label>
 
                                             <div class="col-md-6">
                                                 <input id="name" value="{{old('name')}}" type="text"
@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="surname"
-                                                   class="col-md-4 col-form-label text-md-right">Cognome</label>
+                                                   class="col-form-label text-md-right">Cognome</label>
 
                                             <div class="col-md-6">
                                                 <input id="surname" value="{{old('surname')}}" type="text"

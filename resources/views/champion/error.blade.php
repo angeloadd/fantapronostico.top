@@ -10,7 +10,7 @@
                             </h2>
                             <p class="text-center fs-1">Torna più tardi.</p>
 
-                            <div class="col-12 w-100 text-base-100 text-center my-3 text-xl">
+                            <div class="w-100 text-base-100 text-center my-3 text-xl">
                                 I pronostici saranno aperti dal
                                 {{$championSettableFrom->format('d ')}}
                                 {{ucfirst($championSettableFrom->monthName)}}
@@ -18,7 +18,7 @@
                                 alle
                                 {{$championSettableFrom->format('H:i')}}
                             </div>
-                            <p class="col-12 flex items-center justify-center display-5 title-font py-3"
+                            <p class="flex items-center justify-center display-5 title-font py-3"
                                id="countDown" data-date="{{$championSettableFrom->format('Y-m-d H:i:s')}}"></p>
                         </div>
                     </div>
