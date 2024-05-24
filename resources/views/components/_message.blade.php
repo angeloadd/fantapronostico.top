@@ -13,7 +13,7 @@
     </div>
     <div class="col-8">
         @if(isset($error))
-            <div class="alert alert-danger text-center text-danger">
+            <div class="alert alert-error text-center text-danger">
                 {{$error}}
             </div>
         @endif

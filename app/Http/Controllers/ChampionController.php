@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Constants;
 use App\Http\Requests\ChampionRequest;
 use App\Models\Champion;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\Tournament;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -42,6 +42,7 @@ final class ChampionController extends Controller
             [
                 'teams' => Team::all(),
                 'players' => Player::getInfoForAll(),
+                'firstMatchDate' => $this->getFirstMatchStartDate(),
             ]
         );
     }
@@ -86,6 +87,7 @@ final class ChampionController extends Controller
                 'teams' => Team::all(),
                 'players' => Player::getInfoForAll(),
                 'champion' => $champion,
+                'firstMatchDate' => $this->getFirstMatchStartDate(),
             ]
         );
     }
@@ -125,13 +127,19 @@ final class ChampionController extends Controller
 
         return view(
             'champion.show',
-            compact('champion')
+            compact('champion'),
+            [
+                'firstMatchDate' => $this->getFirstMatchStartDate(),
+                'updatedAtMillis' => $champion->updated_at->format('u'),
+                'updatedAtTime' => $champion->updated_at->format('H:i:s'),
+                'updatedAt' => $champion->updated_at->format('d/m/Y - H:i:s'),
+            ]
         );
     }
 
     public function index(): Renderable
     {
-        if ( ! $this->competitionStarted()) {
+        if (!$this->competitionStarted()) {
             return abort(404, 'not found');
         }
 
@@ -150,7 +158,7 @@ final class ChampionController extends Controller
 
     private function getChampionSettableFrom(): Carbon
     {
-        return Carbon::create('17-11-2022 21:00')->timezone('Europe/Rome');
+        return Carbon::create($this->getFirstMatchStartDate()->subDays(2))->timezone('Europe/Rome');
     }
 
     private function isChampionBetAvailableByDate(): bool
@@ -161,6 +169,12 @@ final class ChampionController extends Controller
     private function competitionStarted(): bool
     {
         $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')->first()->started_at->unix();
+
         return now()->unix() >= $firstGameStartedAtTimestamp;
+    }
+
+    public function getFirstMatchStartDate(): Carbon
+    {
+        return Game::orderBy('started_at', 'asc')->first()->started_at;
     }
 }

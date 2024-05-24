@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Modules\Auth\Models\User;
-use Database\Factories\BetFactory;
+use Database\Factories\PredictionFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -30,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read Game $game
  * @property-read User $user
  *
- * @method static BetFactory factory(...$parameters)
+ * @method static PredictionFactory factory(...$parameters)
  * @method static Builder|Prediction newModelQuery()
  * @method static Builder|Prediction newQuery()
  * @method static Builder|Prediction query()

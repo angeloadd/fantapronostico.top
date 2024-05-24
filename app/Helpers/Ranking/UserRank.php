@@ -280,7 +280,7 @@ final class UserRank
         if ($champion && $champion->team_id === $winner?->id) {
             $this->winnerTeam = true;
         }
-        if ($champion && $topScorer->contains('id', $champion->player_id)) {
+        if ($champion && $topScorer && $topScorer->id === $champion->player_id) {
             $this->topScorer = true;
         }
     }

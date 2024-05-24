@@ -1,34 +1,46 @@
-<x-layout>
-    <x-_champion_card>
-        <div class="card-body pt-0">
-            <div class="w-full justify-center items-center px-0 px-md-3">
-                <div class="row-span-12 justify-center">
-                    <div class="col-12">
-                        <div class="w-full px-0 px-sm-5">
-                            <ul class=" justify-center">
-                                <li class=" col-4 title-font text-bold">Vincente</li>
-                                <li class=" col-4 title-font text-bold">Capocannoniere</li>
-                                <li class=" col-4 title-font text-bold">Ultimo Update</li>
-                            </ul>
-                            <ul class=" justify-center my-1">
-                                <li class=" col-4 bg-primary text-base-100">{{$champion->team->name}}</li>
-                                <li class=" col-4 bg-primary text-base-100">{{$champion->player->name}}</li>
-                                <li class=" col-4 bg-primary text-base-100"
-                                    title="ore {{(new Carbon\Carbon($champion->updated_at))->format('H:i:s')}} e {{(new Carbon\Carbon($champion->updated_at))->format('u')}} millisecondi">
-                                    {{(new Carbon\Carbon($champion->updated_at))->format('d/m/Y - H:i:s')}}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row-span-12 justify-center">
-                        <div class="col-6 flex justify-center my-4">
-                            <a href="{{route('champion.edit', compact('champion'))}}" class="btn btn-danger text-base-100">
-                                Modifica Pronostico
-                            </a>
-                        </div>
-                    </div>
-                </div>
+<x-_champion_card>
+    <x-_message />
+    <div role="alert" class="w-full sm:w-3/5 alert shadow-lg flex justify-center items-center sm:mt-20">
+        <div>
+            <h3 class="font-bold text-center text-sm sm:text-lg pb-3">Puoi modificare il pronostico fino all'inizio dell'Europeo</h3>
+            <div class="w-full flex justify-center items-center">
+                <x-partials.countdown.main date="{{$firstMatchDate}}"/>
             </div>
         </div>
-    </x-_champion_card>
-</x-layout>
+    </div>
+    <div class="overflow-auto w-full pt-10 sm:px-10">
+        <table class="table">
+            <thead>
+                <tr class="border-base-300">
+                    <th>Vincente</th>
+                    <th>Capocannoniere</th>
+                    <th>Ultimo Inserimento</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr
+                    @class([
+                        'border-b-gray-300',
+                        'sm:[&>*]:text-lg',
+                    ])
+                >
+                    <td>{{$champion->team->name}}</td>
+                    <td>{{$champion->player->displayed_name}}</td>
+                    <td class="bg-base-200">
+                       <span title="ore {{$updatedAtTime}} e {{$updatedAtMillis}} millisecondi">
+                        {{$updatedAt}}
+                       </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row-span-12 justify-center">
+            <div class="col-6 flex justify-center my-4">
+                <a href="{{route('champion.edit', compact('champion'))}}" class="btn btn-warning text-base-100">
+                    Modifica Pronostico
+                </a>
+            </div>
+        </div>
+    </div>
+</x-_champion_card>

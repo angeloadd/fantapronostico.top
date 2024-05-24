@@ -36,7 +36,7 @@
                                 @endforeach
                             </li>
                             <li class=" col-sm-2 px-0 px-sm-1">
-                                <a href="{{route('mod.gameEdit', compact('game'))}}" class="btn btn-danger">
+                                <a href="{{route('mod.gameEdit', compact('game'))}}" class="btn  btn-error">
                                     <img class="img-fluid" width="30px" src="{{Vite::asset('resources/img/mods/vai.svg')}}" alt="vai">
                                 </a>
                             </li>

@@ -15,8 +15,7 @@ final class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
-            PreEuroStateSeeder::class,
+            GroupePhaseSeeder::class,
         ]);
     }
 }

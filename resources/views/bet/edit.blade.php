@@ -187,7 +187,7 @@
                     </div>
                     <div class="row-span-12">
                         <div class="justify-around flex items-center">
-                            <button type="submit" class="btn btn-danger text-base-100">
+                            <button type="submit" class="btn  btn-error text-base-100">
                                 Modifica Pronostico
                             </button>
                         </div>

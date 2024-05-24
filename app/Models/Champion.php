@@ -50,17 +50,17 @@ final class Champion extends Model
 
     public function SetUpdatedAtAttribute($date)
     {
-        return $this->attributes['updated_at'] = (new Carbon($date))->format('d-m-Y H:i:s.u');
+        return $this->attributes['updated_at'] = (new Carbon($date))->utc()->format('d-m-Y H:i:s.u');
     }
 
     public function getCreatedAtAttribute($date)
     {
-        return $this->attributes['created_at'] = (new Carbon($date))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u');
+        return $this->attributes['created_at'] = (new Carbon($date))->timezone('Europe/Rome');
     }
 
     public function getUpdatedAtAttribute($date)
     {
-        return $this->attributes['updated_at'] = (new Carbon($date))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u');
+        return $this->attributes['updated_at'] = (new Carbon($date))->timezone('Europe/Rome');
     }
 
     public function user(): BelongsTo

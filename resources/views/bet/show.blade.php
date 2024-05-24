@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.with-header>
     <x-_game_bar :games="$games" :game="$game"/>
     @if($game->isFinal())
         <div class="row-span-12 justify-center mb-3">
@@ -87,7 +87,7 @@
 
             <div class="row-span-12 justify-center">
                 <div class="col-6 flex justify-center my-4">
-                    <a href="{{route('bet.edit', ['bet'=> $userBet])}}" class="btn btn-danger text-base-100">
+                    <a href="{{route('bet.edit', ['bet'=> $userBet])}}" class="btn  btn-error text-base-100">
                         Modifica Pronostico
                     </a>
                 </div>
@@ -95,4 +95,4 @@
         </div>
     </x-_bet-card>
 
-</x-layout>
+</x-layouts.with-header>

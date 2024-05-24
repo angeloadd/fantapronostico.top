@@ -67,6 +67,35 @@ final class Player extends Model
         'club_id',
     ];
 
+    public static function getInfoForAll(): array
+    {
+        return self::playersNamesAndIdsAndTeams(self::all());
+    }
+
+    public static function namesByTeam(int $teamId): array
+    {
+        return self::playersNamesAndIdsAndTeams(self::where('team_id', $teamId)->get());
+    }
+
+    public static function playersNamesAndIdsAndTeams($players): array
+    {
+        return Cache::remember(
+            'updatedPlayers',
+            Carbon::create('tomorrow at 4:00'),
+            static function () use ($players) {
+                return $players->map(
+                    static function (Player $player): array {
+                        return [
+                            'id' => $player->id,
+                            'team_id' => $player->national_id,
+                            'name' => $player->getDisplayableName(),
+                        ];
+                    }
+                )->sortBy('team_id')->toArray();
+            }
+        );
+    }
+
     /**
      * @return BelongsTo<Team, Player>
      */
@@ -107,6 +136,15 @@ final class Player extends Model
         return $this->belongsToMany(Game::class);
     }
 
+    public function getDisplayableName(): string
+    {
+        $name = self::where('last_name', $this->last_name)->get()->count() > 1 ?
+            $this->displayed_name :
+            $this->last_name;
+
+        return empty(trim($name)) ? $this->last_name : $name;
+    }
+
     protected static function booted(): void
     {
         self::saving(static function (Player $player): void {
@@ -124,41 +162,4 @@ final class Player extends Model
             }
         });
     }
-
-    public static function getInfoForAll(): array
-    {
-        return self::playersNamesAndIdsAndTeams(self::all());
-    }
-
-    public static function namesByTeam(int $teamId): array
-    {
-        return self::playersNamesAndIdsAndTeams(self::where('team_id', $teamId)->get());
-    }
-
-    public static function playersNamesAndIdsAndTeams($players): array
-    {
-        return Cache::remember('updatedPlayers', Carbon::create('tomorrow at 4:00'),
-            static function () use ($players) {
-                return $players->map(
-                    static function (Player $player): array {
-                        return [
-                            'id' => $player->id,
-                            'team_id' => $player->national_id,
-                            'name' => $player->getDisplayableName(),
-                        ];
-                    }
-                )->sortBy('team_id')->toArray();
-            }
-        );
-    }
-
-    public function getDisplayableName(): string
-    {
-        $name = self::where('last_name', $this->last_name)->get()->count() > 1 ?
-            $this->displayed_name :
-            $this->last_name;
-
-        return empty(trim($name)) ? $this->last_name : $name;
-    }
-
 }

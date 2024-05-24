@@ -77,4 +77,9 @@ final class Tournament extends Model
     {
         return $this->hasMany(Game::class);
     }
+
+    public static function firstMatchDate(): Carbon
+    {
+
+    }
 }

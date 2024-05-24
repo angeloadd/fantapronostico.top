@@ -37,7 +37,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-6 mt-2 mt-sm-0 flex justify-center">
-                                                <button type="button" class="btn btn-danger text-base-100"
+                                                <button type="button" class="btn  btn-error text-base-100"
                                                         data-bs-toggle="modal" data-bs-target="#deleteUser">
                                                     Cancella Utente
                                                 </button>

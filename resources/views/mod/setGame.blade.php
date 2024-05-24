@@ -51,7 +51,7 @@
                             </div>
                             <div class="row">
                                 <div class="justify-around flex items-center">
-                                    <button type="submit" class="btn btn-danger text-base-100">Inserisci Info</button>
+                                    <button type="submit" class="btn  btn-error text-base-100">Inserisci Info</button>
                                 </div>
                             </div>
                     </div>

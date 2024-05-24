@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="_token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name') }}</title>
+        <title>{{isset($title) && $title?->isNotEmpty()? $title : config('app.name') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,9 +17,9 @@
 
         <!-- Styles -->
         @vite(['resources/scss/app.scss', 'resources/js/app.js'])
-        @isset($style)
+        @if(isset($style) &&$style?->isNotEmpty())
             {{ $style }}
-        @endisset
+        @endif
     </head>
     <body>
 {{--        @if($isDeadlineForChampionBetPassed)--}}

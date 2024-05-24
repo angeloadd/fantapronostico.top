@@ -1,10 +1,10 @@
 <x-layouts.with-drawer>
-    <div class="w-full h-screen overflow-y-scroll">
+    <div class="w-full h-screen flex flex-col justify-between items-center">
         <x-partials.header.header text="classifica" imgClasses="translate-y-5" bgColor="bg-purple-500/90" alt="podium" img="podium.svg"/>
-        <div class="overflow-x-auto">
+        <div class="overflow-auto w-full">
             <table class="table">
                 <thead>
-                    <tr class="border-base-300 bg-purple-500/90 text-base-100">
+                    <tr class="border-base-300">
                         <th></th>
                         <th>Nome</th>
                         <th>Punti</th>
@@ -26,7 +26,7 @@
                         <tr
                             @class([
                                 '[&>*]:bg-purple-500/90 text-base-100 bg-gradient-to-b from-neutral/30' => Auth::user()?->id === $player->user()->id,
-                                'border-b-base-300',
+                                'border-b-gray-300',
                                 'sm:[&>*]:text-lg',
                             ])
                         >
