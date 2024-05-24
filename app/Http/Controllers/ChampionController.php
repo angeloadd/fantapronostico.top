@@ -9,7 +9,6 @@ use App\Models\Champion;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Team;
-use App\Models\Tournament;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -139,7 +138,7 @@ final class ChampionController extends Controller
 
     public function index(): Renderable
     {
-        if (!$this->competitionStarted()) {
+        if ( ! $this->competitionStarted()) {
             return abort(404, 'not found');
         }
 
@@ -154,6 +153,11 @@ final class ChampionController extends Controller
     public function error(): Renderable
     {
         return view('champion.error', ['championSettableFrom' => $this->getChampionSettableFrom()]);
+    }
+
+    public function getFirstMatchStartDate(): Carbon
+    {
+        return Game::orderBy('started_at', 'asc')->first()->started_at;
     }
 
     private function getChampionSettableFrom(): Carbon
@@ -171,10 +175,5 @@ final class ChampionController extends Controller
         $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')->first()->started_at->unix();
 
         return now()->unix() >= $firstGameStartedAtTimestamp;
-    }
-
-    public function getFirstMatchStartDate(): Carbon
-    {
-        return Game::orderBy('started_at', 'asc')->first()->started_at;
     }
 }

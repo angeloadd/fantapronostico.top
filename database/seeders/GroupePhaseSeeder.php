@@ -290,7 +290,7 @@ final class GroupePhaseSeeder extends Seeder
     {
         User::factory(40)->create();
         User::create([
-            'email'=>'ciao@ciao.com',
+            'email' => 'ciao@ciao.com',
             'name' => 'Angelo',
             'password' => Hash::make('123123123'),
         ]);
@@ -350,19 +350,19 @@ final class GroupePhaseSeeder extends Seeder
 
         $users = User::all();
 
-            $users->each(function (User $user) {
+        $users->each(function (User $user): void {
             $teams = Team::all();
             $players = Player::all();
             Champion::create([
                 'user_id' => $user->id,
                 'team_id' => $teams->random()->id,
-                'player_id' => $players->random()->id
+                'player_id' => $players->random()->id,
             ]);
         });
 
-        Game::all()->each(function (Game $game) use ($users) {
-            if($game->started_at < $this->now) {
-                $users->each(function (User $user) use ($game) {
+        Game::all()->each(function (Game $game) use ($users): void {
+            if ($game->started_at < $this->now) {
+                $users->each(function (User $user) use ($game): void {
                     Prediction::factory([
                         'user_id' => $user->id,
                         'game_id' => $game->id,

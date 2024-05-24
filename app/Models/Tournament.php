@@ -54,6 +54,11 @@ final class Tournament extends Model
         'is_cup',
     ];
 
+    public static function firstMatchDate(): Carbon
+    {
+
+    }
+
     /**
      * @return BelongsToMany<Team>
      */
@@ -76,10 +81,5 @@ final class Tournament extends Model
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
-    }
-
-    public static function firstMatchDate(): Carbon
-    {
-
     }
 }
