@@ -62,7 +62,6 @@ final class Game extends Model
     use HasFactory;
 
     private const FINAL = 'final';
-
     private const GROUP = 'group';
 
     public mixed $timestamp;
@@ -93,7 +92,7 @@ final class Game extends Model
             'started_at',
             '>',
             Carbon::create($now->format('d-m-Y'))->addSecond()->unix()
-        )->where('game_date', '<', $now->unix())
+        )->where('started_at', '<', $now->unix())
             ->where('status', 'not_complete')
             ->get();
     }
@@ -145,7 +144,7 @@ final class Game extends Model
     public function homeTeam(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => ! $team->pivot->is_away)->first()
+            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => !$team->pivot->is_away)->first()
         );
     }
 
@@ -202,5 +201,16 @@ final class Game extends Model
         }
 
         return $goals;
+    }
+
+    protected static function booted(): void
+    {
+        self::addGlobalScope(
+            'orderedByGameDate',
+            static function (Builder $builder) {
+                $builder->orderBy('started_at')
+                    ->orderBy('id');
+            }
+        );
     }
 }

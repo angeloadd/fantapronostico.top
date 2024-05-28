@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Modules\Auth\Database\Factory\TournamentFactory;
+use Database\Factories\TournamentFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -53,11 +53,6 @@ final class Tournament extends Model
         'country',
         'is_cup',
     ];
-
-    public static function firstMatchDate(): Carbon
-    {
-
-    }
 
     /**
      * @return BelongsToMany<Team>
