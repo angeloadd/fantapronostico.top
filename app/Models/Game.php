@@ -87,6 +87,17 @@ final class Game extends Model
             ->limit(3);
     }
 
+    public static function notCompletedToday(Carbon $now): Collection
+    {
+        return self::where(
+            'started_at',
+            '>',
+            Carbon::create($now->format('d-m-Y'))->addSecond()->unix()
+        )->where('game_date', '<', $now->unix())
+            ->where('status', 'not_complete')
+            ->get();
+    }
+
     public function casts(): array
     {
         return [

@@ -8,6 +8,6 @@
             :bgColor="$bgColor"
             :alt="$alt"
         />
-        <div class="overflow-auto w-full h-full flex flex-col justify-center sm:justify-start items-center">{{$slot}}</div>
+        <div class="sm:overflow-auto overflow-x-auto w-full sm:h-full sm:flex flex-col justify-start items-center p-3">{{$slot}}</div>
     </div>
 </x-layouts.with-drawer>

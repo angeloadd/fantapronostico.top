@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BetRequest;
 use App\Models\Game;
+use App\Models\Player;
 use App\Models\Prediction;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepositoryInterface;
@@ -83,10 +84,32 @@ final class BetController extends Controller
                 ->with('errore_message', session('error_message') ?: null);
         }
 
+        $prediction = $this->betRepository->getByGameAndUser($game, Auth::user());
+
+        if (0 === $prediction->home_scorer_id) {
+            $homeScorer = 'NoGol';
+        } elseif (-1 === $prediction->home_scorer_id) {
+            $homeScorer = 'Autogol';
+        } else {
+            $homeScorer = Player::where('id', $prediction->home_scorer_id)->first()->displayed_name;
+        }
+        if (0 === $prediction->away_scorer_id) {
+            $awayScorer = 'NoGol';
+        } elseif (-1 === $prediction->away_scorer_id) {
+            $awayScorer = 'Autogol';
+        } else {
+            $awayScorer = Player::where('id', $prediction->away_scorer_id)->first()->displayed_name;
+        }
+
         return view('bet.show', [
             'games' => $this->gameRepository->getAll(),
             'game' => $game,
-            'userBet' => $this->betRepository->getByGameAndUser($game, Auth::user()),
+            'userBet' => $prediction,
+            'updatedAtMillis' => $prediction->updated_at->format('u'),
+            'updatedAtTime' => $prediction->updated_at->format('H:i:s'),
+            'updatedAt' => $prediction->updated_at->format('d/m/Y'),
+            'homeScorer' => $homeScorer ?? 0,
+            'awayScorer' => $awayScorer ?? 0,
         ]);
     }
 
@@ -149,12 +172,12 @@ final class BetController extends Controller
         }
 
         // validazione
-        $game->bets()->create([
-            'home_result' => htmlentities($request->home_result, ENT_QUOTES, 'UTF-8'),
-            'away_result' => htmlentities($request->away_result, ENT_QUOTES, 'UTF-8'),
+        $game->predictions()->create([
+            'home_score' => $request->home_score,
+            'away_score' => $request->away_score,
             'sign' => $request->sign,
-            'home_score' => $request->homeScore,
-            'away_score' => $request->awayScore,
+            'home_scorer_id' => $request->home_scorer_id,
+            'away_scorer_id' => $request->away_scorer_id,
             'user_id' => auth()->user()->id,
         ]);
 
@@ -220,11 +243,11 @@ final class BetController extends Controller
         }
 
         $bet->update([
-            'home_result' => htmlentities($request->home_result, ENT_QUOTES, 'UTF-8'),
-            'away_result' => htmlentities($request->away_result, ENT_QUOTES, 'UTF-8'),
+            'home_score' => $request->home_score,
+            'away_score' => $request->away_score,
             'sign' => $request->sign,
-            'home_score' => $request->homeScore,
-            'away_score' => $request->awayScore,
+            'home_scorer_id' => $request->home_scorer_id,
+            'away_scorer_id' => $request->away_scorer_id,
             'user_id' => Auth::user()->id,
         ]);
 

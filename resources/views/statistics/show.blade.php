@@ -2,7 +2,7 @@
         <div class="row p-3">
             <div class="card col main-bg white-text">
                 <div class="card-body">
-                    <h5 class="card-title text-4xl title-font">
+                    <h5 class="card-title text-4xl fp2024-title">
                         @if($userRank->user()->id === auth()?->user()?->id)
                             Le tue statistiche
                         @else
@@ -13,22 +13,22 @@
                         <li class="">
                             <div class="w-full p-0 justify-center">
                                 <div class="row justify-around">
-                                    <div class="col-1 title-font flex justify-around items-center text-xl">
+                                    <div class="col-1 fp2024-title flex justify-around items-center text-xl">
                                         #
                                     </div>
                                     <div class="title-font flex justify-around items-center text-xl">
                                         Nome
                                     </div>
-                                    <div class="col-2 title-font flex justify-around items-center text-xl">
+                                    <div class="title-font flex justify-around items-center text-xl">
                                         Punti
                                     </div>
-                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
+                                    <div class="title-font hidden sm:flex justify-around items-center text-xl">
                                         Esatti
                                     </div>
-                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
+                                    <div class="title-font hidden sm:flex justify-around items-center text-xl">
                                         Segni
                                     </div>
-                                    <div class="col-2 title-font hidden sm:flex justify-around items-center text-xl">
+                                    <div class="title-font hidden sm:flex justify-around items-center text-xl">
                                         Gol
                                     </div>
                                 </div>
@@ -57,16 +57,16 @@
                                     <div class="flex justify-center text-center items-center text-2xl">
                                         {{$userRank->user()->full_name}}
                                     </div>
-                                    <div class="col-2 flex justify-center items-center text-2xl">
+                                    <div class="flex justify-center items-center text-2xl">
                                         {{$userRank->total()}}
                                     </div>
-                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
+                                    <div class="hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->results()}}
                                     </div>
-                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
+                                    <div class="hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->signs()}}
                                     </div>
-                                    <div class="col-2 hidden sm:flex justify-center items-center text-2xl">
+                                    <div class="hidden sm:flex justify-center items-center text-2xl">
                                         {{$userRank->scorers()}}
                                     </div>
                                 </div>
@@ -157,25 +157,25 @@
             </div>
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                 <p>
-                    <span class="text-2xl title-font">Pronostici Fatti:</span>
+                    <span class="text-2xl fp2024-title">Pronostici Fatti:</span>
                     <span class="text-2xl">{{$userBets->count()}}</span>
                 </p>
                 <p>
-                    <span class="text-2xl title-font">Media punti per pronostico:</span>
+                    <span class="text-2xl fp2024-title">Media punti per pronostico:</span>
                     <span class="text-2xl">{{number_format($userRank->total() / $userBets->count(), 2)}}</span>
                 </p>
                 @if(time() > \App\Helpers\Constants::FINAL_DATE)
                 <p>
-                    <span class="text-2xl title-font">Info Pronostico Finale:</span>
+                    <span class="text-2xl fp2024-title">Info Pronostico Finale:</span>
                     <span class="text-2xl">{{$userRank->finalBetTotal() ?: 'N/A'}} pronosticato in data e ora: {{\Carbon\Carbon::createFromTimestamp($userRank->finalBetTimestamp())->format(\App\Helpers\Constants::DATE_FORMAT) ?: 'N/A'}}</span>
                 </p>
                 @endif
                 <p>
-                    <span class="text-2xl title-font">Pronostico Vincente:</span>
+                    <span class="text-2xl fp2024-title">Pronostico Vincente:</span>
                     <span class="text-2xl">{{$userRank->user()->champion ? $userRank->user()->champion->team->name : 'Non pronosticato'}} - tot:{{$userRank->winner()}}</span>
                 </p>
                 <p>
-                    <span class="text-2xl title-font">Pronostico Capocannoniere:</span>
+                    <span class="text-2xl fp2024-title">Pronostico Capocannoniere:</span>
                     <span class="text-2xl">{{$userRank->user()->champion ? $userRank->user()->champion->player->name : 'Non pronosticato'}} - tot:{{$userRank->top()}}</span>
                 </p>
             </div>

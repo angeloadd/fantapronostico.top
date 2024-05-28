@@ -55,6 +55,7 @@ final class TeamMapperCollection
                         'name' => self::teamNameMapper($item['team']['name']),
                         'code' => $item['team']['code'],
                         'logo' => $item['team']['logo'],
+                        'is_national' => true,
                     ];
                 },
                 $response

@@ -24,7 +24,7 @@
                                 L'incontro si giocherà il
                                 <x-_displaydate :date="$game->started_at"/>
                             </div>
-                            <div class="flex items-center justify-center display-5 title-font py-3"                            >
+                            <div class="flex items-center justify-center display-5 fp2024-title py-3"                            >
                                 <x-_countdown :date="$game->started_at"/>
                             </div>
                         </div>

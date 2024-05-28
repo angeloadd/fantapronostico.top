@@ -25,7 +25,7 @@
 {{--        @if($isDeadlineForChampionBetPassed)--}}
 {{--        here should go the notifications --}}
 {{--            <div class="flex justify-center items-center">--}}
-{{--                <a class="flex justify-center text-decoration-none text-3xl title-font w-100 rounded-pill border border-1 bg-primary border-primary text-success shadow-lg py-3 px-4"--}}
+{{--                <a class="flex justify-center text-decoration-none text-3xl fp2024-title w-100 rounded-pill border border-1 bg-primary border-primary text-success shadow-lg py-3 px-4"--}}
 {{--                   href="{{route('champion.create')}}">--}}
 {{--                    <img class="img-fluid" width="25px" src="{{Vite::asset('resources/img/coppaWorldCup.png')}}"--}}
 {{--                         alt="cup">--}}
@@ -34,7 +34,7 @@
 {{--            </div>--}}
 {{--        @endif--}}
         {{ $slot }}
-        <div class="toast"></div>
+        <div class="toast" x-ref="testWrapper"></div>
         @stack('scripts')
     </body>
 </html>

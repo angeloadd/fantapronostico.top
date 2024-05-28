@@ -29,7 +29,7 @@ final class FetchPlayersCommand extends Command
                 if (0 === $page % 10) {
                     sleep(60);
                 }
-                $response = $apisport->get('players?league=1&season=2022&page=' . $page);
+                $response = $apisport->get('players?league=4&season=2024&page=' . $page);
                 $max = $response['paging']['total'];
                 $page++;
                 $players = $players->add($response['response']);

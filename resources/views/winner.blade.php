@@ -15,7 +15,7 @@
                 class="mb-4 md:mb-0 flex justify-center items-center pe-0 home-page-position">
                 <div class="flex justify-center items-center flex-col bg-secondary p-5 rounded-md">
                     <h3 class="text-2xl text-base-100">The Winner of fantapronostico2022 is</h3>
-                    <h2 class="text-3xl title-font text-base-100">{{$ranking[0] ?? null ? $ranking[0]->user()->name : 'Ciccio'}}</h2>
+                    <h2 class="text-3xl fp2024-title text-base-100">{{$ranking[0] ?? null ? $ranking[0]->user()->name : 'Ciccio'}}</h2>
                     <img src="{{Vite::asset('resources/img/winner.webp')}}"
                          class="img-fluid"
                          alt="Flying man celebrates with hashtag winner"

@@ -2,21 +2,13 @@
     $message = session('message');
     $error = session('error_message');
 @endphp
-@if(isset($message) || isset($error))
-<div class="row-span-12 justify-center mb-5">
-    <div class="col-8">
-        @if(isset($message))
-            <div class="alert alert-success text-center text-success">
-                {{$message}}
-            </div>
-        @endif
-    </div>
-    <div class="col-8">
-        @if(isset($error))
-            <div class="alert alert-error text-center text-danger">
-                {{$error}}
-            </div>
-        @endif
-    </div>
-</div>
-@endif
+@isset($message)
+    <template x-teleport=".toast">
+        <x-partials.notifications.toast :text="$message" type="success" />
+    </template>
+@endisset
+@isset($error)
+    <template x-teleport=".toast">
+        <x-partials.notifications.toast :text="$error" type="error" />
+    </template
+@endisset

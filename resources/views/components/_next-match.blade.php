@@ -8,7 +8,7 @@
                      alt="{{$nextGame->home->name}}-Flag">
             </div>
             <div
-                class="col-2 flex items-center justify-center display-5 title-font py-3 mt-4 md:hidden">
+                class="flex items-center justify-center display-5 fp2024-title py-3 mt-4 md:hidden">
                 VS
             </div>
             <div
@@ -37,7 +37,7 @@
             </p>
         </div>
         <div class="col-6 flex flex-col justify-center aling-items-center">
-            <p class="text-dark title-font w-100 text-center">Pronostica</p>
+            <p class="text-dark fp2024-title w-100 text-center">Pronostica</p>
             <a href="{{route('bet.create', ['game' => $nextGame])}}" role="button" class="btn w-50 mx-auto btn-outline-success">Vai</a>
         </div>
     </div>

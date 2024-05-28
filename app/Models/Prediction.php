@@ -80,7 +80,7 @@ final class Prediction extends Model
     public function createdAt(): Attribute
     {
         return Attribute::make(
-            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u'),
+            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome'),
             set: static fn ($value, $attributes) => $attributes['updated_at']
         );
     }
@@ -88,8 +88,8 @@ final class Prediction extends Model
     public function updatedAt(): Attribute
     {
         return Attribute::make(
-            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u'),
-            set: static fn ($value) => (new Carbon($value))->format('d-m-Y H:i:s.u')
+            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome'),
+            set: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u')
         );
     }
 

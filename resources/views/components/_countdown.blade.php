@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center display-5 title-font py-3"
+<div class="flex items-center justify-center display-5 fp2024-title py-2"
      id="countDown"
      data-date="{{$date->format('Y-m-d H:i:s')}}"
 >

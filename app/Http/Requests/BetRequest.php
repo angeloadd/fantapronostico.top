@@ -22,26 +22,26 @@ final class BetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'home_result' => 'required|integer|numeric',
-            'away_result' => 'required|integer|numeric',
+            'home_score' => 'required|integer|numeric',
+            'away_score' => 'required|integer|numeric',
             'sign' => 'required',
-            'homeScore' => 'required',
-            'awayScore' => 'required',
+            'home_scorer_id' => 'required',
+            'away_scorer_id' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'home_result.required' => 'Il campo è richiesto.',
-            'home_result.integer' => 'Il campo deve essere numerico',
-            'home_result.numeric' => 'Il campo deve essere numerico.',
-            'away_result.required' => 'Il campo è richiesto.',
-            'away_result.integer' => 'Il campo deve essere numerico',
-            'away_result.numeric' => 'Il campo deve essere numerico',
+            'home_score.required' => 'Il campo è richiesto.',
+            'home_score.integer' => 'Il campo deve essere numerico',
+            'home_score.numeric' => 'Il campo deve essere numerico.',
+            'away_score.required' => 'Il campo è richiesto.',
+            'away_score.integer' => 'Il campo deve essere numerico',
+            'away_score.numeric' => 'Il campo deve essere numerico',
             'sign.required' => 'Il campo è richiesto',
-            'homeScore.required' => 'Il campo è richiesto',
-            'awayScore.required' => 'Il campo è richiesto',
+            'home_scorer_id.required' => 'Il campo è richiesto',
+            'away_scorer_id.required' => 'Il campo è richiesto',
         ];
     }
 }

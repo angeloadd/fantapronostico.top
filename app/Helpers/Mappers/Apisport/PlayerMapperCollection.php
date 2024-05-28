@@ -38,12 +38,10 @@ final class PlayerMapperCollection
             static function (array $item): array {
                 return [
                     'id' => $item['player']['id'],
-                    'name' => $item['player']['name'],
-                    'firstname' => $item['player']['firstname'],
-                    'lastname' => $item['player']['lastname'],
-                    'injured' => $item['player']['injured'],
-                    'photo' => $item['player']['photo'],
-                    'team_id' => $item['statistics'][0]['team']['id'],
+                    'displayed_name' => $item['player']['name'],
+                    'first_name' => $item['player']['firstname'],
+                    'last_name' => $item['player']['lastname'],
+                    'national_id' => $item['statistics'][0]['team']['id'],
                 ];
             },
             $response

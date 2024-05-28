@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Helpers\Mappers\Apisport\PlayerMapperCollection;
 use App\Models\Exceptions\ClubAndNationalTeamsCannotBeTheSameException;
 use App\Models\Exceptions\ClubTeamCannotBeNationalException;
 use App\Models\Exceptions\NationalTeamCannotBeClubException;
@@ -67,6 +68,19 @@ final class Player extends Model
         'club_id',
     ];
 
+    public static function getScorer(string|int $id): string
+    {
+        if (0 === (int) $id) {
+            return 'No Gol';
+        }
+
+        if (-1 === (int) $id) {
+            return 'Auto Gol';
+        }
+
+        return self::find($id)->displayed_name;
+    }
+
     public static function getInfoForAll(): array
     {
         return self::playersNamesAndIdsAndTeams(self::all());
@@ -94,6 +108,13 @@ final class Player extends Model
                 )->sortBy('team_id')->toArray();
             }
         );
+    }
+
+    public static function upsertMany(PlayerMapperCollection $players): void
+    {
+        foreach ($players->toArray() as $player) {
+            self::updateOrCreate(['id' => $player['id']], $player);
+        }
     }
 
     /**

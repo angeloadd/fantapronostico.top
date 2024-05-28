@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Modules\Auth\Models\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,29 +45,25 @@ final class Champion extends Model
 
     protected $fillable = ['team_id', 'player_id', 'created_at', 'updated_at'];
 
-    public function SetCreatedAtAttribute()
+    public function createdAt(): Attribute
     {
-        return $this->attributes['created_at'] = $this->attributes['updated_at'];
+        return Attribute::make(
+            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome'),
+            set: static fn ($value, $attributes) => $attributes['updated_at']
+        );
     }
 
-    public function SetUpdatedAtAttribute($date)
+    public function updatedAt(): Attribute
     {
-        return $this->attributes['updated_at'] = (new Carbon($date))->utc()->format('d-m-Y H:i:s.u');
-    }
-
-    public function getCreatedAtAttribute($date)
-    {
-        return $this->attributes['created_at'] = (new Carbon($date))->timezone('Europe/Rome');
-    }
-
-    public function getUpdatedAtAttribute($date)
-    {
-        return $this->attributes['updated_at'] = (new Carbon($date))->timezone('Europe/Rome');
+        return Attribute::make(
+            get: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome'),
+            set: static fn ($value) => (new Carbon($value))->timezone('Europe/Rome')->format('d-m-Y H:i:s.u')
+        );
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Auth\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function team(): BelongsTo

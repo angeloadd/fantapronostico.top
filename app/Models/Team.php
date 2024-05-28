@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Helpers\Mappers\Apisport\TeamMapperCollection;
 use App\Modules\Auth\Database\Factory\TeamFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,6 +58,13 @@ final class Team extends Model
         'logo',
         'is_national',
     ];
+
+    public static function upsertMany(TeamMapperCollection $teams): void
+    {
+        foreach ($teams->toArray() as $team) {
+            self::updateOrCreate(['id' => $team['id']], $team);
+        }
+    }
 
     /**
      * @return HasMany<Player>

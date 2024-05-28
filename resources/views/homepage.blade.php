@@ -2,7 +2,7 @@
             <div class="w-full flex flex-col sm:flex-row justify-evenly items-center">
                 <div class="w-full flex flex-col items-center">
                     <div class="card px-3 w-full shadow-lg rounded-lg">
-                        <div class="rounded-lg text-center title-font text-2xl py-4 shadow-lg bg-red-600 text-base-100 bg-gradient-to-t from-white/20 via-transparent to-white/20 transition duration-500 ease-in-out hover:-translate-y-4">
+                        <div class="rounded-lg text-center fp2024-title text-2xl py-4 shadow-lg bg-red-600 text-base-100 bg-gradient-to-t from-white/20 via-transparent to-white/20 transition duration-500 ease-in-out hover:-translate-y-4">
                             Ultimi Risultati
                         </div>
                         <div class="card-body">

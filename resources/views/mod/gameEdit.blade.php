@@ -60,7 +60,7 @@
                                     <p class="m-0 text-center">
                                         Gol Casa
                                     </p>
-                                    <span class="text-xl title-font mx-3 flex items-start">
+                                    <span class="text-xl fp2024-title mx-3 flex items-start">
                                         {{$game->home_team ?? ''}}
                                     </span>
                                 </label>
@@ -76,7 +76,7 @@
                                     <p class="m-0 order-md-2 text-center">
                                         Gol Ospite
                                     </p>
-                                    <span class="md:order-1 text-xl title-font mx-3 flex items-start">
+                                    <span class="md:order-1 text-xl fp2024-title mx-3 flex items-start">
                                         {{$game->away_team ?? ''}}
                                     </span>
                                 </label>

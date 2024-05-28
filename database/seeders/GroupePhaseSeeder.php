@@ -406,7 +406,8 @@ final class GroupePhaseSeeder extends Seeder
             $this->now->year,
             $this->now->month,
             $this->now->day + $delayInDays,
-            $hour
+            $hour,
+            timezone: 'Europe/Rome'
         );
 
         if ( ! $time) {

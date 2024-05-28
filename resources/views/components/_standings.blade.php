@@ -1,4 +1,4 @@
-<div class="rounded-lg text-center title-font text-2xl py-4 shadow-lg bg-purple-500 text-base-100 bg-gradient-to-t from-white/20 via-transparent to-white/20 transition duration-500 ease-in-out hover:-translate-y-4">
+<div class="rounded-lg text-center fp2024-title text-2xl py-4 shadow-lg bg-purple-500 text-base-100 bg-gradient-to-t from-white/20 via-transparent to-white/20 transition duration-500 ease-in-out hover:-translate-y-4">
     Classifica
 </div>
 <div class="p-3">
