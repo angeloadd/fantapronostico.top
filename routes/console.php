@@ -15,6 +15,7 @@ Artisan::command('inspire', function (): void {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
+try{
 // Run Schedules maximum 10 hours after final started
 /** @var Carbon $finalStartedAt */
 $finalStartedAt = Tournament::first()->final_started_at;
@@ -52,4 +53,8 @@ if (now()->lt($finalStartedAt->addHours(10))) {
             ->timezone('Europe/Rome')
             ->everyThreeMinutes();
     }
+}
+
+}catch (Throwable $e){
+    Log::error($e->getMessage());
 }
