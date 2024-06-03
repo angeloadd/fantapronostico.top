@@ -5,7 +5,7 @@ import "./util";
 import './countdown'
 import './gameNav'
 
-import.meta.glob(["../assets/images/**"]);
+import.meta.glob(["../assets/images/**", "../img/**"]);
 
 htmx.config.withCredentials = true;
 
