@@ -19,13 +19,12 @@ final class GameNotAccessibleAction extends Controller
     ) {
     }
 
-    public function __invoke(Request $request, ?Game $game = null): RedirectResponse|Renderable
+    public function __invoke(Request $request, ?Game $game = null): Renderable
     {
         $gameRef = $game ?? $this->gameRepository->getNextGameByDateTime($this->timeManagementService->now());
 
         if ( ! isset($gameRef)) {
-            redirect(route('errors.gameNotSet'))
-                ->with('error_message', 'L\'incontro non è disponibile');
+            abort(404);
         }
 
         return view(

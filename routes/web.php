@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\GameModController;
 use App\Http\Controllers\GameNotAccessibleAction;
-use App\Http\Controllers\GameNotSetAction;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MiscController;
 use App\Http\Controllers\ModController;
@@ -39,7 +38,6 @@ Route::group([], static function (Router $r): void {
 /* homepage */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/game/not/set', GameNotSetAction::class)->name('errors.gameNotSet');
 Route::get('/game/not/accessible/{game?}', GameNotAccessibleAction::class)->name('errors.gameNotAccessible');
 
 /* Bet CRUD */

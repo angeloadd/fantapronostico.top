@@ -36,9 +36,7 @@ final class PredictionController extends Controller
 
         $last = Game::all()->last();
         if ( ! $last) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('message', session('message') ?: null)
-                ->with('errore_message', session('error_message') ?: null);
+            return abort(404);
         }
 
         return redirect(route('bet.index', ['game' => $last]))
@@ -123,9 +121,7 @@ final class PredictionController extends Controller
         }
 
         if ( ! $this->gameRepository->areGameTeamsSet($game)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('message', session('message') ?: null)
-                ->with('errore_message', session('error_message') ?: null);
+            return abort(404);
         }
 
         //Controllo per non anticipare troppo i pronostici
@@ -157,8 +153,7 @@ final class PredictionController extends Controller
         }
 
         if ( ! $this->gameRepository->areGameTeamsSet($game)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('error_message', 'L\'incontro non è ancora accessibile');
+            abort(404);
         }
 
         if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
@@ -201,9 +196,7 @@ final class PredictionController extends Controller
         }
 
         if ( ! $this->gameRepository->areGameTeamsSet($game)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('message', session('message') ?: null)
-                ->with('errore_message', session('error_message') ?: null);
+            return abort(404);
         }
 
         //Controllo per non anticipare troppo i pronostici
@@ -233,8 +226,7 @@ final class PredictionController extends Controller
         }
 
         if ( ! $this->gameRepository->areGameTeamsSet($game)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('error_message', 'L\'incontro non è ancora accessibile');
+            return abort(404);
         }
 
         if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
@@ -260,9 +252,7 @@ final class PredictionController extends Controller
         $goToGame = $this->gameRepository->getNextGameByOtherGame($game) ?? $game;
 
         if ( ! $this->gameRepository->areGameTeamsSet($goToGame)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('message', session('message') ?: null)
-                ->with('errore_message', session('error_message') ?: null);
+            return abort(404);
         }
 
         return redirect(route('bet.index', ['game' => $goToGame]));
@@ -273,9 +263,7 @@ final class PredictionController extends Controller
         $goToGame = $this->gameRepository->getPreviousGameByOtherGame($game) ?? $game;
 
         if ( ! $this->gameRepository->areGameTeamsSet($goToGame)) {
-            return redirect(route('errors.gameNotSet'))
-                ->with('message', session('message') ?: null)
-                ->with('errore_message', session('error_message') ?: null);
+            return abort(404);
         }
 
         return redirect(route('bet.index', ['game' => $goToGame]));
