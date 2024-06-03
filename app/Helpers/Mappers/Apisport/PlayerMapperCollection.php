@@ -34,17 +34,36 @@ final class PlayerMapperCollection
 
     private static function mapResponse(array $response): array
     {
+        if ([] === $response) {
+            return [];
+        }
+        $players = $response['players'];
+        $team = $response['team'];
+
         return array_map(
-            static function (array $item): array {
+            static function (array $item) use ($team): array {
+                $nameItems = explode(' ', $item['name']);
+                $lastname = '';
+                $firstname = '';
+                foreach ($nameItems as $key => $nameItem) {
+                    if ($key === (count($nameItems) - 1)) {
+                        $lastname = $nameItem;
+
+                        continue;
+                    }
+
+                    $firstname .= $nameItem . ' ';
+                }
+
                 return [
-                    'id' => $item['player']['id'],
-                    'displayed_name' => $item['player']['name'],
-                    'first_name' => $item['player']['firstname'],
-                    'last_name' => $item['player']['lastname'],
-                    'national_id' => $item['statistics'][0]['team']['id'],
+                    'id' => $item['id'],
+                    'displayed_name' => $item['name'],
+                    'first_name' => trim($firstname),
+                    'last_name' => trim($lastname),
+                    'national_id' => $team['id'],
                 ];
             },
-            $response
+            $players
         );
     }
 }

@@ -15,7 +15,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
-final class BetController extends Controller
+final class PredictionController extends Controller
 {
     public function __construct(
         private readonly TimeManagementServiceInterface $timeManagementService,

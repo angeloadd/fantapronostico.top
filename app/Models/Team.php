@@ -63,6 +63,7 @@ final class Team extends Model
     {
         foreach ($teams->toArray() as $team) {
             self::updateOrCreate(['id' => $team['id']], $team);
+            Tournament::first()?->teams()->attach($team['id']);
         }
     }
 

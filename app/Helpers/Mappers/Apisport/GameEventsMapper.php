@@ -10,23 +10,23 @@ final class GameEventsMapper
 {
     private const OWN_GOAL = 1000000000;
 
-    public function __construct(private array $gameEvents)
+    public function __construct(private readonly array $gameEvents)
     {
     }
 
     public static function fromArray(array $response, Game $game): self
     {
-        $homeScorers = self::getList($response, $game->home->id);
-        $awayScorers = self::getList($response, $game->away->id);
+        $homeScorers = self::getList($response, $game->home_team->id);
+        $awayScorers = self::getList($response, $game->away_team->id);
         $homeResult = self::inferResult($homeScorers);
         $awayResult = self::inferResult($awayScorers);
 
         return new self([
-            'home_result' => $homeResult,
-            'away_result' => $awayResult,
+            'home_score' => $homeResult,
+            'away_score' => $awayResult,
             'sign' => self::getGameSign($homeResult, $awayResult),
-            'home_score' => $homeScorers,
-            'away_score' => $awayScorers,
+            'home_scorers' => $homeScorers,
+            'away_scorers' => $awayScorers,
             'status' => 'completed',
         ]);
     }
@@ -41,21 +41,23 @@ final class GameEventsMapper
         $scorerList = [];
         foreach ($response as $event) {
             if ($event['team']['id'] === $teamId) {
-                if (str_contains($event['detail'], 'Own')) {
-                    $scorerList[] = 1000000001;
-                } else {
-                    if (120 === $event['time']['elapsed'] && null !== $event['time']['extra'] && str_contains($event['detail'], 'Penalty')) {
-                        continue;
-                    }
-                    if (str_contains($event['detail'], 'Missed')) {
-                        continue;
-                    }
-                    $scorerList[] = $event['player']['id'];
+                // If a goal is a penalty in the shootouts skip
+                if (120 === $event['time']['elapsed'] && null !== $event['time']['extra'] && str_contains($event['comments'], 'Penalty')) {
+                    continue;
                 }
+                // if a player missed a penalty we don't care
+                if (str_contains($event['detail'], 'Missed')) {
+                    continue;
+                }
+                $scorerList[] = [
+                    'id' => $event['player']['id'],
+                    'is_autogoal' => str_contains($event['detail'], 'Own'),
+                    'scored_at' => $event['time']['elapsed'] + ($event['time']['extra'] ?? 0),
+                ];
             }
         }
 
-        return count($scorerList) > 0 ? $scorerList : [self::OWN_GOAL];
+        return $scorerList;
     }
 
     private static function inferResult(array $list): int
@@ -63,7 +65,7 @@ final class GameEventsMapper
         return count(
             array_filter(
                 $list,
-                static fn (int $el) => self::OWN_GOAL !== $el
+                static fn (array $goalEvent) => ! $goalEvent['is_autogoal']
             )
         );
     }
@@ -82,6 +84,6 @@ final class GameEventsMapper
             return '2';
         }
 
-        return 'X';
+        return 'x';
     }
 }

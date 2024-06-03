@@ -114,6 +114,7 @@ final class Player extends Model
     {
         foreach ($players->toArray() as $player) {
             self::updateOrCreate(['id' => $player['id']], $player);
+            Tournament::first()?->players()->attach($player['id']);
         }
     }
 

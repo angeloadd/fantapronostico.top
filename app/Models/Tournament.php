@@ -52,6 +52,7 @@ final class Tournament extends Model
         'name',
         'country',
         'is_cup',
+        'final_started_at',
     ];
 
     /**
@@ -76,5 +77,12 @@ final class Tournament extends Model
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'final_started_at' => 'datetime',
+        ];
     }
 }

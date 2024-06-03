@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\Champion;
 use App\Models\Game;
-use App\Models\GameGoal;
 use App\Models\Player;
 use App\Models\Prediction;
 use App\Models\Team;
@@ -295,7 +294,10 @@ final class GroupePhaseSeeder extends Seeder
             'password' => Hash::make('123123123'),
         ]);
         $this->now = now()->subDays(5);
-        $this->tournament = Tournament::factory()->euro()->create();
+        $this->tournament = Tournament::factory()->euro()->create([
+            'final_started_at' => $this->createDateFromDelayInDays(28, 21),
+        ]);
+
         Team::factory(24)
             ->national()
             ->hasAttached($this->tournament)
@@ -361,22 +363,25 @@ final class GroupePhaseSeeder extends Seeder
         });
 
         Game::all()->each(function (Game $game) use ($users): void {
-            if ($game->started_at < $this->now) {
+            if (now()->gte($game->started_at)) {
                 $users->each(function (User $user) use ($game): void {
                     Prediction::factory([
                         'user_id' => $user->id,
                         'game_id' => $game->id,
                         'home_scorer_id' => $game->home_team->players->random()->id,
                         'away_scorer_id' => $game->away_team->players->random()->id,
-                        'is_home_own' => false,
-                        'is_away_own' => false,
                     ])->create();
                 });
 
                 $game->update([
                     'status' => 'finished',
                 ]);
-                GameGoal::factory()->forGame($game)->forPlayer($game->players->random())->create();
+
+                $game->goals()->create([
+                    'player_id' => $game->teams->random()->players->random()->id,
+                    'scored_at' => now(),
+                ]);
+
             }
         });
     }

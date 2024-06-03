@@ -12,7 +12,6 @@ use App\Helpers\Mappers\Apisport\GameEventsMapper;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -39,15 +38,19 @@ final class FetchGameEventsCommand extends Command
     {
         $count = 0;
         try {
-            $games = Game::notCompletedToday(now());
+            $games = Game::all();
             if (0 === $games->count()) {
                 return self::INVALID;
             }
+
             /** @var Game $game */
-            foreach ($games as $game) {
-                /** @var Carbon $date */
+            foreach ($games as $key => $game) {
+                if (($key + 1) % 5 === 0) {
+                    sleep(60);
+                }
+                $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $date = $game->started_at;
-                if ($date->addHour()->addMinutes(70)->gte(now())) {
+                if ($date->addHours(2)->addMinutes(10)->gte(now())) {
                     continue;
                 }
                 $isFinished = $apisport->get('fixtures?id=' . $game->id);
@@ -56,7 +59,12 @@ final class FetchGameEventsCommand extends Command
                 }
                 $response = $apisport->get('fixtures/events?fixture=' . $game->id . '&type=Goal');
                 $events = GameEventsMapper::fromArray($response['response'], $game);
-                $game->update($events->toArray());
+                try {
+
+                    $game->addGameEvent($events->toArray());
+                } catch (Throwable $e) {
+                    dump($e);
+                }
                 $count++;
             }
         } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
@@ -91,6 +99,8 @@ final class FetchGameEventsCommand extends Command
                     'trace' => $e->getTraceAsString(),
                 ]
             );
+
+            $this->error($e->getMessage());
         }
 
         if ($count > 0) {

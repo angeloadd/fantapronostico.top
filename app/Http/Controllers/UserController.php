@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Ranking\RankingCalculator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +21,7 @@ final class UserController extends Controller
     // classifica completa
     public function officialStanding()
     {
+        Artisan::call('cache:clear');
         $standing = (new RankingCalculator())->get();
 
         return view('bet.standing', compact('standing'));

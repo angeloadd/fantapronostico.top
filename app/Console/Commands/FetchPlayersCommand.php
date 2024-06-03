@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Helpers\ApiClients\ApiClientInterface;
+use App\Helpers\ApiClients\Apisport;
 use App\Helpers\ApiClients\Exception\InvalidApisportTokenException;
 use App\Helpers\ApiClients\Exception\MissingApisportTokenException;
 use App\Helpers\ApiClients\ExternalSystemUnavailableException;
 use App\Helpers\Mappers\Apisport\PlayerMapperCollection;
 use App\Models\Player;
+use App\Models\Team;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -24,16 +26,18 @@ final class FetchPlayersCommand extends Command
     {
         try {
             $players = PlayerMapperCollection::fromArray([]);
-            $page = 1;
-            do {
-                if (0 === $page % 10) {
+            $teams = Team::all();
+            $teams->each(function (Team $team, int $key) use ($apisport, &$players): void {
+                if ((0 === ($key + 1) % 10) && $apisport instanceof Apisport) {
+                    $this->info('Call done' . ($key + 1));
                     sleep(60);
                 }
-                $response = $apisport->get('players?league=4&season=2024&page=' . $page);
-                $max = $response['paging']['total'];
-                $page++;
-                $players = $players->add($response['response']);
-            } while ($page <= $max);
+
+                $uri = '/players/squads?team=' . $team->id;
+                $response = $apisport->get($uri);
+
+                $players = $players->add($response['response'][0]);
+            });
             unset($response);
         } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
             Log::error(

@@ -19,6 +19,7 @@ return new class() extends Migration
                 $table->string('name');
                 $table->string('country');
                 $table->boolean('is_cup');
+                $table->timestamp('final_started_at');
                 $table->timestamps();
             }
         );

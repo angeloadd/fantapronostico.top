@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
-use App\Models\Game;
 use App\Models\Prediction;
 use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
 use Carbon\Carbon;
+use Throwable;
 
 final class UserRank
 {
@@ -50,9 +50,6 @@ final class UserRank
     public function calculate(): self
     {
         $this->calculateResultsV2();
-        //        $this->calculateSigns();
-        //        $this->calculateScorers();
-        //        $this->getFinalBetInfo();
         $this->getChampionInfo();
         $this->calculateTotal();
 
@@ -64,56 +61,61 @@ final class UserRank
         if (null === $this->user->predictions) {
             return;
         }
-        $result = $this->user->predictions->reduce(
+        $result = $this->user->predictions()->with(['game'])->get()->filter(fn (Prediction $bet) => 'finished' === $bet->game->status)->reduce(
             static function (array $acc, Prediction $bet) {
-                $game = $bet->game;
+                try {
+                    $game = $bet->game;
 
-                if (isset($game->home_result, $game->away_result) &&
-                    $game->home_result === $bet->home_result &&
-                    $game->away_result === $bet->away_result
-                ) {
-                    if ($game->isFinal()) {
-                        $acc['finalTotal'] += self::RESULT_POINTS;
+                    if ($game->home_score === $bet->home_score &&
+                        $game->away_score === $bet->away_score
+                    ) {
+                        if ($game->isFinal()) {
+                            $acc['finalTotal'] += self::RESULT_POINTS;
+                        }
+                        $acc['results']++;
                     }
-                    $acc['results']++;
-                }
 
-                $sign = $bet->game->sign;
+                    $sign = $bet->game->sign;
 
-                if (isset($sign) && $sign === $bet->sign) {
-                    if ($game->isFinal()) {
-                        $acc['finalTotal'] += self::SIGN_POINTS;
+                    if ($sign === $bet->sign) {
+                        if ($game->isFinal()) {
+                            $acc['finalTotal'] += self::SIGN_POINTS;
+                        }
+                        $acc['signs']++;
                     }
-                    $acc['signs']++;
-                }
 
-                if (in_array(
-                    $bet->home_score,
-                    $game->home_score ?? [],
-                    true
-                )) {
-                    if ($game->isFinal()) {
-                        $acc['finalTotal'] += self::SCORER_POINTS;
+                    if (in_array(
+                        $bet->home_scorer_id,
+                        $game->home_scorers ?? [],
+                        true
+                    )) {
+                        if ($game->isFinal()) {
+                            $acc['finalTotal'] += self::SCORER_POINTS;
+                        }
+                        $acc['scorers']++;
                     }
-                    $acc['scorers']++;
-                }
 
-                if (in_array(
-                    $bet->away_score,
-                    $game->away_score ?? [],
-                    true
-                )) {
-                    if ($game->isFinal()) {
-                        $acc['finalTotal'] += self::SCORER_POINTS;
+                    if (in_array(
+                        $bet->away_scorer_id,
+                        $game->away_scorers ?? [],
+                        true
+                    )) {
+                        if ($game->isFinal()) {
+                            $acc['finalTotal'] += self::SCORER_POINTS;
+                        }
+                        $acc['scorers']++;
                     }
-                    $acc['scorers']++;
+
+                    if ($game->isFinal()) {
+                        $acc['finalTimestamp'] = Carbon::create($bet->updated_at)->unix();
+                    }
+
+                    return $acc;
+                } catch (Throwable $e) {
+                    dump($e);
+                    throw $e;
                 }
 
-                if ($game->isFinal()) {
-                    $acc['finalTimestamp'] = Carbon::create($bet->updated_at)->unix();
-                }
-
-                return $acc;
             },
             [
                 'results' => 0,
@@ -198,89 +200,25 @@ final class UserRank
         return $this->topScorerTot();
     }
 
-    private function calculateResults(): void
-    {
-        $this->numberOfResults = $this->user->predictions->reduce(
-            static function (int $result, Prediction $bet) {
-                $game = $bet->game;
-
-                if (isset($game->home_result, $game->away_result) &&
-                    $game->home_result === $bet->home_result &&
-                    $game->away_result === $bet->away_result
-                ) {
-                    $result++;
-                }
-
-                return $result;
-            },
-            0
-        );
-    }
-
-    private function calculateSigns(): void
-    {
-        $this->numberOfSigns = $this->user->predictions->reduce(
-            static function (int $result, Prediction $bet) {
-                $sign = $bet->game->sign;
-
-                return isset($sign) && $sign === $bet->sign ? $result + self::SIGN_POINTS : $result;
-            },
-            0
-        );
-    }
-
-    private function calculateScorers(): void
-    {
-        $this->numberOfScorers = $this->user->predictions->reduce(
-            static function (int $result, Prediction $bet) {
-                $game = $bet->game;
-                if (in_array(
-                    $bet->home_score,
-                    $game->home_score ?? [],
-                    true
-                )) {
-                    $result++;
-                }
-
-                if (in_array(
-                    $bet->away_score,
-                    $game->away_score ?? [],
-                    true
-                )) {
-                    $result++;
-                }
-
-                return $result;
-            },
-            0
-        );
-    }
-
-    private function getFinalBetInfo(): void
-    {
-        $final = Game::where('type', 'final')->first();
-        $bet = Prediction::where('game_id', $final?->id)
-            ->where('user_id', $this->user->id)
-            ->first();
-
-        if (isset($bet)) {
-            $this->finalBetTimestamp = (new Carbon($bet->updated_at))->unix();
-            $this->calculateFinalTotal($final, $bet);
-        } else {
-            $this->finalBetTotal = 0;
-            $this->finalBetTimestamp = 0;
-        }
-    }
-
     private function getChampionInfo(): void
     {
         $winner = Tournament::first()->teams->where('is_winner', true)->first();
+        if (null === $winner) {
+            return;
+        }
         $topScorer = Tournament::first()->players->where('is_top_scorer', true)->first();
+
+        if (null === $topScorer) {
+            return;
+        }
         $champion = $this->user->champion;
-        if ($champion && $champion->team_id === $winner?->id) {
+        if (null === $champion) {
+            return;
+        }
+        if ($champion->team_id === $winner->id) {
             $this->winnerTeam = true;
         }
-        if ($champion && $topScorer && $topScorer->id === $champion->player_id) {
+        if ($topScorer->id === $champion->player_id) {
             $this->topScorer = true;
         }
     }
@@ -292,29 +230,6 @@ final class UserRank
             $this->scorerTot() +
             $this->winnerTeamTot() +
             $this->topScorerTot();
-    }
-
-    private function calculateFinalTotal(?Game $final, Prediction $bet): void
-    {
-        if ( ! isset($final, $final->home_result, $final->away_result, $final->sign)) {
-            $this->finalBetTotal = 0;
-        } else {
-            $result = 0;
-            if ($final->home_result === $bet?->home_result && $final->away_result === $bet?->away_result) {
-                $result += self::RESULT_POINTS;
-            }
-            if ($final->sign === $bet->sign) {
-                $result += +self::SIGN_POINTS;
-            }
-            if (in_array($bet->home_score, $final->home_score ?? [], true)) {
-                $result += self::SCORER_POINTS;
-            }
-            if (in_array($bet->away_score, $final->away_score ?? [], true)) {
-                $result += self::SCORER_POINTS;
-            }
-
-            $this->finalBetTotal = $result;
-        }
     }
 
     private function resultsTot(): int

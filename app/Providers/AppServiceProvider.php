@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Console\Commands\FetchGameEventsCommand;
+use App\Console\Commands\FetchGamesCommand;
 use App\Helpers\ApiClients\ApiClientInterface;
 use App\Helpers\ApiClients\Apisport;
+use App\Helpers\ApiClients\ParseFromFile;
 use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
-use App\Http\Controllers\HomeController;
+use App\Models\Tournament;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
-use App\Shared\RouteMeta\RouteMeta;
+use DateTimeImmutable;
+use DateTimeZone;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -31,13 +36,16 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ApiClientInterface::class,
-            static fn () => new Apisport(config('apisport.token'))
+            static fn () => new ParseFromFile(base_path('/tests/mocks'))
         );
+        $this->app->when(FetchGamesCommand::class)
+            ->needs(ApiClientInterface::class)
+            ->give(fn () => new Apisport(config('apisport.token')));
+        $this->app->when(FetchGameEventsCommand::class)
+            ->needs(ApiClientInterface::class)
+            ->give(fn () => new Apisport(config('apisport.token')));
         $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
 
-        $this->app->when(HomeController::class)
-            ->needs('$winnerDeclarationDate')
-            ->give(Constants::WINNER_DECLARATION_DATE);
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TimeManagementServiceInterface::class, TimeManagementService::class);
@@ -48,12 +56,18 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Tournament::createOrFirst([
+            'id' => 4,
+            'country' => 'World',
+            'name' => 'Euro Championship',
+            'is_cup' => true,
+            'final_started_at' => Carbon::createFromImmutable(new DateTimeImmutable('2024-07-14 21:00:00', new DateTimeZone('Europe/Berlin'))),
+        ]);
         $this->registerPagesNamespace();
 
         Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');
 
         View::share('finalDate', Constants::FINAL_DATE);
-        View::share('routeMeta', new RouteMeta());
 
         if ( ! Collection::hasMacro('sortByMulti')) {
             Collection::macro(

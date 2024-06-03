@@ -12,6 +12,7 @@ use App\Helpers\Mappers\Apisport\TopScorers;
 use App\Helpers\Mappers\Apisport\Winner;
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\Tournament;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -42,7 +43,7 @@ final class FetchWinnerAndTopScorerCommand extends Command
             $response = $apisport->get('players/topscorers?league=1&season=2022');
             $players = TopScorers::fromArray($response['response']);
             unset($response);
-            $response = $apisport->get('fixtures?league=1&season=2022');
+            $response = $apisport->get('fixtures?league=1&season=2022&round=Final');
             $winner = Winner::fromArray($response['response']);
             unset($response);
         } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
@@ -74,12 +75,13 @@ final class FetchWinnerAndTopScorerCommand extends Command
         try {
             foreach ($players->toArray() as $player) {
                 $player = Player::find($player['id']);
-                $player->top_scorer = true;
+                Tournament::first()->players()->attach($player, ['top_scorer' => true]);
+
                 $player->save();
             }
             if ($winner->toInt()) {
                 $winner = Team::find($winner->toInt());
-                $winner->winner = true;
+                Tournament::first()->teams()->attach($winner, ['winner' => true]);
                 $winner->save();
             }
         } catch (Throwable $e) {

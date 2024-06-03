@@ -17,10 +17,12 @@ final class GameMapperCollection
                 static function (array $item): array {
                     return [
                         'id' => $item['fixture']['id'],
-                        'home_team' => TeamMapperCollection::teamNameMapper($item['teams']['home']['name']),
-                        'away_team' => TeamMapperCollection::teamNameMapper($item['teams']['away']['name']),
+                        'home_team' => $item['teams']['home']['id'],
+                        'away_team' => $item['teams']['away']['id'],
                         'started_at' => $item['fixture']['timestamp'],
-                        'type' => self::getGameType($item['league']['round']),
+                        'stage' => self::getGameType($item['league']['round']),
+                        'status' => 'not_started',
+                        'tournament_id' => 4,
                     ];
                 },
                 $response

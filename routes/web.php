@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\BetController;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\GameModController;
 use App\Http\Controllers\GameNotAccessibleAction;
@@ -10,6 +9,7 @@ use App\Http\Controllers\GameNotSetAction;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MiscController;
 use App\Http\Controllers\ModController;
+use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserModController;
 use Illuminate\Routing\Router;
@@ -43,15 +43,15 @@ Route::get('/game/not/set', GameNotSetAction::class)->name('errors.gameNotSet');
 Route::get('/game/not/accessible/{game?}', GameNotAccessibleAction::class)->name('errors.gameNotAccessible');
 
 /* Bet CRUD */
-Route::get('/prossimo/incontro/{game}', [BetController::class, 'nextGameFromReference'])->name('bet.nextFromReference');
-Route::get('/precedente/incontro/{game}', [BetController::class, 'previousGameFromReference'])->name('bet.previousFromReference');
-Route::get('/pronostico/prossimo/incontro', [BetController::class, 'nextGame'])->name('bet.nextGame');
-Route::get('/pronostici/incontro/{game}', [BetController::class, 'index'])->name('bet.index');
-Route::get('/pronostico/incontro/{game}', [BetController::class, 'show'])->name('bet.show');
-Route::get('/pronostico/incontro/{game}/crea', [BetController::class, 'create'])->name('bet.create');
-Route::post('/pronostico/incontro/{game}/store', [BetController::class, 'store'])->name('bet.store');
-Route::get('/pronostico/modifica/{bet}', [BetController::class, 'edit'])->name('bet.edit');
-Route::put('/pronostico/aggiorna/{bet}', [BetController::class, 'update'])->name('bet.update');
+Route::get('/prossimo/incontro/{game}', [PredictionController::class, 'nextGameFromReference'])->name('bet.nextFromReference');
+Route::get('/precedente/incontro/{game}', [PredictionController::class, 'previousGameFromReference'])->name('bet.previousFromReference');
+Route::get('/pronostico/prossimo/incontro', [PredictionController::class, 'nextGame'])->name('bet.nextGame');
+Route::get('/pronostici/incontro/{game}', [PredictionController::class, 'index'])->name('bet.index');
+Route::get('/pronostico/incontro/{game}', [PredictionController::class, 'show'])->name('bet.show');
+Route::get('/pronostico/incontro/{game}/crea', [PredictionController::class, 'create'])->name('bet.create');
+Route::post('/pronostico/incontro/{game}/store', [PredictionController::class, 'store'])->name('bet.store');
+Route::get('/pronostico/modifica/{bet}', [PredictionController::class, 'edit'])->name('bet.edit');
+Route::put('/pronostico/aggiorna/{bet}', [PredictionController::class, 'update'])->name('bet.update');
 
 /* CRUD per vincitore e capocannoniere */
 Route::get('/pronostico/vincitore/index', [ChampionController::class, 'index'])->name('champion.index');

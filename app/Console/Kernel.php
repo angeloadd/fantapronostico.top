@@ -6,13 +6,12 @@ namespace App\Console;
 
 use App\Console\Commands\FetchGameEventsCommand;
 use App\Console\Commands\FetchGamesCommand;
-use App\Console\Commands\FetchPlayersByTeamCommand;
 use App\Console\Commands\FetchPlayersCommand;
 use App\Console\Commands\FetchTeamsCommand;
 use App\Console\Commands\FetchWinnerAndTopScorerCommand;
 use App\Console\Commands\FixPlayersCommand;
-use App\Helpers\Constants;
 use App\Models\Game;
+use App\Models\Tournament;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -30,7 +29,6 @@ final class Kernel extends ConsoleKernel
         FetchTeamsCommand::class,
         FetchGameEventsCommand::class,
         FetchWinnerAndTopScorerCommand::class,
-        FetchPlayersByTeamCommand::class,
         FixPlayersCommand::class,
     ];
 
@@ -95,7 +93,7 @@ final class Kernel extends ConsoleKernel
     private function scheduleFetchChampion(Schedule $schedule): void
     {
         if (
-            now()->lt(Carbon::createFromTimestamp(Constants::FINAL_DATE)->addHours(2)) &&
+            now()->lt(Carbon::createFromTimestamp(Tournament::fisrt()->final_started_at)->addHours(2)) &&
             Game::all()->every('status', '=', 'completed')
         ) {
             $schedule->command('fp:fetch:champions')

@@ -9,8 +9,8 @@ use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
-use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 final class HomeController extends Controller
@@ -56,7 +56,9 @@ final class HomeController extends Controller
 
     private function isDeadlineForChampionBetPassed(): bool
     {
-        return time() < (Constants::FIRST_GAME_SART_TIMESTAMP - (60 * 60));
+        $game = Game::first();
+
+        return null !== $game && $game->started_at->lte(now());
     }
 
     private function isFinalStarted(): bool
@@ -66,6 +68,6 @@ final class HomeController extends Controller
 
     private function areGameTeamsSet($nextGame): bool
     {
-        return isset($nextGame?->home, $nextGame?->away);
+        return isset($nextGame?->home_team, $nextGame?->away_team);
     }
 }

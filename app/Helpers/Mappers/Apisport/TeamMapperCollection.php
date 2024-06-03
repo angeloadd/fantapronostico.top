@@ -39,6 +39,13 @@ final class TeamMapperCollection
         'Ecuador' => 'Ecuador',
         'USA' => 'USA',
         'Canada' => 'Canada',
+        'Italy' => 'Italia',
+        'Hungary' => 'Ungheria',
+        'Czech Republic' => 'Repubblica Ceca',
+        'Ukraine' => 'Ucraina',
+        'Slovakia' => 'Slovacchia',
+        'Turkey' => 'Turchia',
+        'Scotland' => 'Scozia',
     ];
 
     public function __construct(private array $teamMappers)

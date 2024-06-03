@@ -96,7 +96,7 @@ final class User extends Authenticatable implements MustVerifyEmail
         return UserFactory::new();
     }
 
-    public function bets(): HasMany
+    public function predictions(): HasMany
     {
         return $this->hasMany(Prediction::class);
     }
