@@ -202,11 +202,11 @@ final class UserRank
 
     private function getChampionInfo(): void
     {
-        $winner = Tournament::first()->teams->where('is_winner', true)->first();
+        $winner = Tournament::first()->teams?->where('is_winner', true)?->first();
         if (null === $winner) {
             return;
         }
-        $topScorer = Tournament::first()->players->where('is_top_scorer', true)->first();
+        $topScorer = Tournament::first()->players?->where('is_top_scorer', true)?->first();
 
         if (null === $topScorer) {
             return;

@@ -1,66 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Steps
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Run marketplace app
+add domain and put in DNS in godaddy the three digital ocean dns:
+```
+ns1.digitalocean.com
+ns2.digitalocean.com
+ns3.digitalocean.com
+```
+After the domains are active go run the first ssh session:
 
-## About Laravel
+activate app and run certbot (if live folder is not present run certbot certonly be sure to do it before adding the following nginx config):
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+server {
+    server_name _ fantapronostico.top www.fantapronostico.top;
+    root /var/www/html/fantapronostico.top/public;
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    index index.php;
 
-## Learning Laravel
+    charset utf-8;
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    error_page 404 /index.php;
 
-## Laravel Sponsors
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
 
-### Premium Partners
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/fantapronostico.top/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/fantapronostico.top/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+server {
+     #Force all HTTP traffic to SSL
+    listen 80;
+    return 301 https://$host$request_uri;
+}
+server {
+    # Redirect www.example.com to example.com
+    listen 443 ssl;
 
-## Contributing
+    #This needs to be the cert for www.fantapronostico.top or *.example.com
+    ssl_certificate /etc/letsencrypt/live/fantapronostico.top/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/fantapronostico.top/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    #Remember, if nginx doesnt find the server_name, it uses the first vhost.
+    server_name www.fantapronostico.top;
+    return 301 https://fantapronostico.top$request_uri;
+}
+```
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-laravel-with-nginx-on-ubuntu-20-04
+This config enables https. Then run mysql secure installation and apply firewalls following the guides in the marketplace page:
+[https://marketplace.digitalocean.com/apps/laravel](https://marketplace.digitalocean.com/apps/laravel)
 
-## Code of Conduct
+following install posgresql and follow this guide:
+```shell
+sudo apt install postgresql
+sudo apt install php(phpv)-pgsql
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+https://ubuntu.com/server/docs/install-and-configure-postgresql
 
-## Security Vulnerabilities
+check nginx status `sudo nginx -t`
+reload nginx `sudo systemctl reload nginx`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+remember to change user for storage and cache `chown -R www-data:www-data folder` -R stands for recursive
