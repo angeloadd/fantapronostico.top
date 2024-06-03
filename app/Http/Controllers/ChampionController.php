@@ -77,7 +77,7 @@ final class ChampionController extends Controller
         }
 
         if (Auth::user()?->id !== $champion->user_id) {
-            return abort(404, 'Not Found');
+            abort(404);
         }
 
         return view(
@@ -102,7 +102,7 @@ final class ChampionController extends Controller
         }
 
         if (Auth::user()?->id !== $champion->user_id) {
-            return abort(404, 'Not found');
+            abort(404);
         }
 
         $champion->update([
@@ -121,7 +121,7 @@ final class ChampionController extends Controller
         }
 
         if (Auth::user()?->id !== $champion->user_id) {
-            return abort(404, 'Not Found');
+             abort(404);
         }
 
         return view(
@@ -139,14 +139,12 @@ final class ChampionController extends Controller
     public function index(): Renderable
     {
         if ( ! $this->competitionStarted()) {
-            return abort(404, 'not found');
+            abort(404, 'not found');
         }
 
         return view(
             'champion.index',
-            [
-                'champion' => Champion::all(),
-            ]
+            ['champion' => Champion::all(),]
         );
     }
 
@@ -155,24 +153,24 @@ final class ChampionController extends Controller
         return view('champion.error', ['championSettableFrom' => $this->getChampionSettableFrom()]);
     }
 
-    public function getFirstMatchStartDate(): Carbon
+    public function getFirstMatchStartDate(): Carbon|null
     {
-        return Game::orderBy('started_at', 'asc')->first()->started_at;
+        return Game::orderBy('started_at', 'asc')?->first()?->started_at;
     }
 
-    private function getChampionSettableFrom(): Carbon
+    private function getChampionSettableFrom(): ?Carbon
     {
-        return Carbon::create($this->getFirstMatchStartDate()->subDays(2))->timezone('Europe/Rome');
+        return Carbon::create($this->getFirstMatchStartDate()?->subDays(2))?->timezone('Europe/Rome');
     }
 
     private function isChampionBetAvailableByDate(): bool
     {
-        return time() <= $this->getChampionSettableFrom()->unix();
+        return time() <= ($this->getChampionSettableFrom()?->unix() ?? 0);
     }
 
     private function competitionStarted(): bool
     {
-        $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')->first()->started_at->unix();
+        $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')?->first()?->started_at?->unix();
 
         return now()->unix() >= $firstGameStartedAtTimestamp;
     }
