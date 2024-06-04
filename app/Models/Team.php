@@ -70,7 +70,7 @@ final class Team extends Model
 
     public static function upsertTeamsDto(TeamsDto $teamsDto): void
     {
-        foreach ($teamsDto->teams as $teamDto) {
+        foreach ($teamsDto->teams() as $teamDto) {
             $team = self::updateOrCreate(['api_id' => $teamDto->apiId], $teamDto->toArray());
             $team->tournaments()->attach(Tournament::first()->id);
         }

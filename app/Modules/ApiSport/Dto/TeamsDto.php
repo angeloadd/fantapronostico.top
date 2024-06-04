@@ -9,7 +9,7 @@ final class TeamsDto
     /**
      * @var TeamDto[]
      */
-    public array $teams;
+    private array $teams;
 
     public function __construct(TeamDto ...$teams)
     {

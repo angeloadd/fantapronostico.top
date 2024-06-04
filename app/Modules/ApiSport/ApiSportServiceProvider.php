@@ -6,6 +6,9 @@ namespace App\Modules\ApiSport;
 
 use App\Modules\ApiSport\Client\ApiSportClient;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Mapper\ApiSportMapper;
+use App\Modules\ApiSport\Mapper\ExceptionMapperDecorator;
+use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Service\ApiSportService;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +28,12 @@ final class ApiSportServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(ApiSportServiceInterface::class, ApiSportService::class);
+
+        $this->app->bind(MapperInterface::class, ApiSportMapper::class);
+        $this->app->extend(
+            MapperInterface::class,
+            static fn (MapperInterface $mapper) => new ExceptionMapperDecorator($mapper)
+        );
     }
 
     public function boot(): void

@@ -6,10 +6,12 @@ namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\TeamDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
+use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
+use Illuminate\Support\Facades\Log;
 
-final class TeamMapper
+final class ApiSportMapper implements MapperInterface
 {
-    public static function map(array $externalResponse): TeamsDto
+    public function mapTeamsResponse(array $externalResponse): TeamsDto
     {
         return new TeamsDto(
             ...array_map(

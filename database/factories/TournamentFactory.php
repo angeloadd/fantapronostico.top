@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Tournament;
+use DateInterval;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +29,14 @@ final class TournamentFactory extends Factory
         /** @var array{name: string, country: string, type: string} $tournament */
         $tournament = $this->faker->randomElement(self::TOURNAMENT_NAMES);
 
+        $dateTime = $this->faker->dateTimeBetween('+1 week', '+2 weeks');
+
         return [
+            'logo' => $this->faker->imageUrl(40, 80, 'sports', true),
+            'season' => $this->faker->year,
+            'api_id' => $this->faker->randomNumber(),
+            'started_at'=> $dateTime,
+            'final_started_at' => $dateTime->add(new DateInterval('P30D')),
             'name' => $tournament['name'],
             'country' => $tournament['country'],
             'is_cup' => 'Serie A' !== $tournament['name'],

@@ -25,7 +25,11 @@ final class GetTeamsCommand extends Command
     {
         $teamsDto = $apiSportService->getTeamsBySeasonAndLeague(new GetTeamsRequest(4, 2024));
 
+        $numberOfTeams = count($teamsDto->teams());
+
         Team::upsertTeamsDto($teamsDto);
+
+        $this->info('Successfully updated ' . $numberOfTeams . ' teams');
 
         return self::SUCCESS;
     }
