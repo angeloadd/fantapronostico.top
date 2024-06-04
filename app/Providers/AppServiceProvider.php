@@ -36,15 +36,8 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ApiClientInterface::class,
-            static fn () => new ParseFromFile(base_path('/tests/mocks'))
+            static fn () => new Apisport(config('apisport.token'))
         );
-        $this->app->when(FetchGamesCommand::class)
-            ->needs(ApiClientInterface::class)
-            ->give(fn () => new Apisport(config('apisport.token')));
-        $this->app->when(FetchGameEventsCommand::class)
-            ->needs(ApiClientInterface::class)
-            ->give(fn () => new Apisport(config('apisport.token')));
-        $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
 
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);

@@ -33,7 +33,7 @@ final class FetchTeamsCommand extends Command
     public function handle(ApiClientInterface $apisport): int
     {
         try {
-            $response = $apisport->get('teams?league=1&season=2022');
+            $response = $apisport->get('teams?league=4&season=2024');
             $teams = TeamMapperCollection::fromArray($response['response']);
             unset($response);
         } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
