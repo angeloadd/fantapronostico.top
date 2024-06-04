@@ -121,7 +121,7 @@ final class ChampionController extends Controller
         }
 
         if (Auth::user()?->id !== $champion->user_id) {
-             abort(404);
+            abort(404);
         }
 
         return view(
@@ -144,7 +144,7 @@ final class ChampionController extends Controller
 
         return view(
             'champion.index',
-            ['champion' => Champion::all(),]
+            ['champion' => Champion::all()]
         );
     }
 
@@ -153,7 +153,7 @@ final class ChampionController extends Controller
         return view('champion.error', ['championSettableFrom' => $this->getChampionSettableFrom()]);
     }
 
-    public function getFirstMatchStartDate(): Carbon|null
+    public function getFirstMatchStartDate(): ?Carbon
     {
         return Game::orderBy('started_at', 'asc')?->first()?->started_at;
     }

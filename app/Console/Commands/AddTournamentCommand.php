@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 final class AddTournamentCommand extends Command
 {
     protected $signature = 'tournament:add';
+
     protected $description = 'Add a new tournament';
 
     public function handle(): int
@@ -24,6 +25,7 @@ final class AddTournamentCommand extends Command
             'is_cup' => true,
             'final_started_at' => Carbon::createFromImmutable(new DateTimeImmutable('2024-07-14 21:00:00', new DateTimeZone('Europe/Berlin'))),
         ]);
+
         return 0;
     }
 }

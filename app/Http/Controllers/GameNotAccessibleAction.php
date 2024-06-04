@@ -8,7 +8,6 @@ use App\Models\Game;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 final class GameNotAccessibleAction extends Controller

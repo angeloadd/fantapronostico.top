@@ -4,24 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Console\Commands\FetchGameEventsCommand;
-use App\Console\Commands\FetchGamesCommand;
 use App\Helpers\ApiClients\ApiClientInterface;
 use App\Helpers\ApiClients\Apisport;
-use App\Helpers\ApiClients\ParseFromFile;
 use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
-use App\Models\Tournament;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
-use DateTimeImmutable;
-use DateTimeZone;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -42,6 +35,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TimeManagementServiceInterface::class, TimeManagementService::class);
+        $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
     }
 
     /**
