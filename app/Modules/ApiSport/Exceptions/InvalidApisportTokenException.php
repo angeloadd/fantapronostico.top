@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Helpers\ApiClients\Exception;
+namespace App\Modules\ApiSport\Exceptions;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Response;

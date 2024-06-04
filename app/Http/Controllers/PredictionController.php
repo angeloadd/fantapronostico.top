@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BetRequest;
+use App\Http\Requests\CreatePredictionRequest;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Prediction;
@@ -144,7 +144,7 @@ final class PredictionController extends Controller
         );
     }
 
-    public function store(BetRequest $request, Game $game): RedirectResponse
+    public function store(CreatePredictionRequest $request, Game $game): RedirectResponse
     {
         // Controllo per limite di tempo
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
@@ -210,7 +210,7 @@ final class PredictionController extends Controller
         return view('bet.edit', compact('bet', 'game'));
     }
 
-    public function update(BetRequest $request, Prediction $bet): RedirectResponse
+    public function update(CreatePredictionRequest $request, Prediction $bet): RedirectResponse
     {
         // controllo per accesso a pronostici diversi dal proprio
         if (Auth::user()->id !== $bet->user_id) {

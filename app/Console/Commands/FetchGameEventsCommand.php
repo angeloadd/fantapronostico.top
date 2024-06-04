@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Helpers\ApiClients\ApiClientInterface;
-use App\Helpers\ApiClients\Exception\InvalidApisportTokenException;
-use App\Helpers\ApiClients\Exception\MissingApisportTokenException;
-use App\Helpers\ApiClients\ExternalSystemUnavailableException;
 use App\Helpers\Mappers\Apisport\GameEventsMapper;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
+use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Exceptions\ExternalSystemUnavailableException;
+use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +33,7 @@ final class FetchGameEventsCommand extends Command
      */
     protected $description = 'Command description';
 
-    public function handle(ApiClientInterface $apisport): int
+    public function handle(ApiSportClientInterface $apisport): int
     {
         $count = 0;
         try {
@@ -53,21 +52,16 @@ final class FetchGameEventsCommand extends Command
                 if ($date->addHours(2)->addMinutes(10)->gte(now())) {
                     continue;
                 }
-                $isFinished = $apisport->get('fixtures?id=' . $game->id);
+                $isFinished = $apisport->get('fixtures', ['id' => $game->id]);
                 if ( ! in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
-                $response = $apisport->get('fixtures/events?fixture=' . $game->id . '&type=Goal');
+                $response = $apisport->get('fixtures/events', ['id' => $game->id, 'type' => 'Goal']);
                 $events = GameEventsMapper::fromArray($response['response'], $game);
-                try {
-
-                    $game->addGameEvent($events->toArray());
-                } catch (Throwable $e) {
-                    dump($e);
-                }
+                $game->addGameEvent($events->toArray());
                 $count++;
             }
-        } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
+        } catch (ExternalSystemUnavailableException|InvalidApisportTokenException $e) {
             Log::error(
                 'Failed to fetch: ' . $e->getMessage(),
                 [
@@ -77,18 +71,6 @@ final class FetchGameEventsCommand extends Command
             );
 
             $this->error('Failed to fetch: ' . $e->getMessage());
-
-            return self::FAILURE;
-        } catch (ExternalSystemUnavailableException $e) {
-            Log::error(
-                $e->getMessage(),
-                [
-                    'message' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                ]
-            );
-
-            $this->error($e->getMessage());
 
             return self::FAILURE;
         } catch (Throwable $e) {

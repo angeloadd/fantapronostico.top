@@ -20,6 +20,7 @@ return new class() extends Migration
                 $table->string('code');
                 $table->string('logo');
                 $table->boolean('is_national');
+                $table->unsignedBigInteger('api_id');
                 $table->timestamps();
             }
         );

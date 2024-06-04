@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Helpers\Mappers\Apisport\TeamMapperCollection;
+use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\Auth\Database\Factory\TeamFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -52,7 +53,7 @@ final class Team extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'api_id',
         'name',
         'code',
         'logo',
@@ -64,6 +65,14 @@ final class Team extends Model
         foreach ($teams->toArray() as $team) {
             self::updateOrCreate(['id' => $team['id']], $team);
             Tournament::first()?->teams()->attach($team['id']);
+        }
+    }
+
+    public static function upsertTeamsDto(TeamsDto $teamsDto): void
+    {
+        foreach ($teamsDto->teams as $teamDto) {
+            $team = self::updateOrCreate(['api_id' => $teamDto->apiId], $teamDto->toArray());
+            $team->tournaments()->attach(Tournament::first()->id);
         }
     }
 

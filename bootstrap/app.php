@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'superAdmin' => AdminMiddleware::class,
         ]);
     })
+    ->withCommands(glob(__DIR__ . '/../app/Modules/*/Console'))
     ->withExceptions(function (Exceptions $exceptions): void {
 
     })->create();

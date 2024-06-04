@@ -48,8 +48,11 @@ final class Tournament extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'name',
+        'logo',
+        'season',
+        'api_id',
+        'started_at',
         'country',
         'is_cup',
         'final_started_at',

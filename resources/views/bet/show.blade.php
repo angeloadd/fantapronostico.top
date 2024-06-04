@@ -14,9 +14,9 @@
                 <tr class="border-base-300">
                     <th>Nome</th>
                     <th>Segno</th>
-                    <th>Risultato {{$game->home_team->name}} - {{$game->away_team->name}}</th>
-                    <th>Gol/NoGol {{$game->home_team->name}}</th>
-                    <th>Gol/NoGol {{$game->away_team->name}}</th>
+                    <th>Risultato {{__($game->home_team->name)}} - {{__($game->away_team->name)}}</th>
+                    <th>Gol/NoGol {{__($game->home_team->name)}}</th>
+                    <th>Gol/NoGol {{__($game->away_team->name)}}</th>
                     <th>Ultimo Update</th>
                 </tr>
             </thead>

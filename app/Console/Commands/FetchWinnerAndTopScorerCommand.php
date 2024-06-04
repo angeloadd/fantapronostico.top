@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Helpers\ApiClients\ApiClientInterface;
-use App\Helpers\ApiClients\Exception\InvalidApisportTokenException;
-use App\Helpers\ApiClients\Exception\MissingApisportTokenException;
-use App\Helpers\ApiClients\ExternalSystemUnavailableException;
 use App\Helpers\Mappers\Apisport\TopScorers;
 use App\Helpers\Mappers\Apisport\Winner;
 use App\Models\Player;
 use App\Models\Team;
 use App\Models\Tournament;
+use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Exceptions\ExternalSystemUnavailableException;
+use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -35,7 +34,7 @@ final class FetchWinnerAndTopScorerCommand extends Command
      */
     protected $description = 'Command description';
 
-    public function handle(ApiClientInterface $apisport): int
+    public function handle(ApiSportClientInterface $apisport): int
     {
         $players = [];
         $winner = 0;
@@ -46,7 +45,7 @@ final class FetchWinnerAndTopScorerCommand extends Command
             $response = $apisport->get('fixtures?league=1&season=2022&round=Final');
             $winner = Winner::fromArray($response['response']);
             unset($response);
-        } catch (MissingApisportTokenException|InvalidApisportTokenException $e) {
+        } catch (ExternalSystemUnavailableException|InvalidApisportTokenException $e) {
             Log::error(
                 'Failed to fetch: ' . $e->getMessage(),
                 [
@@ -56,18 +55,6 @@ final class FetchWinnerAndTopScorerCommand extends Command
             );
 
             $this->error('Failed to fetch: ' . $e->getMessage());
-
-            return self::FAILURE;
-        } catch (ExternalSystemUnavailableException $e) {
-            Log::error(
-                $e->getMessage(),
-                [
-                    'message' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                ]
-            );
-
-            $this->error($e->getMessage());
 
             return self::FAILURE;
         }

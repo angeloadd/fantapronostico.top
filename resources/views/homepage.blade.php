@@ -11,7 +11,7 @@
                                 <li class="my-1 w-full text-lg bg-red-600/10 rounded-lg">
                                     <a class="flex justify-center items-center" href="{{route('bet.index', compact('game'))}}" role="button">
                                         <img src="{{$game->home_team->logo}}" width="24px" alt="">
-                                        <span class="mx-1">{{$game->home_team->name}} - {{$game->away_team->name}}</span>
+                                        <span class="mx-1">{{__($game->home_team->name)}} - {{__($game->away_team->name)}}</span>
                                         <img src="{{$game->away_team->logo}}" width="24px" alt="">
                                     </a>
                                 </li>

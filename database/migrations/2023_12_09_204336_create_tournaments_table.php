@@ -18,7 +18,11 @@ return new class() extends Migration
                 $table->id();
                 $table->string('name');
                 $table->string('country');
+                $table->string('logo');
                 $table->boolean('is_cup');
+                $table->unsignedInteger('season');
+                $table->unsignedBigInteger('api_id');
+                $table->timestamp('started_at');
                 $table->timestamp('final_started_at');
                 $table->timestamps();
             }

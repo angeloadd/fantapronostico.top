@@ -102,17 +102,23 @@ final class Game extends Model
 
     public static function upsertMany(GameMapperCollection $games): void
     {
+        $tournamentId = null;
         foreach ($games->toArray() as $game) {
+            if (null === $tournamentId) {
+                $tournamentId = Tournament::where('api_id', $game['tournament_id'])->firstOrFail()->id;
+            }
             $homeId = $game['home_team'];
             $awayId = $game['away_team'];
             unset($game['home_team'], $game['away_team']);
+
+            $game['tournament_id'] = $tournamentId;
 
             /**
              * @var Game $gameModel
              */
             $gameModel = self::updateOrCreate(['id' => $game['id']], $game);
-            $gameModel->teams()->attach($homeId, ['is_away' => false]);
-            $gameModel->teams()->attach($awayId, ['is_away' => true]);
+            $gameModel->teams()->attach(Team::where('api_id', $homeId)->firstOrFail()->id, ['is_away' => false]);
+            $gameModel->teams()->attach(Team::where('api_id', $awayId)->firstOrFail()->id, ['is_away' => true]);
             $gameModel->save();
         }
     }
@@ -302,7 +308,7 @@ final class Game extends Model
 
     public function addGameEvent(array $toArray): void
     {
-        foreach ([...$toArray['home_scorers']] as $scorer) {
+        foreach ($toArray['home_scorers'] as $scorer) {
             try {
                 $this->goals()->create([
                     'player_id' => $scorer['id'],
@@ -320,7 +326,7 @@ final class Game extends Model
                 }
             }
         }
-        foreach ([...$toArray['away_scorers']] as $scorer) {
+        foreach ($toArray['away_scorers'] as $scorer) {
             try {
                 $this->goals()->create([
                     'player_id' => $scorer['id'],

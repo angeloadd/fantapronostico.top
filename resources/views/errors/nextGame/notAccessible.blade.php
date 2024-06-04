@@ -14,7 +14,7 @@
                     <div class="w-full px-0 py-0">
                         <div class="row-span-12 p-0 justify-around">
                             <h2 class="text-center fs-1 pt-3 mb-0">
-                                {{$game->home_team->name.' vs '.$game->away_team->name}}
+                                {{__($game->home_team->name).' vs '.__($game->away_team->name)}}
                                 <br>
                                 sarà pronosticabile a partire dalle {{$game->started_at->format('H:i')}}
                                 del {{$game->started_at->subDay(1)->format('d ')}} {{ucfirst($game->started_at->subDay(1)->monthName)}} {{$game->started_at->subDay(1)->format(' Y')}}.

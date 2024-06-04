@@ -33,7 +33,9 @@ final class FixPlayersCommand extends Command
     public function handle(): int
     {
         try {
-            dump('Nothing to fix');
+            $this->info('Nothing to fix');
+
+            return self::SUCCESS;
         } catch (Throwable $e) {
             Log::error('fix not worked', ['trace' => $e->getTraceAsString()]);
 
@@ -41,7 +43,5 @@ final class FixPlayersCommand extends Command
 
             return self::FAILURE;
         }
-
-        return self::SUCCESS;
     }
 }

@@ -6,24 +6,31 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class BetRequest extends FormRequest
+final class CreatePredictionRequest extends FormRequest
 {
+    public const HOME_SCORE = 'home_score';
+
+    public const AWAY_SCORE = 'away_score';
+
+    public const SIGN = 'sign';
+
+    public const HOME_SCORER_ID = 'home_scorer_id';
+
+    public const AWAY_SCORER_ID = 'away_scorer_id';
+
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
         return [
-            'home_score' => 'required|integer|numeric',
-            'away_score' => 'required|integer|numeric',
-            'sign' => 'required',
-            'home_scorer_id' => 'required',
-            'away_scorer_id' => 'required',
+            self::HOME_SCORE => ['required', 'integer', 'numeric'],
+            self::AWAY_SCORE => ['required', 'integer', 'numeric'],
+            self::SIGN => ['required'],
+            self::HOME_SCORER_ID => 'required',
+            self::AWAY_SCORER_ID => 'required',
         ];
     }
 

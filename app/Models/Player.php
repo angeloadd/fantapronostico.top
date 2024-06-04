@@ -113,6 +113,7 @@ final class Player extends Model
     public static function upsertMany(PlayerMapperCollection $players): void
     {
         foreach ($players->toArray() as $player) {
+            $player['national_id'] = Team::where('api_id', $player['national_id'])->firstOrFail()->id;
             self::updateOrCreate(['id' => $player['id']], $player);
             Tournament::first()?->players()->attach($player['id']);
         }

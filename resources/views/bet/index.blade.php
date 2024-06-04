@@ -7,9 +7,9 @@
                 <tr>
                     <th>Nome</th>
                     <th>Segno</th>
-                    <th>Risultato {{$game->home_team->name}} vs {{$game->away_team->name}} ({{$game->home_score}} - {{$game->away_score}})</th>
-                    <th>Gol/Nogol {{$game->home_team->name}}</th>
-                    <th>Gol/Nogol {{$game->away_team->name}}</th>
+                    <th>Risultato {{__($game->home_team->name)}} vs {{__($game->away_team->name)}} ({{$game->home_score}} - {{$game->away_score}})</th>
+                    <th>Gol/Nogol {{__($game->home_team->name)}}</th>
+                    <th>Gol/Nogol {{__($game->away_team->name)}}</th>
                     <th>Ultimo Update</th>
                 </tr>
             </thead>
