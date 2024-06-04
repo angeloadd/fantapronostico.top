@@ -90,3 +90,38 @@ remember to change user for storage and cache `chown -R www-data:www-data folder
 `crontab -e`
 `* * * * * cd /var/www/html/fantapronostico.top && php artisan schedule:run >> /dev/null 2>&1`
 `sudo service cron reload`
+
+clean from mysql
+https://askubuntu.com/questions/172514/how-do-i-uninstall-mysql
+
+
+create user in postgres with password and add privilege on specific db
+add localhost="*" to postgresql.conf
+and add entry in ph_hba.conf
+find your ip https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+
+sudo -u postgres psql
+postgres=# create database mydb;
+postgres=# create user myuser with encrypted password 'mypass';
+postgres=# grant all privileges on database mydb to myuser;
+grant all privileges on all tables 
+
+https://dba.stackexchange.com/questions/221209/grant-all-on-all-tables-in-schema-does-not-allow-user-to-see-tables
+
+
+```
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres ALL ON TABLES TO api_group ;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres ALL  ON SEQUENCES TO api_group ;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL  ON FUNCTIONS TO api_group ;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL  ON TYPES TO api_group ;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL  ON SCHEMAS TO api_group ;
+```
+
+grant all privilages on table fantapronostico to fantapronostico;
+you need to be in the database;
+grant all privileger on all tables in schema public to fantapronostico
+grant all privileger on all sequences in schema public to fantapronostico
+grant all privileger on all functions in schema public to fantapronostico
+grant all privileger on all types in schema public to fantapronostico
+
+theoretically you can grant access to types

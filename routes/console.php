@@ -17,7 +17,7 @@ Artisan::command('inspire', function (): void {
 
 try {
     // Run Schedules maximum 10 hours after final started
-    /** @var Carbon $finalStartedAt */
+    /** @var ?Carbon $finalStartedAt */
     $finalStartedAt = Tournament::first()?->final_started_at;
     if (now()->lt($finalStartedAt->addHours(10))) {
         Schedule::command('fp:fetch:team')
@@ -46,7 +46,7 @@ try {
             ->timezone('Europe/Rome')
             ->between('23:00', '23:50');
 
-        $isPast = $finalStartedAt->isPast();
+        $isPast = $finalStartedAt?->isPast();
         $areAllGamesFinished = Game::all()->every('status', '=', 'finished');
         if ($isPast && $areAllGamesFinished) {
             Schedule::command('fp:fetch:champions')
@@ -54,7 +54,6 @@ try {
                 ->everyThreeMinutes();
         }
     }
-
 } catch (Throwable $e) {
     Log::error($e->getMessage());
 }
