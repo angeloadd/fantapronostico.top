@@ -56,13 +56,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-//        Tournament::createOrFirst([
-//            'id' => 4,
-//            'country' => 'World',
-//            'name' => 'Euro Championship',
-//            'is_cup' => true,
-//            'final_started_at' => Carbon::createFromImmutable(new DateTimeImmutable('2024-07-14 21:00:00', new DateTimeZone('Europe/Berlin'))),
-//        ]);
         $this->registerPagesNamespace();
 
         Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');

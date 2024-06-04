@@ -86,3 +86,7 @@ check nginx status `sudo nginx -t`
 reload nginx `sudo systemctl reload nginx`
 
 remember to change user for storage and cache `chown -R www-data:www-data folder` -R stands for recursive
+
+`crontab -e`
+`* * * * * cd /var/www/html/fantapronostico.top && php artisan schedule:run >> /dev/null 2>&1`
+`sudo service cron reload`

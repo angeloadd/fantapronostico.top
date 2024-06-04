@@ -18,7 +18,7 @@ Artisan::command('inspire', function (): void {
 try{
 // Run Schedules maximum 10 hours after final started
 /** @var Carbon $finalStartedAt */
-$finalStartedAt = Tournament::first()->final_started_at;
+$finalStartedAt = Tournament::first()?->final_started_at;
 if (now()->lt($finalStartedAt->addHours(10))) {
     Schedule::command('fp:fetch:team')
         ->timezone('Europe/Rome')
