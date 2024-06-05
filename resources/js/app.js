@@ -5,7 +5,7 @@ import "./gameNav";
 import "./sidebar";
 import "./util";
 
-import.meta.glob(["../assets/images/**", "../img/**"]);
+import.meta.glob(["../assets/images/**", "../img/**", "../assets/favicon/**"]);
 
 htmx.config.withCredentials = true;
 
