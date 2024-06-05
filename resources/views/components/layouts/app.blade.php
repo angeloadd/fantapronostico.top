@@ -25,7 +25,6 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{Vite::asset('resources/assets/favicon/favicon-32x32.png')}}">
         <link rel="icon" type="image/png" sizes="96x96" href="{{Vite::asset('resources/assets/favicon/favicon-96x96.png')}}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{Vite::asset('resources/assets/favicon/favicon-16x16.png')}}">
-        <link rel="manifest" href="{{Vite::asset('resources/assets/favicon/manifest.json')}}">
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{Vite::asset('resources/assets/favicon/ms-icon-144x144.png')}}">
         <meta name="theme-color" content="#ffffff">
