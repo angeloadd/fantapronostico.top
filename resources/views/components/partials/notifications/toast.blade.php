@@ -9,5 +9,5 @@
             @default alert-info
        @endswitch"
 >
-    <span>{{$text ?? 'Task completed'}}</span>
+    <span>{{__($text ?? "Success")}}</span>
 </div>

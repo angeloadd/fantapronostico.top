@@ -52,7 +52,7 @@
 {{--            </div>--}}
 {{--        @endif--}}
         {{ $slot }}
-        <div class="toast" x-ref="testWrapper"></div>
+        <div class="toast" id="toastWrapper"></div>
         @stack('scripts')
     </body>
 </html>

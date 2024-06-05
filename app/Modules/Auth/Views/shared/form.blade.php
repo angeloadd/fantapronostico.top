@@ -18,7 +18,7 @@
                     class="link text-sm pb-2 pr-2 w-full text-right"
                 >{{__('auth.login.request_password_reset')}}</a>
             @endif
-            <button class="btn btn-neutral text-base-100 fp2024-title">{{$btnText}}</button>
+            <button class="btn btn-primary text-base-100 fp2024-title">{{$btnText}}</button>
         </div>
     @else
     {{$btn}}

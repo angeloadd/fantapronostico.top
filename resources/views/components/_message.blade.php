@@ -1,14 +1,20 @@
-@php
-    $message = session('message');
-    $error = session('error_message');
-@endphp
-@isset($message)
-    <template x-teleport=".toast">
-        <x-partials.notifications.toast :text="$message" type="success" />
+@if(null !== session($sessionKey ?? 'message'))
+    <template x-teleport="#toastWrapper">
+        <x-partials.notifications.toast :text="session($sessionKey ?? 'message')" type="success"/>
     </template>
-@endisset
-@isset($error)
-    <template x-teleport=".toast">
-        <x-partials.notifications.toast :text="$error" type="error" />
+@endif
+@if(null !== session($errorKey ?? 'error_message'))
+    <template x-teleport="#toastWrapper">
+        <x-partials.notifications.toast :text="session($errorKey ?? 'error_message')" type="error"/>
     </template
-@endisset
+@endif
+@if(null !== session($warningKey ?? 'warning_message'))
+    <template x-teleport="#toastWrapper">
+        <x-partials.notifications.toast :text="session($warningKey ?? 'warning_message')" type="warning"/>
+    </template
+@endif
+@if(null !== session($infoKey ?? 'info_message'))
+    <template x-teleport="#toastWrapper">
+        <x-partials.notifications.toast :text="session($infoKey ?? 'info_message')" type="info"/>
+    </template
+@endif

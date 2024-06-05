@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Auth\ServiceProviders;
+namespace App\Modules\Auth;
 
 use App\Modules\Auth\Fortify\CreateNewUser;
 use App\Modules\Auth\Fortify\ResetUserPassword;
