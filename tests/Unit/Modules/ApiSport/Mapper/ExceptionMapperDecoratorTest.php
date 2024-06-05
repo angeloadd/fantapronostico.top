@@ -26,6 +26,7 @@ final class ExceptionMapperDecoratorTest extends UnitTestCase
         ];
         $this->assertEquals($dto, (new ExceptionMapperDecorator(new ApiSportMapper()))->mapTeamsResponse($response));
     }
+
     public function test_mapTeamsResponse_throws_for_unexpected_response(): void
     {
         $this->expectException(ApiSportParsingException::class);

@@ -6,8 +6,6 @@ namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\TeamDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
-use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
-use Illuminate\Support\Facades\Log;
 
 final class ApiSportMapper implements MapperInterface
 {

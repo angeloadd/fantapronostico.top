@@ -21,6 +21,7 @@ final class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->country,
+            'api_id' => $this->faker->randomNumber(),
             'code' => $this->faker->countryISOAlpha3,
             'logo' => $this->faker->imageUrl,
             'is_national' => $this->faker->boolean,

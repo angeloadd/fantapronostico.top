@@ -1,6 +1,6 @@
-{{--<x-partials.fireworks.fireworks/>--}}
-<x-layouts.with-header text="albo d'oro" bgColor="bg-yellow-500" alt="corona d'alloro dorata" img="laurel_crown.png">
-    <ul class="pt-16 timeline timeline-vertical text-xl sm:text-3xl">
+<x-partials.fireworks.fireworks/>
+<x-layouts.with-drawer>
+    <ul class="timeline timeline-vertical text-xl sm:text-3xl">
         <li>
             <time class="timeline-start">2024</time>
             <div class="timeline-middle">
@@ -85,4 +85,4 @@
             <div class="timeline-end timeline-box">Alessio Fuganti</div>
         </li>
     </ul>
-</x-layouts.with-header>
+</x-layouts.with-drawer>

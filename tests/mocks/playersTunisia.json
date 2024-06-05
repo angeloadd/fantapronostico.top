@@ -1,1 +1,226 @@
-{"get":"players\/squads","parameters":{"team":"28"},"errors":[],"results":1,"paging":{"current":1,"total":1},"response":[{"team":{"id":28,"name":"Tunisia","logo":"https:\/\/media.api-sports.io\/football\/teams\/28.png"},"players":[{"id":49610,"name":"B. Ben Sa\u00efd","age":31,"number":22,"position":"Goalkeeper","photo":"https:\/\/media.api-sports.io\/football\/players\/49610.png"},{"id":49424,"name":"A. Dahmen","age":26,"number":16,"position":"Goalkeeper","photo":"https:\/\/media.api-sports.io\/football\/players\/49424.png"},{"id":2941,"name":"M. Hassen","age":28,"number":1,"position":"Goalkeeper","photo":"https:\/\/media.api-sports.io\/football\/players\/2941.png"},{"id":2945,"name":"D. Bronn","age":28,"number":null,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/2945.png"},{"id":195897,"name":"A. Cherni","age":22,"number":null,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/195897.png"},{"id":49583,"name":"A. Abdi","age":30,"number":2,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/49583.png"},{"id":2946,"name":"O. Haddadi","age":31,"number":15,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/2946.png"},{"id":49442,"name":"H. Jelassi","age":32,"number":13,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/49442.png"},{"id":2954,"name":"W. Kechrida","age":28,"number":21,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/2954.png"},{"id":49432,"name":"H. Mathlouthi","age":31,"number":null,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/49432.png"},{"id":296311,"name":"G. Zaalouni","age":21,"number":null,"position":"Defender","photo":"https:\/\/media.api-sports.io\/football\/players\/296311.png"},{"id":42012,"name":"E. Achouri","age":24,"number":27,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/42012.png"},{"id":67195,"name":"H. Mahmoud","age":23,"number":25,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/67195.png"},{"id":49404,"name":"M. Ben Romdhane","age":24,"number":5,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/49404.png"},{"id":206404,"name":"Samy Olivier Chouchane","age":20,"number":null,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/206404.png"},{"id":8990,"name":"N. Ghandri","age":28,"number":null,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/8990.png"},{"id":49439,"name":"A. Ghram","age":22,"number":26,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/49439.png"},{"id":43246,"name":"A. La\u00efdouni","age":27,"number":14,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/43246.png"},{"id":264419,"name":"S. Ltaief","age":23,"number":18,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/264419.png"},{"id":84658,"name":"F. Mannai","age":27,"number":null,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/84658.png"},{"id":136016,"name":"H. Rafia","age":24,"number":8,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/136016.png"},{"id":21587,"name":"E. Skhiri","age":28,"number":17,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/21587.png"},{"id":210198,"name":"M. Zaddem","age":22,"number":null,"position":"Midfielder","photo":"https:\/\/media.api-sports.io\/football\/players\/210198.png"},{"id":16933,"name":"S. Jaziri","age":30,"number":24,"position":"Attacker","photo":"https:\/\/media.api-sports.io\/football\/players\/16933.png"},{"id":49419,"name":"H. Jouini","age":30,"number":9,"position":"Attacker","photo":"https:\/\/media.api-sports.io\/football\/players\/49419.png"},{"id":323974,"name":"E. Saad","age":24,"number":null,"position":"Attacker","photo":"https:\/\/media.api-sports.io\/football\/players\/323974.png"}]}]}
+{
+	"get": "players/squads",
+	"parameters": { "team": "28" },
+	"errors": [],
+	"results": 1,
+	"paging": { "current": 1, "total": 1 },
+	"response": [
+		{
+			"team": {
+				"id": 28,
+				"name": "Tunisia",
+				"logo": "https://media.api-sports.io/football/teams/28.png"
+			},
+			"players": [
+				{
+					"id": 49610,
+					"name": "B. Ben Sa\u00efd",
+					"age": 31,
+					"number": 22,
+					"position": "Goalkeeper",
+					"photo": "https://media.api-sports.io/football/players/49610.png"
+				},
+				{
+					"id": 49424,
+					"name": "A. Dahmen",
+					"age": 26,
+					"number": 16,
+					"position": "Goalkeeper",
+					"photo": "https://media.api-sports.io/football/players/49424.png"
+				},
+				{
+					"id": 2941,
+					"name": "M. Hassen",
+					"age": 28,
+					"number": 1,
+					"position": "Goalkeeper",
+					"photo": "https://media.api-sports.io/football/players/2941.png"
+				},
+				{
+					"id": 2945,
+					"name": "D. Bronn",
+					"age": 28,
+					"number": null,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/2945.png"
+				},
+				{
+					"id": 195897,
+					"name": "A. Cherni",
+					"age": 22,
+					"number": null,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/195897.png"
+				},
+				{
+					"id": 49583,
+					"name": "A. Abdi",
+					"age": 30,
+					"number": 2,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/49583.png"
+				},
+				{
+					"id": 2946,
+					"name": "O. Haddadi",
+					"age": 31,
+					"number": 15,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/2946.png"
+				},
+				{
+					"id": 49442,
+					"name": "H. Jelassi",
+					"age": 32,
+					"number": 13,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/49442.png"
+				},
+				{
+					"id": 2954,
+					"name": "W. Kechrida",
+					"age": 28,
+					"number": 21,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/2954.png"
+				},
+				{
+					"id": 49432,
+					"name": "H. Mathlouthi",
+					"age": 31,
+					"number": null,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/49432.png"
+				},
+				{
+					"id": 296311,
+					"name": "G. Zaalouni",
+					"age": 21,
+					"number": null,
+					"position": "Defender",
+					"photo": "https://media.api-sports.io/football/players/296311.png"
+				},
+				{
+					"id": 42012,
+					"name": "E. Achouri",
+					"age": 24,
+					"number": 27,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/42012.png"
+				},
+				{
+					"id": 67195,
+					"name": "H. Mahmoud",
+					"age": 23,
+					"number": 25,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/67195.png"
+				},
+				{
+					"id": 49404,
+					"name": "M. Ben Romdhane",
+					"age": 24,
+					"number": 5,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/49404.png"
+				},
+				{
+					"id": 206404,
+					"name": "Samy Olivier Chouchane",
+					"age": 20,
+					"number": null,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/206404.png"
+				},
+				{
+					"id": 8990,
+					"name": "N. Ghandri",
+					"age": 28,
+					"number": null,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/8990.png"
+				},
+				{
+					"id": 49439,
+					"name": "A. Ghram",
+					"age": 22,
+					"number": 26,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/49439.png"
+				},
+				{
+					"id": 43246,
+					"name": "A. La\u00efdouni",
+					"age": 27,
+					"number": 14,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/43246.png"
+				},
+				{
+					"id": 264419,
+					"name": "S. Ltaief",
+					"age": 23,
+					"number": 18,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/264419.png"
+				},
+				{
+					"id": 84658,
+					"name": "F. Mannai",
+					"age": 27,
+					"number": null,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/84658.png"
+				},
+				{
+					"id": 136016,
+					"name": "H. Rafia",
+					"age": 24,
+					"number": 8,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/136016.png"
+				},
+				{
+					"id": 21587,
+					"name": "E. Skhiri",
+					"age": 28,
+					"number": 17,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/21587.png"
+				},
+				{
+					"id": 210198,
+					"name": "M. Zaddem",
+					"age": 22,
+					"number": null,
+					"position": "Midfielder",
+					"photo": "https://media.api-sports.io/football/players/210198.png"
+				},
+				{
+					"id": 16933,
+					"name": "S. Jaziri",
+					"age": 30,
+					"number": 24,
+					"position": "Attacker",
+					"photo": "https://media.api-sports.io/football/players/16933.png"
+				},
+				{
+					"id": 49419,
+					"name": "H. Jouini",
+					"age": 30,
+					"number": 9,
+					"position": "Attacker",
+					"photo": "https://media.api-sports.io/football/players/49419.png"
+				},
+				{
+					"id": 323974,
+					"name": "E. Saad",
+					"age": 24,
+					"number": null,
+					"position": "Attacker",
+					"photo": "https://media.api-sports.io/football/players/323974.png"
+				}
+			]
+		}
+	]
+}

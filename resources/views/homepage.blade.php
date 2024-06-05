@@ -1,43 +1,38 @@
 <x-layouts.with-drawer>
-            <div class="w-full flex flex-col sm:flex-row justify-evenly items-center">
-                <div class="w-full flex flex-col items-center">
-                    <div class="card px-3 w-full shadow-lg rounded-lg">
-                        <div class="rounded-lg text-center fp2024-title text-2xl py-4 shadow-lg bg-red-600 text-base-100 bg-gradient-to-t from-white/20 via-transparent to-white/20 transition duration-500 ease-in-out hover:-translate-y-4">
-                            Ultimi Risultati
-                        </div>
-                        <div class="card-body">
-                            <ul class="menu w-full h-full flex justify-center items-center rounded-box">
-                            @foreach($lastThreeGames as $game)
-                                <li class="my-1 w-full text-lg bg-red-600/10 rounded-lg">
-                                    <a class="flex justify-center items-center" href="{{route('bet.index', compact('game'))}}" role="button">
-                                        <img src="{{$game->home_team->logo}}" width="24px" alt="">
-                                        <span class="mx-1">{{__($game->home_team->name)}} - {{__($game->away_team->name)}}</span>
-                                        <img src="{{$game->away_team->logo}}" width="24px" alt="">
-                                    </a>
-                                </li>
-                            @endforeach
-                            </ul>
-
-                        </div>
-                    </div>
-                    <x-homepage._card>
-                        @if($isFinalStarted)
-                            <div
-                                class="card-body bg-success flex justify-center items-center flex-col p-3 rounded-md">
-                                <h2 class="text-base-100 text-center">È attualmente in corso la finale attendi la fine della
-                                    competizione per sapere di quanto hai perso.</h2>
-                                <img src="{{Vite::asset('resources/img/table.webp')}}" class="img-fluid rounded-md"
-                                     alt="Meme guy lancia il tavolo">
-                            </div>
-                        @elseif($areGameTeamsSet && isset($nextGame))
+    <div class="flex justify-center items-center w-full h-screen">
+        <div class="h-screen w-full sm:grid sm:grid-cols-2 place-items-center justify-items-stretch">
+            <div class="h-fit w-full sm:grid sm:grid-rows-2 place-items-center justify-items-stretch">
+                <div class="flex h-full w-full justify-center items-center">
+                    <x-home-card title="Prossimo Incontro">
+                        @isset($nextGame)
                             <x-_next-match :nextGame="$nextGame"/>
                         @else
                             <x-_not-set/>
-                        @endif
-                    </x-homepage._card>
+                        @endisset
+                    </x-home-card>
                 </div>
-                <div class="w-full card bg-base-100 shadow-xl px-3">
-                    <x-_standings :standing="$ranking"/>
+                <div class="flex h-full w-full justify-center items-center">
+                    <x-home-card title="Ultimi Partite">
+                        <ul class="join join-vertical space-y-3">
+                            @foreach($lastThreeGames as $game)
+                                <li class="pb-1 border-b border-accent/20">
+                                    <a class="flex justify-center items-center" href="{{route('bet.index', compact('game'))}}">
+                                        <img class="w-7" src="{{$game->home_team->logo}}" alt="{{$game->home_team->name}} Flag">
+                                        <span class="basis-1/3 text-right">{{__($game->home_team->name)}}</span>
+                                        <span class="basis-1/6 text-center">({{$game->home_score}} - {{$game->away_score}})</span>
+                                        <span class="basis-1/3 text-left">{{__($game->away_team->name)}}</span>
+                                        <img class="w-7" src="{{$game->away_team->logo}}" alt="{{$game->away_team->name}} Flag">
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </x-home-card>
                 </div>
             </div>
-</x-layouts.with-drawer>
+            <div class="flex h-fit w-full justify-center items-center">
+                <x-home-card title="Classifica">
+                    <x-_standings :standing="$ranking"/>
+                </x-home-card>
+            </div>
+        </div>
+    </div></x-layouts.with-drawer>

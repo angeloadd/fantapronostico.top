@@ -6,7 +6,6 @@ namespace App\Modules\ApiSport\Service;
 
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Dto\TeamsDto;
-use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Request\GetTeamsRequest;
 

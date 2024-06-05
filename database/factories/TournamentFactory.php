@@ -35,7 +35,7 @@ final class TournamentFactory extends Factory
             'logo' => $this->faker->imageUrl(40, 80, 'sports', true),
             'season' => $this->faker->year,
             'api_id' => $this->faker->randomNumber(),
-            'started_at'=> $dateTime,
+            'started_at' => $dateTime,
             'final_started_at' => $dateTime->add(new DateInterval('P30D')),
             'name' => $tournament['name'],
             'country' => $tournament['country'],

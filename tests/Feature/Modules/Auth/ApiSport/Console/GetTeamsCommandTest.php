@@ -18,6 +18,7 @@ final class GetTeamsCommandTest extends TestCase
         'name' => 'Country',
         'logo' => 'Logo 2',
     ];
+
     private const FIRST_DTO = [
         'id' => 1,
         'is_national' => true,
@@ -29,7 +30,7 @@ final class GetTeamsCommandTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        if (!Config::has('api-sport.host')) {
+        if ( ! Config::has('api-sport.host')) {
             $this->fail('ApiSport host not configured');
         }
         Config::set('api-sport.host', 'api-sport-host');
@@ -38,6 +39,16 @@ final class GetTeamsCommandTest extends TestCase
         ]);
 
         Tournament::factory()->euro()->create();
+    }
+
+    public function test_handle(): void
+    {
+        $this->artisan('fp:teams:get')
+            ->expectsOutput('Successfully updated 2 teams')
+            ->assertExitCode(0);
+
+        $this->assertDatabaseHas('teams', self::FIRST_DTO);
+        $this->assertDatabaseHas('teams', self::SECOND_DTO);
     }
 
     private function getResponse(): array
@@ -64,15 +75,5 @@ final class GetTeamsCommandTest extends TestCase
                 ],
             ],
         ];
-    }
-
-    public function test_handle(): void
-    {
-        $this->artisan('fp:teams:get')
-            ->expectsOutput('Successfully updated 2 teams')
-            ->assertExitCode(0);
-
-        $this->assertDatabaseHas('teams', self::FIRST_DTO);
-        $this->assertDatabaseHas('teams', self::SECOND_DTO);
     }
 }

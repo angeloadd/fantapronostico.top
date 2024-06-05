@@ -2,7 +2,7 @@
     <a href="{{route($routeName)}}"
         @class([
              'text-base-100 hover:bg-accent/80',
-             'bg-accent' => Route::currentRouteName() === ($active ?? $routeName)
+             'bg-neutral/50' => Route::currentRouteName() === ($active ?? $routeName)
         ])
     >
         <img class="me-2"

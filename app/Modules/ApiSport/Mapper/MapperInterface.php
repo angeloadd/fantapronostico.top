@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\TeamsDto;

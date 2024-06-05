@@ -16,6 +16,15 @@ final class ApiSportServiceTest extends UnitTestCase
 {
     private ApiSportClientInterface|MockObject $client;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = $this->createMock(ApiSportClientInterface::class);
+        $this->mapper = $this->createMock(MapperInterface::class);
+        $this->subject = new ApiSportService($this->client, $this->mapper);
+    }
+
     /**
      * @return array[]
      */
@@ -24,14 +33,13 @@ final class ApiSportServiceTest extends UnitTestCase
         return [
             'response' => [
                 [
-                    'team' =>
-                        [
-                            'id' => 1,
-                            'national' => true,
-                            'code' => 'CNR',
-                            'name' => 'Nation',
-                            'logo' => 'Logo 1',
-                        ],
+                    'team' => [
+                        'id' => 1,
+                        'national' => true,
+                        'code' => 'CNR',
+                        'name' => 'Nation',
+                        'logo' => 'Logo 1',
+                    ],
                     [
                         'id' => 2,
                         'national' => true,
@@ -41,15 +49,6 @@ final class ApiSportServiceTest extends UnitTestCase
                     ],
                 ],
             ]];
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->client = $this->createMock(ApiSportClientInterface::class);
-        $this->mapper = $this->createMock(MapperInterface::class);
-        $this->subject = new ApiSportService($this->client, $this->mapper);
     }
 
     public function test_GetTeamsBySeasonAndLeague_returns_a_dto(): void

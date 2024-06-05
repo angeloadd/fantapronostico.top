@@ -1,5 +1,5 @@
+<x-partials.fireworks.fireworks/>
 <x-layouts.with-drawer>
-    <x-partials.fireworks.fireworks/>
     <div
         class="w-full flex flex-col items-center container-homepage-custom min-h-screen px-0">
         <div class="mb-5">

@@ -1,9 +1,9 @@
 import htmx from "htmx.org";
 import "./alpine";
+import "./countdown";
+import "./gameNav";
 import "./sidebar";
 import "./util";
-import './countdown'
-import './gameNav'
 
 import.meta.glob(["../assets/images/**", "../img/**"]);
 

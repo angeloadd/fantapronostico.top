@@ -60,11 +60,6 @@ Route::post('/pronostico/vincitore/update/{champion}', [ChampionController::clas
 Route::get('/pronostico/vincitore/show/{champion}', [ChampionController::class, 'show'])->name('champion.show');
 Route::get('/pronostico/vincitore/error', [ChampionController::class, 'error'])->name('champion.error');
 
-/* routes per password */
-
-Route::get('profilo/utente/reset', [UserController::class, 'resetPassword'])->name('password.firstSet');
-Route::put('password/store', [UserController::class, 'storePassword'])->name('password.store');
-
 /* rotte per moderatori */
 Route::get('pannello/controllo', [ModController::class, 'index'])->name('mod.index');
 
