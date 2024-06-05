@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Champion;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Prediction;
-use App\Models\Team;
 use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
 use DateTimeInterface;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 
 final class PredictionsSeeder extends Seeder
 {

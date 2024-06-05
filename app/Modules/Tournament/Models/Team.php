@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Modules\Tournament\Models;
 
-use App\Helpers\Mappers\Apisport\TeamMapperCollection;
+use App\Models\Game;
+use App\Models\Player;
+use App\Models\Tournament;
 use App\Modules\ApiSport\Dto\TeamsDto;
-use App\Modules\Auth\Database\Factory\TeamFactory;
+use App\Modules\Tournament\Database\Factory\TeamFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -46,6 +48,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Team whereName($value)
  * @method static Builder|Team whereUpdatedAt($value)
  *
+ * @property int $api_id
+ *
+ * @method static Builder|Team whereApiId($value)
+ *
  * @mixin Eloquent
  */
 final class Team extends Model
@@ -60,19 +66,17 @@ final class Team extends Model
         'is_national',
     ];
 
-    public static function upsertMany(TeamMapperCollection $teams): void
+    public static function newFactory(): TeamFactory
     {
-        foreach ($teams->toArray() as $team) {
-            self::updateOrCreate(['id' => $team['id']], $team);
-            Tournament::first()?->teams()->attach($team['id']);
-        }
+        return TeamFactory::new();
     }
 
     public static function upsertTeamsDto(TeamsDto $teamsDto): void
     {
         foreach ($teamsDto->teams() as $teamDto) {
             $team = self::updateOrCreate(['api_id' => $teamDto->apiId], $teamDto->toArray());
-            $team->tournaments()->attach(Tournament::first()->id);
+
+            Tournament::attachByApiId($team->id, $teamsDto->tournamentApiId);
         }
     }
 

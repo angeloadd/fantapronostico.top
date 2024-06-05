@@ -59,6 +59,13 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --ansi"
+        ],
+        "ide-helper:all": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:eloquent",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models --write",
+            "@fix"
         ]
     },
     "extra": {

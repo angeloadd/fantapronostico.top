@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Modules\Auth\ApiSport\Console;
+namespace Tests\Feature\Modules\ApiSport\Console;
 
 use App\Models\Tournament;
 use Config;
@@ -54,6 +54,7 @@ final class GetTeamsCommandTest extends TestCase
     private function getResponse(): array
     {
         return [
+            'parameters' => ['league' => 1],
             'response' => [
                 [
                     'team' => [

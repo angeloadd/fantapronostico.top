@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
+use App\Helpers\Constants;
 use App\Models\Player;
-use App\Models\Team;
 use App\Models\Tournament;
+use App\Modules\Tournament\Models\Team;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Tests\Feature\Helpers\FactoryHelper;
@@ -55,22 +56,26 @@ final class TournamentTest extends TestCase
 
     public function test_a_tournament_is_persisted_with_correct_properties(): void
     {
-        $testNow = '2023-12-31T23:00:00.000000Z';
-        Carbon::setTestNow($testNow);
+        $date = '2023-12-31T23:00:00.000000Z';
         $attributes = [
-            'id' => 100,
+            'season' => 2022,
+            'api_id' => 1,
             'name' => 'tournament_name',
+            'logo' => 'logo.png',
             'country' => 'World',
             'is_cup' => true,
+            'started_at' => $date,
+            'final_started_at' => $date,
         ];
         $tournament = Tournament::create($attributes);
 
-        $expected = [
-            ...$attributes,
-            'updated_at' => $testNow,
-            'created_at' => $testNow,
-        ];
-
-        self::assertSame($expected, $tournament->toArray());
+        $this->assertSame($attributes['season'], $tournament->season);
+        $this->assertSame($attributes['api_id'], $tournament->api_id);
+        $this->assertSame($attributes['name'], $tournament->name);
+        $this->assertSame($attributes['logo'], $tournament->logo);
+        $this->assertSame($attributes['country'], $tournament->country);
+        $this->assertSame($attributes['is_cup'], $tournament->is_cup);
+        $this->assertSame($attributes['started_at'], $tournament->started_at->format(Constants::ISO_DATE_FORMAT));
+        $this->assertSame($attributes['final_started_at'], $tournament->final_started_at->format(Constants::DISPLAY));
     }
 }

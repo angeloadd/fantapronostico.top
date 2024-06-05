@@ -17,8 +17,9 @@ final class ExceptionMapperDecoratorTest extends UnitTestCase
     {
         $teamDto = new TeamDto(1, 'name', 'code', 'logo', false);
         $teamDto2 = new TeamDto(2, 'name', 'code', 'logo', true);
-        $dto = new TeamsDto($teamDto, $teamDto2);
+        $dto = new TeamsDto(4, $teamDto, $teamDto2);
         $response = [
+            'parameters' => ['league' => 4],
             'response' => [
                 ['team' => ['id' => $teamDto->apiId, 'name' => $teamDto->name, 'code' => $teamDto->code, 'logo' => $teamDto->logo, 'national' => $teamDto->isNational]],
                 ['team' => ['id' => $teamDto2->apiId, 'name' => $teamDto2->name, 'code' => $teamDto2->code, 'logo' => $teamDto2->logo, 'national' => $teamDto2->isNational]],

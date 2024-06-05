@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
+use App\Models\Tournament;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
@@ -50,7 +51,7 @@ final class HomeController extends Controller
 
     private function isWinnerDeclared(): bool
     {
-        return now()->gt(Carbon::createFromTimestamp(Constants::FINAL_DATE)->addHours(2)) &&
+        return Tournament::first()?->final_started_at->addHours(2)->isPast() &&
             Game::all()->every('status', '=', 'completed');
     }
 
@@ -63,7 +64,7 @@ final class HomeController extends Controller
 
     private function isFinalStarted(): bool
     {
-        return time() >= Constants::FINAL_DATE;
+        return Tournament::first()?->final_started_at->isPast();
     }
 
     private function areGameTeamsSet($nextGame): bool

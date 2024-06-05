@@ -6,10 +6,10 @@ namespace App\Console\Commands;
 
 use App\Helpers\Mappers\Apisport\PlayerMapperCollection;
 use App\Models\Player;
-use App\Models\Team;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Exceptions\ExternalSystemUnavailableException;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
+use App\Modules\Tournament\Models\Team;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;

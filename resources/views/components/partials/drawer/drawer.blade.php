@@ -43,23 +43,13 @@
                                     <a href="{{ route('register') }}">Iscriviti</a>
                                 </li>
                             @else
-                                @if(Auth::user()->games_mod || Auth::user()->users_mod)
+                                @if(Auth::user()->admin || Auth::user()->moderator)
                                     <li>
                                         <a href="{{route('mod.index')}}">
                                             PannelloMod
                                         </a>
                                     </li>
                                 @endif
-                                <li>
-                                    <a href="{{route('statistics', ['user' => auth()->user()])}}">
-                                        Statistiche
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{route('password.firstSet')}}">
-                                        Cambia Password
-                                    </a>
-                                </li>
                                 <li>
                                     <button type="button" onclick="logOutModal.showModal()">
                                         Logout

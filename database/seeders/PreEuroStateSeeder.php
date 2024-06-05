@@ -6,8 +6,8 @@ namespace Database\Seeders;
 
 use App\Models\Game;
 use App\Models\Player;
-use App\Models\Team;
 use App\Models\Tournament;
+use App\Modules\Tournament\Models\Team;
 use DateTimeInterface;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;

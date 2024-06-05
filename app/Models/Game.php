@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Helpers\Mappers\Apisport\GameMapperCollection;
+use App\Modules\Tournament\Models\Team;
 use Database\Factories\GameFactory;
 use DateTimeInterface;
 use Eloquent;
@@ -56,6 +57,11 @@ use Throwable;
  * @property-read int|null $goals_count
  * @property-read Collection<int, Prediction> $predictions
  * @property-read int|null $predictions_count
+ * @property-read int $away_score
+ * @property-read mixed $away_scorers
+ * @property-read int $home_score
+ * @property-read mixed $home_scorers
+ * @property-read string|null $sign
  *
  * @mixin Eloquent
  */

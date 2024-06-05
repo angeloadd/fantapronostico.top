@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
-use App\Models\Team;
-use Illuminate\Support\Carbon;
+use App\Modules\ApiSport\Dto\TeamDto;
+use App\Modules\ApiSport\Dto\TeamsDto;
+use App\Modules\Tournament\Models\Team;
 use Tests\Feature\Helpers\FactoryHelper;
 use Tests\TestCase;
 
@@ -108,10 +109,8 @@ final class TeamTest extends TestCase
 
     public function test_a_team_is_persisted_with_correct_properties(): void
     {
-        $testNow = '2023-12-31T23:00:00.000000Z';
-        Carbon::setTestNow($testNow);
         $attributes = [
-            'id' => 100,
+            'api_id' => 4,
             'name' => 'team_name',
             'code' => 'TEN',
             'logo' => 'team_logo',
@@ -119,12 +118,46 @@ final class TeamTest extends TestCase
         ];
         $team = Team::create($attributes);
 
-        $expected = [
-            ...$attributes,
-            'updated_at' => $testNow,
-            'created_at' => $testNow,
-        ];
+        $this->assertSame($attributes['api_id'], $team->api_id);
+        $this->assertSame($attributes['name'], $team->name);
+        $this->assertSame($attributes['code'], $team->code);
+        $this->assertSame($attributes['logo'], $team->logo);
+        $this->assertSame($attributes['is_national'], $team->is_national);
+    }
 
-        self::assertSame($expected, $team->toArray());
+    public function test_upsertMany_can_persist_multiple_team_dto(): void
+    {
+        $tournament = FactoryHelper::makeTournament();
+        $teamDto1 = new TeamDto(1, 'team_name', 'TEN', 'team_logo', true);
+        $teamDto2 = new TeamDto(2, 'other', 'OTH', 'other', true);
+        $teamsDto = new TeamsDto($tournament->api_id, $teamDto1, $teamDto2);
+
+        Team::upsertTeamsDto($teamsDto);
+
+        $this->assertDatabaseHas(
+            'teams',
+            [
+                'api_id' => $teamDto1->apiId,
+                'name' => $teamDto1->name,
+                'code' => $teamDto1->code,
+                'logo' => $teamDto1->logo,
+                'is_national' => $teamDto1->isNational,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'teams',
+            [
+                'api_id' => $teamDto2->apiId,
+                'name' => $teamDto2->name,
+                'code' => $teamDto2->code,
+                'logo' => $teamDto2->logo,
+                'is_national' => $teamDto2->isNational,
+            ]
+        );
+
+        $this->assertDatabaseHas('team_tournament', [
+            'tournament_id' => $tournament->id,
+        ]);
     }
 }

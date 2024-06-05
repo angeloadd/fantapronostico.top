@@ -6,8 +6,8 @@ namespace Tests\Feature\Helpers;
 
 use App\Models\Game;
 use App\Models\Player;
-use App\Models\Team;
 use App\Models\Tournament;
+use App\Modules\Tournament\Models\Team;
 use Tests\TestCase;
 
 final class FactoryHelper extends TestCase

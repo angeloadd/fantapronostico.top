@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Champion;
 use App\Models\Game;
 use App\Models\Player;
-use App\Models\Team;
+use App\Modules\Tournament\Models\Team;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;

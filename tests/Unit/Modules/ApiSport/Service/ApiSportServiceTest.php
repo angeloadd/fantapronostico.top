@@ -25,41 +25,15 @@ final class ApiSportServiceTest extends UnitTestCase
         $this->subject = new ApiSportService($this->client, $this->mapper);
     }
 
-    /**
-     * @return array[]
-     */
-    public function makeResponse(): array
-    {
-        return [
-            'response' => [
-                [
-                    'team' => [
-                        'id' => 1,
-                        'national' => true,
-                        'code' => 'CNR',
-                        'name' => 'Nation',
-                        'logo' => 'Logo 1',
-                    ],
-                    [
-                        'id' => 2,
-                        'national' => true,
-                        'code' => 'AFR',
-                        'name' => 'Country',
-                        'logo' => 'Logo 1',
-                    ],
-                ],
-            ]];
-    }
-
     public function test_GetTeamsBySeasonAndLeague_returns_a_dto(): void
     {
-        $response = ['response' => ['teams' => ['ok']]];
+        $response = ['parameters' => ['league' => 1], 'response' => ['teams' => ['ok']]];
         $this->client->expects($this->once())->method('get')
             ->with('teams', ['league' => 1, 'season' => 2050])
             ->willReturn($response);
         $this->mapper->expects($this->once())->method('mapTeamsResponse')
             ->with($response)
-            ->willReturn(new TeamsDto());
+            ->willReturn(new TeamsDto($response['parameters']['league']));
         $this->subject->getTeamsBySeasonAndLeague(new GetTeamsRequest(1, 2050));
     }
 }

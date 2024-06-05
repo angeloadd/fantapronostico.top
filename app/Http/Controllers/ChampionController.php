@@ -8,7 +8,7 @@ use App\Http\Requests\ChampionRequest;
 use App\Models\Champion;
 use App\Models\Game;
 use App\Models\Player;
-use App\Models\Team;
+use App\Modules\Tournament\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;

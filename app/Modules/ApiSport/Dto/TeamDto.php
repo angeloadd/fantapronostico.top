@@ -11,7 +11,7 @@ final readonly class TeamDto
         public string $name,
         public string $code,
         public string $logo,
-        public bool $isNational
+        public bool $isNational,
     ) {
     }
 

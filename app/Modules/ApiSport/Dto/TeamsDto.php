@@ -11,7 +11,7 @@ final class TeamsDto
      */
     private array $teams;
 
-    public function __construct(TeamDto ...$teams)
+    public function __construct(public readonly int $tournamentApiId, TeamDto ...$teams)
     {
         $this->teams = $teams;
     }

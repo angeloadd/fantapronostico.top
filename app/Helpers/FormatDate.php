@@ -11,11 +11,11 @@ final class FormatDate
 {
     public function fnow(): string
     {
-        return now()->format(Constants::DATE_FORMAT);
+        return now()->format(Constants::DISPLAY);
     }
 
     public function fdate(DateTimeInterface|string $time): string
     {
-        return (is_string($time) ? new Carbon($time) : $time)->format(Constants::DATE_FORMAT);
+        return (is_string($time) ? new Carbon($time) : $time)->format(Constants::DISPLAY);
     }
 }

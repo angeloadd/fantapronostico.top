@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories;
+namespace App\Modules\Tournament\Database\Factory;
 
-use App\Models\Team;
+use App\Modules\Tournament\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Modules\Tournament\Models\Team>
  */
 final class TeamFactory extends Factory
 {
+    protected $model = Team::class;
+
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -23,7 +23,7 @@ final class TeamFactory extends Factory
             'name' => $this->faker->unique()->country,
             'api_id' => $this->faker->randomNumber(),
             'code' => $this->faker->countryISOAlpha3,
-            'logo' => $this->faker->imageUrl,
+            'logo' => $this->faker->imageUrl(100, 100, 'sports'),
             'is_national' => $this->faker->boolean,
         ];
     }

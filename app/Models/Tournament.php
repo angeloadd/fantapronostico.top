@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Modules\Tournament\Models\Team;
 use Database\Factories\TournamentFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,6 +42,18 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Tournament whereName($value)
  * @method static Builder|Tournament whereUpdatedAt($value)
  *
+ * @property string $logo
+ * @property int $season
+ * @property int $api_id
+ * @property string $started_at
+ * @property Carbon $final_started_at
+ *
+ * @method static Builder|Tournament whereApiId($value)
+ * @method static Builder|Tournament whereFinalStartedAt($value)
+ * @method static Builder|Tournament whereLogo($value)
+ * @method static Builder|Tournament whereSeason($value)
+ * @method static Builder|Tournament whereStartedAt($value)
+ *
  * @mixin Eloquent
  */
 final class Tournament extends Model
@@ -57,6 +70,11 @@ final class Tournament extends Model
         'is_cup',
         'final_started_at',
     ];
+
+    public static function attachByApiId(int $teamId, int $tournamentApiId): void
+    {
+        self::whereApiId($tournamentApiId)->first()?->teams()?->attach($teamId);
+    }
 
     /**
      * @return BelongsToMany<Team>
@@ -86,6 +104,7 @@ final class Tournament extends Model
     {
         return [
             'final_started_at' => 'datetime',
+            'started_at' => 'datetime',
         ];
     }
 }

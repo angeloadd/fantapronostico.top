@@ -12,6 +12,7 @@ final class ApiSportMapper implements MapperInterface
     public function mapTeamsResponse(array $externalResponse): TeamsDto
     {
         return new TeamsDto(
+            $externalResponse['parameters']['league'],
             ...array_map(
                 static fn (array $teamArray) => new TeamDto(
                     $teamArray['team']['id'],

@@ -9,6 +9,7 @@ use App\Models\Exceptions\ClubAndNationalTeamsCannotBeTheSameException;
 use App\Models\Exceptions\ClubTeamCannotBeNationalException;
 use App\Models\Exceptions\NationalTeamCannotBeClubException;
 use App\Modules\Auth\Database\Factory\PlayerFactory;
+use App\Modules\Tournament\Models\Team;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

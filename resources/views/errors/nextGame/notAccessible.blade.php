@@ -17,7 +17,7 @@
                                 {{__($game->home_team->name).' vs '.__($game->away_team->name)}}
                                 <br>
                                 sarà pronosticabile a partire dalle {{$game->started_at->format('H:i')}}
-                                del {{$game->started_at->subDay(1)->format('d ')}} {{ucfirst($game->started_at->subDay(1)->monthName)}} {{$game->started_at->subDay(1)->format(' Y')}}.
+                                del {{str($game->started_at->isoFormat('D MMMM YYYY HH:mm'))->title()}}.
                             </h2>
                             <p class="text-center fs-1">Torna più tardi.</p>
                             <div class="w-100 text-base-100 text-center my-3 text-xl">
@@ -25,7 +25,7 @@
                                 <x-_displaydate :date="$game->started_at"/>
                             </div>
                             <div class="flex items-center justify-center display-5 fp2024-title py-3"                            >
-                                <x-_countdown :date="$game->started_at"/>
+                                <x-partials.countdown.main :date="$game->started_at"/>
                             </div>
                         </div>
                     </div>

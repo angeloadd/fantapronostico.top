@@ -15,6 +15,7 @@ use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -47,8 +48,6 @@ final class AppServiceProvider extends ServiceProvider
 
         Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');
 
-        View::share('finalDate', Constants::FINAL_DATE);
-
         if ( ! Collection::hasMacro('sortByMulti')) {
             Collection::macro(
                 'sortByMulti',
@@ -72,7 +71,6 @@ final class AppServiceProvider extends ServiceProvider
                 }
             );
         }
-
     }
 
     private function registerPagesNamespace(): void
