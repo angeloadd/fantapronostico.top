@@ -9,9 +9,9 @@ use Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse;
 final class RequestPasswordResetViaLinkResponse implements RequestPasswordResetLinkViewResponse
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function toResponse($request)
+    public function toResponse($request): void
     {
 
     }

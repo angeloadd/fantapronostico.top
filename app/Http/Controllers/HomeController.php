@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
 use App\Models\Tournament;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 final class HomeController extends Controller

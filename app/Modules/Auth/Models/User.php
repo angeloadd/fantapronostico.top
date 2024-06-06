@@ -7,12 +7,14 @@ namespace App\Modules\Auth\Models;
 use App\Models\Champion;
 use App\Models\Prediction;
 use App\Modules\Auth\Database\Factory\UserFactory;
+use App\Modules\League\Models\League;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +60,10 @@ use Illuminate\Support\Carbon;
  * @property-read Champion|null $champion
  * @property-read Collection<int, Prediction> $bets
  * @property-read int|null $bets_count
+ * @property-read Collection<int, League> $leagues
+ * @property-read int|null $leagues_count
+ * @property-read Collection<int, \App\Modules\Auth\Models\Role> $roles
+ * @property-read int|null $roles_count
  *
  * @mixin Eloquent
  */
@@ -104,5 +110,15 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function champion(): HasOne
     {
         return $this->hasOne(Champion::class);
+    }
+
+    public function leagues(): BelongsToMany
+    {
+        return $this->belongsToMany(League::class)->withPivot(['status']);
+    }
+
+    public function roles(): HasMany
+    {
+        return $this->hasMany(Role::class);
     }
 }

@@ -45,7 +45,7 @@
                             >{{$position+1}}</span>
                             </th>
                             <td>
-                                <a href="{{route('statistics', ['user' => $player->user()])}}">{{$player->user()->name}}</a>
+                               {{$player->user()->name}}
                             </td>
                             <td>{{$player->total()}}</td>
                             <td>{{$player->results()}}</td>

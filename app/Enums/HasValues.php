@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use InvalidArgumentException;
-use UnitEnum;
+use ReflectionClass;
 
 trait HasValues
 {
-    public function values(): array
+    public static function values(): array
     {
-        if ( ! $this instanceof UnitEnum) {
+        if ( ! (new ReflectionClass(self::class))->isEnum()) {
             throw new InvalidArgumentException('This trait can be only used by enum classes');
         }
 
         return array_map(
-            static fn (self $enumCase) => $enumCase->value,
-            $this::cases()
+            static fn (self $enumCase) => $enumCase->value ?? mb_strtolower($enumCase->name),
+            self::cases()
         );
     }
 }

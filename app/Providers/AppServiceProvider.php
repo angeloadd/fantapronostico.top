@@ -6,7 +6,6 @@ namespace App\Providers;
 
 use App\Helpers\ApiClients\ApiClientInterface;
 use App\Helpers\ApiClients\Apisport;
-use App\Helpers\Constants;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Repository\Game\GameRepository;
@@ -15,10 +14,8 @@ use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementService;
 use App\Service\TimeManagementServiceInterface;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider

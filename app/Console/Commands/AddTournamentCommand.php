@@ -18,7 +18,7 @@ final class AddTournamentCommand extends Command
 
     public function handle(): int
     {
-        Tournament::createOrFirst([
+        $tournament = Tournament::createOrFirst([
             'country' => 'World',
             'name' => 'UEFA Euro Cup',
             'logo' => 'https://media.api-sports.io/football/leagues/4.png',
@@ -27,6 +27,10 @@ final class AddTournamentCommand extends Command
             'api_id' => 4,
             'started_at' => Carbon::createFromImmutable(new DateTimeImmutable('2024-06-14 21:00:00', new DateTimeZone('Europe/Berlin'))),
             'final_started_at' => Carbon::createFromImmutable(new DateTimeImmutable('2024-07-14 21:00:00', new DateTimeZone('Europe/Berlin'))),
+        ]);
+
+        $tournament->leagues()->create([
+            'name' => 'Fantapronostico2024',
         ]);
 
         return self::SUCCESS;

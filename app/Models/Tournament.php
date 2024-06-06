@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Modules\League\Models\League;
 use App\Modules\Tournament\Models\Team;
 use Database\Factories\TournamentFactory;
 use Eloquent;
@@ -54,6 +55,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Tournament whereSeason($value)
  * @method static Builder|Tournament whereStartedAt($value)
  *
+ * @property-read Collection<int, League> $leagues
+ * @property-read int|null $leagues_count
+ *
  * @mixin Eloquent
  */
 final class Tournament extends Model
@@ -98,6 +102,11 @@ final class Tournament extends Model
     public function games(): HasMany
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function leagues(): HasMany
+    {
+        return $this->hasMany(League::class);
     }
 
     protected function casts(): array

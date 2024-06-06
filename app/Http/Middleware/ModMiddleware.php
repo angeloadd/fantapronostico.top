@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Modules\Auth\Enums\RoleEnum;
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 final class ModMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @return mixed
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): RedirectResponse|Response
     {
-        if (Auth::user()->games_mod || Auth::user()->users_mod) {
+        $user = $request->user();
+        if (RoleEnum::MOD === $user->roles->role && $user->roles->league_id === $request->get('league_id')) {
             return $next($request);
         }
 

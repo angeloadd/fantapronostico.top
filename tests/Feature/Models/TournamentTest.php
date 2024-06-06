@@ -8,7 +8,6 @@ use App\Helpers\Constants;
 use App\Models\Player;
 use App\Models\Tournament;
 use App\Modules\Tournament\Models\Team;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Tests\Feature\Helpers\FactoryHelper;
 use Tests\TestCase;
