@@ -63,37 +63,12 @@ Route::middleware(['auth', LeagueEnricherMiddleware::class])->group(static funct
     Route::get('/pronostico/vincitore/show/{champion}', [ChampionController::class, 'show'])->name('champion.show');
     Route::get('/pronostico/vincitore/error', [ChampionController::class, 'error'])->name('champion.error');
 
-    /* rotte per moderatori */
-    Route::get('pannello/controllo', [ModController::class, 'index'])->name('mod.index');
-
-    //gestione degli users
-    Route::get('pannello/controllo/utenti', [UserModController::class, 'index'])->name('mod.usersIndex');
-    Route::get('pannello/controllo/crea/utente', [UserModController::class, 'create'])->name('mod.userCreate');
-    Route::post('pannello/controllo/nuovo/utente/creato', [UserModController::class, 'modUserStore'])
-        ->name('mod.userStore');
-    Route::get('pannello/controllo/utenti/{user}', [UserModController::class, 'modUserEdit'])->name('mod.userEdit');
-    Route::put('pannello/controllo/utenti/modifica/{user}/', [UserModController::class, 'modUserUpdate'])
-        ->name('mod.userUpdate');
-    Route::delete('pannello/controllo/cancella/{user}', [UserModController::class, 'modUserDelete'])
-        ->name('mod.userDelete');
-
-    // gestione partite
-    Route::get('pannello/controllo/partite', [GameModController::class, 'index'])->name('mod.gamesIndex');
-    Route::get('pannello/controllo/modifica/partita/{game}', [GameModController::class, 'gameEdit'])->name('mod.gameEdit');
-    Route::put('pannello/controllo/aggiorna/partita/{game}', [GameModController::class, 'gameUpdate'])->name(
-        'mod.gameUpdate'
-    );
-    Route::put('pannello/controllo/inserisci/squadre/{game}', [GameModController::class, 'setGame'])->name('mod.setGame');
-
-    //gestione vincitore
-    Route::get('pannello/controllo/vincitore', [GameModController::class, 'editWinner'])->name('mod.editWinner');
-    Route::put('pannello/controllo/vincitore/modifica', [GameModController::class, 'updateWinner'])->name(
-        'mod.updateWinner'
-    );
-
     // classifica
     Route::get('classifica', [UserController::class, 'officialStanding'])->name('standing');
 
     Route::get('albo', [MiscController::class, 'albo'])->name('albo');
     //Route::get('statistiche/{user}', [MiscController::class, 'statistics'])->name('statistics')->middleware(['auth']);
 });
+
+/* rotte per moderatori */
+Route::get('pannello/controllo', [ModController::class, 'index'])->name('mod.index');
