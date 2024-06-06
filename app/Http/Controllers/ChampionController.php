@@ -23,18 +23,18 @@ final class ChampionController extends Controller
 
     public function create(): Renderable|RedirectResponse
     {
-//        if ($this->isChampionBetAvailableByDate()) {
-//            return redirect(route('champion.error'))->with('La competizione non è ancora iniziata');
-//        }
-//
-//        if ($this->competitionStarted()) {
-//            return redirect(route('champion.index'));
-//        }
-//
-//        $champion = Auth::user()->champion;
-//        if ($champion) {
-//            return redirect(route('champion.show', compact('champion')));
-//        }
+        if ($this->isChampionBetAvailableByDate()) {
+            return redirect(route('champion.error'))->with('La competizione non è ancora iniziata');
+        }
+
+        if ($this->competitionStarted()) {
+            return redirect(route('champion.index'));
+        }
+
+        $champion = Auth::user()->champion;
+        if ($champion) {
+            return redirect(route('champion.show', compact('champion')));
+        }
 
         return view(
             'champion.create',
