@@ -4,10 +4,10 @@
     </div>
     <div class="flex flex-col justify-center items-center">
         <div class="flex justify-between items-center w-full">
-            <div>
+            <div class="w-12 mask mask-circle">
                 <img
                     src="{{$nextGame->home_team->logo}}"
-                    class="w-12 sm:w-36 mask mask-circle"
+                    class="object-center object-fill"
                     alt="{{__(__($nextGame->away_team->name))}}-Flag"
                 >
                 <h3 class="text-xl font-bold text-center">{{__($nextGame->home_team->name)}}</h3>
@@ -21,10 +21,10 @@
                 </p>
             </div>
 
-            <div>
+            <div class="w-12 mask-circle mask">
                 <img
                     src="{{$nextGame->away_team->logo}}"
-                    class="w-12 sm:w-36 mask mask-circle"
+                    class="object-fill object-center"
                     alt="{{$nextGame->away_team->name}} Flag"
                 >
                 <h3 class="text-xl font-bold text-center">{{__($nextGame->away_team->name)}}</h3>
