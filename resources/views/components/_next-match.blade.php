@@ -1,7 +1,4 @@
 <div class="w-full justify-center items-center">
-    <div>
-
-    </div>
     <div class="flex flex-col justify-center items-center">
         <div class="flex justify-between items-center w-full">
             <div class="w-full flex flex-col justify-center items-center">

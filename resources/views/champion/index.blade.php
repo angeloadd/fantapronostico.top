@@ -1,5 +1,5 @@
 <x-_champion_card>
-    <h2 class="w-full text-center text-3xl font-bolt fp2024-title">Pronostici Vincente e Capocannoniere</h2>
+    <x-partials.header.header text="Pronostico Vincente e Capocannoniere" bgColor="bg-secondary" />
     <div class="overflow-x-auto w-full sm:px-10">
         <table class="table table-zebra">
             <!-- head -->

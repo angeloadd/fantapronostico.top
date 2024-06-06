@@ -1,6 +1,6 @@
 <x-layouts.with-drawer>
     <div class="w-full h-screen flex flex-col justify-start items-center">
-        <x-partials.header.header text="classifica" imgClasses="translate-y-5" bgColor="bg-purple-500/90" alt="podium" img="podium.svg"/>
+        <x-partials.header.header text="classifica" bgColor="bg-purple-500/90"/>
         <div class="overflow-auto w-full">
             <table class="table">
                 <thead>

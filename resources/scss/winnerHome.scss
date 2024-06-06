@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 $particles: 50;
 $width: 500px;
 $height: 500px;
@@ -7,9 +9,9 @@ $box-shadow: ();
 $box-shadow2: ();
 @for $i from 0 through $particles {
   $box-shadow: $box-shadow,
-               random($width)- calc($width / 2)
-               random($height)- calc($height / 1.2)
-               hsl(random(360%), 100%, 50%);
+  (math.random(math.div($width, 1px)) * 1px)- calc($width / 2)
+      (math.random(math.div($height, 1px)) * 1px)- calc($height / 1.2)
+               hsl((math.random(math.div(360%, 1%)) * 1%), 100%, 50%);
   $box-shadow2: $box-shadow2, 0 0 #fff
 }
 @mixin keyframes ($animationName) {
