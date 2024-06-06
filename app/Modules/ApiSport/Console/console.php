@@ -11,7 +11,7 @@ try {
     /** @var ?Carbon $finalStartedAt */
     $finalStartedAt = Tournament::first()?->final_started_at;
     if (now()->lt($finalStartedAt->addHours(10))) {
-        Schedule::command('fp:fetch:team')
+        Schedule::command('fp:teams:get')
             ->timezone('Europe/Rome')
             ->dailyAt('01:05');
         Schedule::command('fp:fetch:games')
@@ -20,7 +20,7 @@ try {
         Schedule::command('fp:fetch:players')
             ->timezone('Europe/Rome')
             ->dailyAt('01:15');
-        Schedule::command('fp:fix:players')
+        Schedule::command('fp:players:fix')
             ->timezone('Europe/Rome')
             ->dailyAt('02:15');
 
