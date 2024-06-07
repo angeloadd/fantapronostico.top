@@ -19,7 +19,6 @@ final class LeaguesWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->groups(League::all()->map(static fn (League $league) => $league->name)->toArray())
             ->query(User::query()->with(['leagues']))
             ->columns([
                 TextColumn::make('name'),
