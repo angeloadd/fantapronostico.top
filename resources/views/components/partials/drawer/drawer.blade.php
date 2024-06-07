@@ -25,15 +25,13 @@
                     <div class="bg-base-100/70 p-[0.025rem] -mt-3 mx-3"></div>
                 </li>
                 <li>
-                    <div class="dropdown dropdown-top dropdown-start flex">
-                        <div tabindex="0" role="button" class="flex items-center w-full">
+                    <div class="dropdown dropdown-top dropdown-start flex hover:bg-neutral/30">
+                        <div tabindex="0" role="button" class=" flex items-center w-full">
                             <img src="{{Vite::asset('resources/img/sidebar/profile.svg')}}"
                                  alt="grind"
                                  width="32"
-                                 class="rounded-circle me-2"">
-                            <p class="w-fit">
-                                <strong class="text-2xl">{{Auth::user()->name ?? 'Accedi'}}</strong>
-                            </p>
+                                 class="rounded-circle me-2">
+                            <p><strong class="text-2xl">{{Auth::user()->name ?? 'Accedi'}}</strong></p>
                         </div>
                         <ul tabindex="0" class="dropdown-content z-[1] text-lg rounded-lg bg-accent shadow-lg" aria-labelledby="dropdownUser1">
                             @guest

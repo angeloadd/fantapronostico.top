@@ -18,45 +18,29 @@ final class UserRank
 
     private const SIGN_POINTS = 1;
 
-    private int $total;
-
-    private int $finalBetTimestamp;
-
-    private int $finalBetTotal;
-
-    private bool $winnerTeam;
-
-    private bool $topScorer;
-
-    private int $numberOfResults;
-
-    private int $numberOfSigns;
-
-    private int $numberOfScorers;
-
-    public function __construct(private readonly User $user)
-    {
-        $this->total = 0;
-        $this->numberOfResults = 0;
-        $this->numberOfSigns = 0;
-        $this->numberOfScorers = 0;
-        $this->finalBetTimestamp = 0;
-        $this->finalBetTotal = 0;
-        $this->winnerTeam = false;
-        $this->topScorer = false;
-        $this->calculate();
+    public function __construct(
+        private readonly User $user,
+        private int $total = 0,
+        private int $numberOfResults = 0,
+        private int $numberOfSigns = 0,
+        private int $numberOfScorers = 0,
+        private int $finalBetTimestamp = 0,
+        private int $finalBetTotal = 0,
+        private bool $winnerTeam = false,
+        private bool $topScorer = false,
+    ) {
     }
 
     public function calculate(): self
     {
-        $this->calculateResultsV2();
+        $this->calculateResult();
         $this->getChampionInfo();
         $this->calculateTotal();
 
         return $this;
     }
 
-    public function calculateResultsV2(): void
+    public function calculateResult(): void
     {
         if (null === $this->user->predictions) {
             return;
@@ -115,7 +99,6 @@ final class UserRank
                     dump($e);
                     throw $e;
                 }
-
             },
             [
                 'results' => 0,
@@ -185,11 +168,6 @@ final class UserRank
         return $this->numberOfScorers;
     }
 
-    public function user(): User
-    {
-        return $this->user;
-    }
-
     public function winner(): int
     {
         return $this->winnerTeamTot();
@@ -198,6 +176,16 @@ final class UserRank
     public function top(): int
     {
         return $this->topScorerTot();
+    }
+
+    public function userName(): string
+    {
+        return $this->user->name;
+    }
+
+    public function userId(): int
+    {
+        return $this->user->id;
     }
 
     private function getChampionInfo(): void

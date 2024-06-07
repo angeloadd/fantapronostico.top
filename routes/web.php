@@ -6,7 +6,6 @@ use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\GameNotAccessibleAction;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MiscController;
-use App\Http\Controllers\ModController;
 use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\LeagueEnricherMiddleware;
@@ -27,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([], static function (Router $r): void {
     $routesFromModules = glob(__DIR__ . '/../app/Modules/*/Http/Routes/*.php');
-    if (!$routesFromModules) {
+    if ( ! $routesFromModules) {
         $routesFromModules = [];
     }
     foreach ($routesFromModules as $moduleRoutesPath) {
@@ -41,7 +40,7 @@ Route::middleware(['auth', LeagueEnricherMiddleware::class])->group(static funct
 
     Route::get('/game/not/accessible/{game?}', GameNotAccessibleAction::class)->name('errors.gameNotAccessible');
 
-    Route::middleware([EnsureEmailIsVerified::class])->group(static function () {
+    Route::middleware([EnsureEmailIsVerified::class])->group(static function (): void {
         /* Bet CRUD */
         Route::get('/prossimo/incontro/{game}', [PredictionController::class, 'nextGameFromReference'])->name('bet.nextFromReference');
         Route::get('/precedente/incontro/{game}', [PredictionController::class, 'previousGameFromReference'])->name('bet.previousFromReference');

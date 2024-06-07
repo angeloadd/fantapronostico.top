@@ -15,21 +15,20 @@
                 @foreach($ranking as $position => $rank)
                     <tr
                         @class([
-                            '[&>*]:bg-primary/50' => Auth::user()?->id === $rank->user()->id,
-                            '[&>*:first-child]:rounded-l-lg [&>*:last-child]:rounded-r-lg border-accent/0',
+                            '[&>*]:bg-accent [&>*]:text-base-100' => Auth::user()?->id === $rank->user()->id,
                         ])
                     >
                         <th>
                             <span
                                 @class([
-                                    'badge badge-lg border-none badge-accent',
-                                    'first-place' => $position === 0,
-                                    'text-base-100 second-place' => $position === 1,
-                                    'text-base-100 third-place' => $position === 2,
-                                    'text-base-100 bg-success' => $position >= 3 && $position <= 5,
-                                    'text-base-100 bg-neutral' => $position === 7 || $position === 6,
+                                    'badge badge-lg border-none badge-neutral text-base-100',
+                                    'bg-amber-300' => $position === 0,
+                                    'bg-gray-500' => $position === 1,
+                                    'bg-amber-800' => $position === 2,
+                                    'bg-secondary' => $position >= 3 && $position <= 5,
+                                    'bg-accent' => $position === 7 || $position === 6,
                                 ])
-                            >{{$position+1}}</span>
+                            >{{$position+1 < 10 ? '0'.$position+1 : $position+1}}</span>
                         </th>
                         <td>
                             {{$rank->user()->name}}

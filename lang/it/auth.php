@@ -40,7 +40,7 @@ return [
         'paragraph2' => 'Se non hai ricevuto niente clicca sul link qui sotto.',
         'btn' => 'Invia link di verifica',
     ],
-    'league' =>[
+    'league' => [
         'title' => 'Leghe',
     ],
     'request_password_reset' => [

@@ -13,11 +13,11 @@ final class ScorerRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $model = Game::where('stage', 'group')->orderBy('started_at', 'desc')->first();
-        if(now()->lte($model?->started_at)){
+        if (now()->lte($model?->started_at)) {
             return;
         }
 
-        if(empty($value)){
+        if (empty($value)) {
             $fail('ciao');
         }
     }

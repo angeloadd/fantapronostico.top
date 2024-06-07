@@ -46,7 +46,7 @@ final class PredictionsSeeder extends Seeder
         //            ]);
         //        });
 
-        /*Game::all()->each(function (Game $game) use ($users): void {
+        Game::all()->each(function (Game $game) use ($users): void {
             if (now()->gte($game->started_at)) {
                 $users->each(function (User $user) use ($game): void {
                     $homeScorers = $game->home_team->players->map(fn (Player $player): int => $player->id);
@@ -63,7 +63,7 @@ final class PredictionsSeeder extends Seeder
                     ])->create();
                 });
             }
-        });*/
+        });
     }
 
     public function createDateFromDelayInDays(int $delayInDays, int $hour): DateTimeInterface

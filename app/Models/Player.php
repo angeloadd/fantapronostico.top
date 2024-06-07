@@ -71,7 +71,7 @@ final class Player extends Model
 
     public static function getScorer(null|string|int $id): string
     {
-        if($id === null){
+        if (null === $id) {
             return 'N/A';
         }
         if (0 === (int) $id) {

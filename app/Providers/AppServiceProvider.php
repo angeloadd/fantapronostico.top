@@ -70,7 +70,7 @@ final class AppServiceProvider extends ServiceProvider
                     $folder,
                     str($folder)
                         ->explode('/')
-                        ->last(static fn($folder) => '' !== $folder)
+                        ->last(static fn ($folder) => '' !== $folder)
                 );
             }
         }

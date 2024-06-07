@@ -127,9 +127,7 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function admin(): Attribute
     {
         return Attribute::get(
-            function (): bool {
-                return $this->roles->some(fn (Role $role) => $role->role === RoleEnum::ADMIN);
-            }
+            fn (): bool => $this->roles->some(fn (Role $role) => RoleEnum::ADMIN === $role->role)
         );
     }
 }

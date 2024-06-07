@@ -39,7 +39,7 @@
             {{ $style }}
         @endif
     </head>
-    <body>
+    <body class="bg-base-300">
 {{--        @if($isDeadlineForChampionBetPassed)--}}
 {{--        here should go the notifications --}}
 {{--            <div class="flex justify-center items-center">--}}

@@ -1,12 +1,12 @@
-<div class="card w-full max-w-xl shadow-xl rounded-xl bg-gradient-to-br from-accent/40 via-accent/20 to-white  ">
+<div class="card w-full shadow-lg rounded-lg border border-gray-300 bg-base-100">
     <div class="card-body">
-        <div class="w-full flex justify-between">
-            <h2 class="card-title pb-2">{{$title}}</h2>
+        <div class="w-full flex justify-between items-center">
+            <h2 class="card-title pb-2 text-2xl">{{$title}}</h2>
             @if(! empty($link ?? null))
                 <a
                         href="{{$link}}"
                         role="button"
-                        class="link link-primary text-md sm:text-lg"
+                        class="link link-accent text-md text-right lg:text-lg"
                 >{{$linkText}}</a>
             @endif
         </div>

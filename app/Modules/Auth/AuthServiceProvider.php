@@ -25,8 +25,10 @@ final class AuthServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom((__DIR__ . '/Views'), 'auth');
 
-        $this->app->extend(RegisterResponse::class,
-            static fn () => new class implements RegisterResponse {
+        $this->app->extend(
+            RegisterResponse::class,
+            static fn () => new class() implements RegisterResponse
+            {
                 public function toResponse($request): RedirectResponse
                 {
                     return redirect('api/email/verify');

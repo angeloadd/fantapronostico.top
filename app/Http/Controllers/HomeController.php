@@ -39,9 +39,9 @@ final class HomeController extends Controller
         }
 
         return view('pages.home.index', [
-            'ranking' => $collection->filter(static fn(UserRank $rank, int $index) => Auth::user()?->id === $rank->user()->id || $index <= 13),
+            'ranking' => $collection->filter(static fn (UserRank $rank, int $index) => Auth::user()?->id === $rank->user()->id || $index <= 13),
             'nextGame' => $nextGame,
-            'champion'=> auth()->user()->champion,
+            'champion' => auth()->user()->champion,
             'hasTournamentStarted' => $this->hasTournamentStarted(),
             'hasFinalStarted' => $this->hasFinalStarted(),
             'lastResults' => $this->gameRepository->getLastThreeGames($this->timeManagementService->now()),

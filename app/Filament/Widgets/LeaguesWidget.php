@@ -35,10 +35,10 @@ final class LeaguesWidget extends BaseWidget
             ])
             ->actions([
                 Action::make('accept')
-                    ->disabled(static fn (User $user) => $user->leagues->first()?->pivot->status === 'accepted')
+                    ->disabled(static fn (User $user) => 'accepted' === $user->leagues->first()?->pivot->status)
                     ->action(
                         static function (User $user): void {
-                            $user->leagues()->updateExistingPivot($user->leagues->first()?->id, ['status'=> 'accepted']);
+                            $user->leagues()->updateExistingPivot($user->leagues->first()?->id, ['status' => 'accepted']);
                             $user->save();
 
                             Cache::forget('usersRank');

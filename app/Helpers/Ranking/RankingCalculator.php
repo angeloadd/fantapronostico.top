@@ -17,11 +17,12 @@ final class RankingCalculator implements RankingCalculatorInterface
             'usersRank',
             now()->addDay(),
             static function () {
-                $users = League::first()->users;
-                $users = $users->filter(static fn (User $user) => $user->pivot->status === 'accepted');
+                $users = League::first()
+                    ->users
+                    ->filter(static fn (User $user) => 'accepted' === $user->pivot->status);
 
                 return Collection::sortByMulti(
-                    $users->map(static fn (User $user): UserRank => new UserRank($user)),
+                    $users->map(static fn (User $user): UserRank => (new UserRank($user))->calculate()),
                     [
                         static fn (UserRank $item): int => $item->total(),
                         static fn (UserRank $item): int => $item->results(),
@@ -29,49 +30,11 @@ final class RankingCalculator implements RankingCalculatorInterface
                         static fn (UserRank $item): int => $item->signs(),
                         static fn (UserRank $item): int => $item->finalBetTotal(),
                         static fn (UserRank $item): int => $item->finalBetTimestamp(),
-                        static fn (UserRank $item): string => $item->user()->name,
+                        static fn (UserRank $item): string => $item->userName(),
                     ]
                 )->flatten()
                     ->values();
             }
         );
-    }
-
-    public function backup(): Collection
-    {
-        return User::all()->map(static fn (User $user): UserRank => new UserRank($user))
-            ->sortByDesc(static fn (UserRank $a): int => $a->total())
-            ->groupBy(static fn (UserRank $item): int => $item->total())
-            ->map(static function (Collection $collection): Collection {
-                return $collection->sortByDesc(static fn (UserRank $a): int => $a->results())
-                    ->groupBy(static fn (UserRank $item): int => $item->results())
-                    ->map(static function (Collection $collection): Collection {
-                        return $collection->sortByDesc(static fn (UserRank $a): int => $a->scorers())
-                            ->groupBy(static fn (UserRank $item): int => $item->scorers())
-                            ->map(static function (Collection $collection): Collection {
-                                return $collection->sortByDesc(static fn (UserRank $a): int => $a->signs())
-                                    ->groupBy(static fn (UserRank $item): int => $item->signs())
-                                    ->map(static function (Collection $collection): Collection {
-                                        return $collection->sortByDesc(
-                                            static fn (UserRank $a): int => $a->finalBetTotal()
-                                        )
-                                            ->groupBy(static fn (UserRank $item): int => $item->finalBetTotal())
-                                            ->map(static function (Collection $collection): Collection {
-                                                return $collection->sortByDesc(
-                                                    static fn (UserRank $a): int => $a->finalBetTimestamp()
-                                                )
-                                                    ->groupBy(
-                                                        static fn (UserRank $item): int => $item->finalBetTimestamp()
-                                                    )
-                                                    ->map(static function (Collection $collection): Collection {
-                                                        return $collection->sortByDesc(
-                                                            static fn (UserRank $a): string => $a->user()->name
-                                                        );
-                                                    });
-                                            });
-                                    });
-                            });
-                    });
-            })->flatten()->values();
     }
 }
