@@ -18,7 +18,7 @@ final class RankingCalculator implements RankingCalculatorInterface
             now()->addDay(),
             static function () {
                 $users = League::first()->users;
-                $users = $users->filer(static fn (User $user) => $user->pivot->status === 'accepted');
+                $users = $users->filter(static fn (User $user) => $user->pivot->status === 'accepted');
 
                 return Collection::sortByMulti(
                     $users->map(static fn (User $user): UserRank => new UserRank($user)),
