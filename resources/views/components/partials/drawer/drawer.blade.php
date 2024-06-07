@@ -18,6 +18,7 @@
                 <x-partials.drawer.item routeName="champion.create" active="champion.index" svg="winner" text="Vincente"/>
                 <x-partials.drawer.item routeName="standing" svg="rank" text="Classifica"/>
                 <x-partials.drawer.item routeName="albo" svg="albo" text="Albo d'oro"/>
+                <x-partials.drawer.item routeName="terms" svg="terms" text="Regolamento"/>
             </ul>
             <ul class="menu w-full">
                 <li class="w-full">

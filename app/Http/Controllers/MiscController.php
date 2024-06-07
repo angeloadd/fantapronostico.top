@@ -18,6 +18,10 @@ final class MiscController extends Controller
     {
         return view('misc.albo');
     }
+    public function terms(): Renderable
+    {
+        return view('misc.terms');
+    }
 
     public function statistics(User $user): Renderable
     {
