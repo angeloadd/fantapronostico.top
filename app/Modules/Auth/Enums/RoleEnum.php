@@ -6,10 +6,10 @@ namespace App\Modules\Auth\Enums;
 
 use App\Enums\HasValues;
 
-enum RoleEnum
+enum RoleEnum: string
 {
     use HasValues;
-    case ADMIN;
+    case ADMIN = 'admin';
 
-    case MOD;
+    case MOD = 'mod';
 }

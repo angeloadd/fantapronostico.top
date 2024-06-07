@@ -6,6 +6,7 @@ namespace App\Modules\League\Models;
 
 use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,14 +22,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|League newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|League newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|League query()
- * @method static \Illuminate\Database\Eloquent\Builder|League whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|League whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|League whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|League whereTournamentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|League whereUpdatedAt($value)
+ * @method static Builder|League newModelQuery()
+ * @method static Builder|League newQuery()
+ * @method static Builder|League query()
+ * @method static Builder|League whereCreatedAt($value)
+ * @method static Builder|League whereId($value)
+ * @method static Builder|League whereName($value)
+ * @method static Builder|League whereTournamentId($value)
+ * @method static Builder|League whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -49,5 +50,10 @@ final class League extends Model
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(Tournament::class);
+    }
+
+    public function scopeCiao(Builder $query): Builder
+    {
+        return $query->with(['users']);
     }
 }

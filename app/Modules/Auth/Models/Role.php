@@ -6,6 +6,7 @@ namespace App\Modules\Auth\Models;
 
 use App\Modules\Auth\Enums\RoleEnum;
 use App\Modules\League\Models\League;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,15 +21,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read League|null $leagues
  * @property-read User $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role query()
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereLeagueId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereRole($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Role whereUserId($value)
+ * @method static Builder|Role newModelQuery()
+ * @method static Builder|Role newQuery()
+ * @method static Builder|Role query()
+ * @method static Builder|Role whereCreatedAt($value)
+ * @method static Builder|Role whereId($value)
+ * @method static Builder|Role whereLeagueId($value)
+ * @method static Builder|Role whereRole($value)
+ * @method static Builder|Role whereUpdatedAt($value)
+ * @method static Builder|Role whereUserId($value)
  *
  * @mixin \Eloquent
  */

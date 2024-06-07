@@ -1,15 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
-use App\Modules\ApiSport\ApiSportServiceProvider;
-use App\Modules\Auth\AuthServiceProvider;
-use App\Modules\Auth\FortifyServiceProvider;
-use App\Providers\AppServiceProvider;
-
 return [
-    AppServiceProvider::class,
-    AuthServiceProvider::class,
-    FortifyServiceProvider::class,
-    ApiSportServiceProvider::class,
+    App\Modules\ApiSport\ApiSportServiceProvider::class,
+    App\Modules\Auth\AuthServiceProvider::class,
+    App\Modules\Auth\FortifyServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
+    App\Providers\Filament\AdminPanelProvider::class,
 ];

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "filament/filament": "^3.2",
         "laravel/fortify": "^1.21",
         "laravel/framework": "^11.7",
         "laravel/tinker": "^2.9",
@@ -37,17 +38,18 @@
         }
     },
     "scripts": {
-        "test":"vendor/bin/phpunit --testdox",
+        "test": "vendor/bin/phpunit --testdox",
         "test:feature": "@test --testsuite Feature",
         "test:unit": "@test --testsuite Unit",
         "test:filter": "@test --filter",
-        "test:coverage":"XDEBUG_MODE=coverage @test --coverage",
+        "test:coverage": "XDEBUG_MODE=coverage @test --coverage",
         "check": "vendor/bin/pint --test",
         "fix": "vendor/bin/pint",
         "stan": "vendor/bin/phpstan analyse",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
