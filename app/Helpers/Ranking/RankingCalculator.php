@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers\Ranking;
 
 use App\Modules\Auth\Models\User;
+use App\Modules\League\Models\League;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,8 +17,11 @@ final class RankingCalculator implements RankingCalculatorInterface
             'usersRank',
             now()->addDay(),
             static function () {
+                $users = League::first()->users;
+                $users = $users->filer(static fn (User $user) => $user->pivot->status === 'accepted');
+
                 return Collection::sortByMulti(
-                    User::all()->map(static fn (User $user): UserRank => new UserRank($user)),
+                    $users->map(static fn (User $user): UserRank => new UserRank($user)),
                     [
                         static fn (UserRank $item): int => $item->total(),
                         static fn (UserRank $item): int => $item->results(),

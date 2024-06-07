@@ -23,6 +23,7 @@ final class LeaguesWidget extends BaseWidget
             ->query(User::query()->with(['leagues'])->whereHas('leagues'))
             ->columns([
                 TextColumn::make('name'),
+                TextColumn::make('email'),
                 TextColumn::make('leagues')
                     ->state(static fn (Model $model) => $model->leagues->first()?->name),
                 TextColumn::make('status')
