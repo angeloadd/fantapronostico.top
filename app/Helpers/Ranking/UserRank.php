@@ -244,4 +244,9 @@ final class UserRank
     {
         return $this->topScorer ? 10 : 0;
     }
+
+    public function user(): User
+    {
+        return $this->user;
+    }
 }

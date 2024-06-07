@@ -15,7 +15,7 @@
                 @foreach($ranking as $position => $rank)
                     <tr
                         @class([
-                            '[&>*]:bg-accent [&>*]:text-base-100' => Auth::user()?->id === $rank->user()->id,
+                            '[&>*]:bg-accent [&>*]:text-base-100' => Auth::user()?->id === $rank->userId(),
                         ])
                     >
                         <th>
@@ -31,7 +31,7 @@
                             >{{$position+1 < 10 ? '0'.$position+1 : $position+1}}</span>
                         </th>
                         <td>
-                            {{$rank->user()->name}}
+                            {{$rank->userName()}}
                         </td>
                         <td>{{$rank->total()}}</td>
                         <td>{{$rank->results()}}</td>
