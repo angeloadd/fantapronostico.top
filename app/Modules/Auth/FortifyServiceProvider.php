@@ -10,10 +10,12 @@ use App\Modules\Auth\Fortify\UpdateUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserProfileInformation;
 use App\Shared\RouteMeta\RouteMeta;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
 
 final class FortifyServiceProvider extends ServiceProvider
@@ -23,7 +25,14 @@ final class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->extend(RegisterResponse::class,
+            static fn () => new class implements RegisterResponse {
+                public function toResponse($request): RedirectResponse
+                {
+                    return redirect('api/email/verify');
+                }
+            }
+        );
     }
 
     /**

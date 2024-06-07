@@ -40,6 +40,9 @@ return [
         'paragraph2' => 'Se non hai ricevuto niente clicca sul link qui sotto.',
         'btn' => 'Invia link di verifica',
     ],
+    'league' =>[
+        'title' => 'Leghe',
+    ],
     'request_password_reset' => [
         'title' => 'Password Dimenticata - ' . $appName,
         'paragraph' => 'Inserisci la tua e-mail e ti invieremo un link per reimpostare la tua password.',

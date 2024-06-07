@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Helpers\ApiClients\ApiClientInterface;
-use App\Helpers\ApiClients\Apisport;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Repository\Game\GameRepository;
@@ -25,11 +23,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            ApiClientInterface::class,
-            static fn () => new Apisport(config('apisport.token'))
-        );
-
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TimeManagementServiceInterface::class, TimeManagementService::class);

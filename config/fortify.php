@@ -150,8 +150,4 @@ return [
         Features::resetPasswords(),
         Features::emailVerification(),
     ],
-
-    'redirects' => [
-        'register' => 'api/email/verify',
-    ],
 ];
