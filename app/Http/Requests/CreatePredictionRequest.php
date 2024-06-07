@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Rules\ScorerRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class CreatePredictionRequest extends FormRequest
@@ -29,8 +30,8 @@ final class CreatePredictionRequest extends FormRequest
             self::HOME_SCORE => ['required', 'integer', 'numeric'],
             self::AWAY_SCORE => ['required', 'integer', 'numeric'],
             self::SIGN => ['required'],
-            self::HOME_SCORER_ID => 'required',
-            self::AWAY_SCORER_ID => 'required',
+            self::HOME_SCORER_ID => new ScorerRule(),
+            self::AWAY_SCORER_ID => new ScorerRule(),
         ];
     }
 

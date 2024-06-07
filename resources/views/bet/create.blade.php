@@ -48,7 +48,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                @endif
+                    @endif
                 </div>
             </div>
 
@@ -102,51 +102,53 @@
                             <label for="away_victory">2: {{__($game->away_team->name)}}</label>
                         </div>
                     </div>
-                    <div class="flex space-x-1 justify-center items-center">
-                        <label class="label basis-1/6" for="home_scorer_id">
-                            Gol {{__($game->home_team->name)}}
-                        </label>
-                        <select name="home_scorer_id" id="home_scorer_id" class="select select-sm select-bordered w-full max-w-2xl bg-white basis-2/6">
-                            <option value="" selected>-- Seleziona un'opzione --</option>
-                            <option value="0">NoGoal</option>
-                            <option value="-1"> AutoGoal</option>
-                            @foreach($game->home_team->players as $player)
-                                <option value="{{$player->id}}">{{$player->displayed_name}}</option>
-                            @endforeach
-                        </select>
-                        <select name="away_scorer_id" id="away_scorer_id"
-                                class="select select-sm select-bordered w-full max-w-2xl bg-white basis-2/6">
-                            <option value="" selected>-- Seleziona un'opzione --</option>
-                            <option value="0" class="text-bold bg-success text-base-100">
-                                NoGol
-                            </option>
-                            <option value="-1" class="text-bold bg-danger text-base-100">
-                                AutoGol
-                            </option>
-                            @foreach($game->away_team->players as $player)
-                                <option
-                                    value="{{$player->id}}">{{$player->displayed_name}}
+
+                    @if(!$game->isGroupStage())
+                        <div class="flex space-x-1 justify-center items-center">
+                            <label class="label basis-1/6" for="home_scorer_id">
+                                Gol {{__($game->home_team->name)}}
+                            </label>
+                            <select name="home_scorer_id" id="home_scorer_id" class="select select-sm select-bordered w-full max-w-2xl bg-white basis-2/6">
+                                <option value="" selected>-- Seleziona un'opzione --</option>
+                                <option value="0">NoGoal</option>
+                                <option value="-1"> AutoGoal</option>
+                                @foreach($game->home_team->players as $player)
+                                    <option value="{{$player->id}}">{{$player->displayed_name}}</option>
+                                @endforeach
+                            </select>
+                            <select name="away_scorer_id" id="away_scorer_id"
+                                    class="select select-sm select-bordered w-full max-w-2xl bg-white basis-2/6">
+                                <option value="" selected>-- Seleziona un'opzione --</option>
+                                <option value="0" class="text-bold bg-success text-base-100">
+                                    NoGol
                                 </option>
-                            @endforeach
-                        </select>
-                        <label
-                            class="label basis-1/6 flex justify-center items-center"
-                            for="away_scorer_id">
-                            Gol {{__($game->away_team->name)}}
-                        </label>
-                    </div>
+                                <option value="-1" class="text-bold bg-danger text-base-100">
+                                    AutoGol
+                                </option>
+                                @foreach($game->away_team->players as $player)
+                                    <option
+                                        value="{{$player->id}}">{{$player->displayed_name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label
+                                class="label basis-1/6 flex justify-center items-center"
+                                for="away_scorer_id">
+                                Gol {{__($game->away_team->name)}}
+                            </label>
+                        </div>
 
-                    @error('home_scorer_id')
-                    <span class="text-error flex justify-start items-center">
+                        @error('home_scorer_id')
+                        <span class="text-error flex justify-start items-center">
                 <strong>{{ $message }}</strong>
             </span>
-                    @enderror
-                    @error('away_scorer_id')
-                    <span class="text-error flex justify-start items-center">
+                        @enderror
+                        @error('away_scorer_id')
+                        <span class="text-error flex justify-start items-center">
                 <strong>{{ $message }}</strong>
             </span>
-                    @enderror
-
+                        @enderror
+                    @endif
                     <div class="form-control mt-6">
                         <button type="submit" class="btn btn-primary text-base-100 fp2024-title">Pronostica</button>
                     </div>

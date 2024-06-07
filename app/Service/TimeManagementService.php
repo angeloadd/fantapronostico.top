@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Models\Tournament;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -27,8 +28,13 @@ final class TimeManagementService implements TimeManagementServiceInterface
     {
         $now = $this->now()->getTimestamp();
 
+        $daySpan = self::TWENTY_FOUR_HOURS_IN_SECONDS;
+        if ($dateTime === Tournament::first()->started_at) {
+            $daySpan *= 2;
+        }
+
         return $dateTime->getTimestamp() > $now &&
-            self::TWENTY_FOUR_HOURS_IN_SECONDS < ($dateTime->getTimestamp() - $now);
+            $daySpan < ($dateTime->getTimestamp() - $now);
     }
 
     public function now(): DateTimeInterface

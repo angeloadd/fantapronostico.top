@@ -76,6 +76,8 @@
                             <label for="away_victory">2: {{__($game->away_team->name)}}</label>
                         </div>
                     </div>
+
+                    @if(!$game->isGroupStage())
                     <div class="flex space-x-1 justify-center items-center">
                         <label class="label basis-1/6" for="home_scorer_id">
                             Gol {{__($game->home_team->name)}}
@@ -121,7 +123,7 @@
                 <strong>{{ $message }}</strong>
             </span>
                     @enderror
-
+                    @endif
                     <div class="form-control mt-6">
                         <button type="submit" class="btn btn-warning text-base-100 fp2024-title">Modifica</button>
                     </div>

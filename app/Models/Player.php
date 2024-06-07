@@ -69,8 +69,11 @@ final class Player extends Model
         'club_id',
     ];
 
-    public static function getScorer(string|int $id): string
+    public static function getScorer(null|string|int $id): string
     {
+        if($id === null){
+            return 'N/A';
+        }
         if (0 === (int) $id) {
             return 'No Gol';
         }
@@ -79,7 +82,7 @@ final class Player extends Model
             return 'Auto Gol';
         }
 
-        return self::find($id)->displayed_name;
+        return self::find($id)?->displayed_name;
     }
 
     public static function getInfoForAll(): array

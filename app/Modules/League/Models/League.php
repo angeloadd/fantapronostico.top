@@ -52,9 +52,4 @@ final class League extends Model
     {
         return $this->belongsTo(Tournament::class);
     }
-
-    public function scopeCiao(Builder $query): Builder
-    {
-        return $query->with(['users']);
-    }
 }

@@ -17,8 +17,10 @@
                         <th>Nome</th>
                         <th>Segno</th>
                         <th>Risultato {{__($game->home_team->name)}} - {{__($game->away_team->name)}}</th>
+                        @if(!$game->isGroupStage())
                         <th>Gol/NoGol {{__($game->home_team->name)}}</th>
                         <th>Gol/NoGol {{__($game->away_team->name)}}</th>
+                        @endif
                         <th>Ultimo Update</th>
                     </tr>
                 </thead>
@@ -32,8 +34,10 @@
                         <td>{{$userBet->user->name}}</td>
                         <td>{{$userBet->sign}}</td>
                         <td>{{$userBet->home_score}} - {{$userBet->away_score}}</td>
+                        @if(!$game->isGroupStage())
                         <td>{{\App\Models\Player::getScorer($userBet->home_scorer_id)}}</td>
                         <td>{{\App\Models\Player::getScorer($userBet->away_scorer_id)}}</td>
+                        @endif
                         <td class="bg-base-200">
                        <span title="ore {{$updatedAtTime}} e {{$updatedAtMillis}} millisecondi">
                         {{$updatedAt}}

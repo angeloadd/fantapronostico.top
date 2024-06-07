@@ -24,8 +24,8 @@ return new class() extends Migration
                 $table->integer('home_score');
                 $table->integer('away_score');
                 $table->enum('sign', ['1', 'x', '2']);
-                $table->integer('home_scorer_id');
-                $table->integer('away_scorer_id');
+                $table->integer('home_scorer_id')->nullable();
+                $table->integer('away_scorer_id')->nullable();
                 $table->string('created_at');
                 $table->string('updated_at');
             }
