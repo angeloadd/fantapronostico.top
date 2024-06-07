@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Modules\Auth\Models\User;
 use App\Modules\League\Models\League;
 use Filament\Tables\Actions\Action;
@@ -12,6 +13,7 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 final class LeaguesWidget extends BaseWidget
 {
@@ -40,6 +42,9 @@ final class LeaguesWidget extends BaseWidget
                         static function (User $user): void {
                             $user->leagues()->updateExistingPivot($user->leagues->first()?->id, ['status'=> 'accepted']);
                             $user->save();
+
+                            Cache::forget('usersRank');
+                            app(RankingCalculatorInterface::class)->get();
                         }
                     ),
             ]);
