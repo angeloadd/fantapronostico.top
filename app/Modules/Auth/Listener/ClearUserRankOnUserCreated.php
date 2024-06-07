@@ -17,7 +17,7 @@ final readonly class ClearUserRankOnUserCreated implements ShouldQueue
 
     public function handle(Registered $event): void
     {
-        Cache::forget('UserRank');
+        Cache::forget('userRank');
         $this->calculator->get();
     }
 }
