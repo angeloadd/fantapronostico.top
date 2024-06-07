@@ -7,6 +7,7 @@ namespace App\Modules\Auth\Fortify;
 use App\Modules\Auth\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -36,6 +37,7 @@ final class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'remember_token' => Str::random(60),
         ]);
     }
 }

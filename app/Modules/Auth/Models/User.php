@@ -7,11 +7,13 @@ namespace App\Modules\Auth\Models;
 use App\Models\Champion;
 use App\Models\Prediction;
 use App\Modules\Auth\Database\Factory\UserFactory;
+use App\Modules\Auth\Enums\RoleEnum;
 use App\Modules\League\Models\League;
 use DateTimeImmutable;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -120,5 +122,14 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
+    }
+
+    public function admin(): Attribute
+    {
+        return Attribute::get(
+            function (): bool {
+                return $this->roles->some(fn (Role $role) => $role->role === RoleEnum::ADMIN);
+            }
+        );
     }
 }

@@ -43,9 +43,9 @@
                                     <a href="{{ route('register') }}">Iscriviti</a>
                                 </li>
                             @else
-                                @if(Auth::user()->admin || Auth::user()->moderator)
+                                @if(auth()->user()->admin)
                                     <li>
-                                        <a href="{{route('mod.index')}}">
+                                        <a href="/admin">
                                             PannelloMod
                                         </a>
                                     </li>
