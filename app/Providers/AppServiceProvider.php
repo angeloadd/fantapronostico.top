@@ -36,8 +36,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->registerPagesNamespace();
 
-        Blade::anonymousComponentPath(resource_path('/views/mails'), 'mails');
-
         if ( ! Collection::hasMacro('sortByMulti')) {
             Collection::macro(
                 'sortByMulti',
@@ -68,14 +66,12 @@ final class AppServiceProvider extends ServiceProvider
         $foldersInPages = glob(resource_path('/views/pages') . '/**/');
         if (is_array($foldersInPages)) {
             foreach ($foldersInPages as $folder) {
-                $pathSegments = array_values(
-                    array_filter(
-                        explode('/', $folder),
-                        static fn ($string) => '' !== $string
-                    )
+                Blade::anonymousComponentPath(
+                    $folder,
+                    str($folder)
+                        ->explode('/')
+                        ->last(static fn($folder) => '' !== $folder)
                 );
-
-                Blade::anonymousComponentPath($folder, $pathSegments[count($pathSegments) - 1]);
             }
         }
     }

@@ -6,12 +6,10 @@ namespace App\Filament\Widgets;
 
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Modules\Auth\Models\User;
-use App\Modules\League\Models\League;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 

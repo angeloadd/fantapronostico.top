@@ -9,6 +9,7 @@ use App\Models\Player;
 use App\Models\Prediction;
 use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
+use App\Modules\League\Models\League;
 use DateTimeInterface;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -33,6 +34,8 @@ final class PredictionsSeeder extends Seeder
         //        ]);
         //
         $users = User::all();
+        League::first()->users()->attach($users, ['status' => 'accepted']);
+
         //        $users->each(function (User $user): void {
         //            $teams = Team::all();
         //            $players = Player::all();
@@ -43,7 +46,7 @@ final class PredictionsSeeder extends Seeder
         //            ]);
         //        });
 
-        Game::all()->each(function (Game $game) use ($users): void {
+        /*Game::all()->each(function (Game $game) use ($users): void {
             if (now()->gte($game->started_at)) {
                 $users->each(function (User $user) use ($game): void {
                     $homeScorers = $game->home_team->players->map(fn (Player $player): int => $player->id);
@@ -60,7 +63,7 @@ final class PredictionsSeeder extends Seeder
                     ])->create();
                 });
             }
-        });
+        });*/
     }
 
     public function createDateFromDelayInDays(int $delayInDays, int $hour): DateTimeInterface

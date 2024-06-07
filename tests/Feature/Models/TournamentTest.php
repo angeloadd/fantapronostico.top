@@ -74,7 +74,7 @@ final class TournamentTest extends TestCase
         $this->assertSame($attributes['logo'], $tournament->logo);
         $this->assertSame($attributes['country'], $tournament->country);
         $this->assertSame($attributes['is_cup'], $tournament->is_cup);
-        $this->assertSame($attributes['started_at'], $tournament->started_at->format(Constants::ISO_DATE_FORMAT));
-        $this->assertSame($attributes['final_started_at'], $tournament->final_started_at->format(Constants::DISPLAY));
+        $this->assertSame($attributes['started_at'], $tournament->started_at->format(Constants::ISO8601_DATE_FORMAT));
+        $this->assertSame($attributes['final_started_at'], $tournament->final_started_at->format(Constants::DISPLAY_DATE_FORMAT));
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Helpers\Ranking\RankingCalculatorInterface;
+use App\Helpers\Ranking\UserRank;
 use App\Models\Game;
 use App\Models\Tournament;
 use App\Repository\Game\GameRepositoryInterface;
@@ -37,13 +38,13 @@ final class HomeController extends Controller
             $nextGame = $this->gameRepository->getNextGameByOtherGame($nextGame);
         }
 
-        return view('homepage', [
-            'ranking' => $collection,
+        return view('pages.home.index', [
+            'ranking' => $collection->filter(static fn(UserRank $rank, int $index) => Auth::user()?->id === $rank->user()->id || $index <= 13),
             'nextGame' => $nextGame,
-            'isDeadlineForChampionBetPassed' => $this->isDeadlineForChampionBetPassed(),
-            'isFinalStarted' => $this->isFinalStarted(),
-            'areGameTeamsSet' => isset($nextGame) && $this->areGameTeamsSet($nextGame),
-            'lastThreeGames' => $this->gameRepository->getLastThreeGames($this->timeManagementService->now()),
+            'champion'=> auth()->user()->champion,
+            'hasTournamentStarted' => $this->hasTournamentStarted(),
+            'hasFinalStarted' => $this->hasFinalStarted(),
+            'lastResults' => $this->gameRepository->getLastThreeGames($this->timeManagementService->now()),
         ]);
     }
 
@@ -53,14 +54,14 @@ final class HomeController extends Controller
             Game::all()->every('status', '=', 'completed');
     }
 
-    private function isDeadlineForChampionBetPassed(): bool
+    private function hasTournamentStarted(): bool
     {
         $game = Game::first();
 
         return null !== $game && $game->started_at->lte(now());
     }
 
-    private function isFinalStarted(): bool
+    private function hasFinalStarted(): bool
     {
         return Tournament::first()?->final_started_at->isPast();
     }
