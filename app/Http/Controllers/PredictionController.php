@@ -145,25 +145,25 @@ final class PredictionController extends Controller
 
     public function store(CreatePredictionRequest $request, Game $game): RedirectResponse
     {
-        // Controllo per limite di tempo
-        //        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-        //            return redirect(route('bet.index', compact('game')))
-        //                ->with('error_message', 'Hai superato il limite di tempo!');
-        //        }
-        //
-        //        if ( ! $this->gameRepository->areGameTeamsSet($game)) {
-        //            abort(404);
-        //        }
-        //
-        //        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
-        //            return redirect(route('errors.gameNotAccessible', compact('game')))
-        //                ->with('error_message', 'L\'incontro non è ancora accessibile');
-        //        }
-        //
-        //        if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
-        //            return redirect(route('bet.show', compact('game')))
-        //                ->with('error_message', 'Hai già pronosticato per questo incontro');
-        //        }
+        //         Controllo per limite di tempo
+        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+            return redirect(route('bet.index', compact('game')))
+                ->with('error_message', 'Hai superato il limite di tempo!');
+        }
+
+        if ( ! $this->gameRepository->areGameTeamsSet($game)) {
+            abort(404);
+        }
+
+        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+            return redirect(route('errors.gameNotAccessible', compact('game')))
+                ->with('error_message', 'L\'incontro non è ancora accessibile');
+        }
+
+        if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
+            return redirect(route('bet.show', compact('game')))
+                ->with('error_message', 'Hai già pronosticato per questo incontro');
+        }
 
         // validazione
         $game->predictions()->create([

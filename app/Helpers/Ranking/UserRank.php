@@ -188,6 +188,11 @@ final class UserRank
         return $this->user->id;
     }
 
+    public function user(): User
+    {
+        return $this->user;
+    }
+
     private function getChampionInfo(): void
     {
         $winner = Tournament::first()?->teams?->where('is_winner', true)?->first();
@@ -243,10 +248,5 @@ final class UserRank
     private function topScorerTot(): int
     {
         return $this->topScorer ? 10 : 0;
-    }
-
-    public function user(): User
-    {
-        return $this->user;
     }
 }
