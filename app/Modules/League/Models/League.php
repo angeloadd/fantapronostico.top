@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|League whereName($value)
  * @method static Builder|League whereTournamentId($value)
  * @method static Builder|League whereUpdatedAt($value)
+ * @method static Builder|League ciao()
  *
  * @mixin \Eloquent
  */

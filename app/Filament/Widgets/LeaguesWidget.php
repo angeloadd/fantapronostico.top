@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
 use App\Modules\Auth\Models\User;
@@ -10,39 +12,35 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
 
-class LeaguesWidget extends BaseWidget
+final class LeaguesWidget extends BaseWidget
 {
     use Table\Concerns\HasQuery;
 
     public function table(Table $table): Table
     {
         return $table
-            ->groups(League::all()->map(static fn(League $league) => $league->name)->toArray())
+            ->groups(League::all()->map(static fn (League $league) => $league->name)->toArray())
             ->query(User::query()->with(['leagues']))
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('leagues')
-                ->state(static function(Model $model) {
-                    return $model->leagues->first()->name;
-                }),
+                    ->state(static fn (Model $model) => $model->leagues->first()->name),
                 TextColumn::make('status')
                     ->badge()
-                ->state(static function(Model $model){
-                    return $model->leagues->first()->pivot->status;
-                })->color(fn (string $state): string => match ($state) {
+                    ->state(static fn (Model $model) => $model->leagues->first()->pivot->status)->color(fn (string $state): string => match ($state) {
                         'accepted' => 'success',
                         'pending' => 'warning',
-                    })
+                    }),
             ])
             ->actions([
                 Action::make('accept')
-                ->disabled(static fn(User $user) => $user->leagues->first->pivot->status = 'accepted')
-                ->action(
-                    static function(User $user){
-                        $user->leagues->first->pivot->status = 'accepted';
-                        $user->save();
-                    }
-                )
+                    ->disabled(static fn (User $user) => $user->leagues->first->pivot->status = 'accepted')
+                    ->action(
+                        static function (User $user): void {
+                            $user->leagues->first->pivot->status = 'accepted';
+                            $user->save();
+                        }
+                    ),
             ]);
     }
 }

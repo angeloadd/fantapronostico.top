@@ -19,7 +19,7 @@ final class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $some = Auth::user()?->roles->some(static fn(Role $role) => $role->role === RoleEnum::ADMIN);
+        $some = Auth::user()?->roles->some(static fn (Role $role) => RoleEnum::ADMIN === $role->role);
         if ($some) {
             return $next($request);
         }

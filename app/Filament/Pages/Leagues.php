@@ -1,16 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\LeaguesWidget;
-use App\Models\Game;
-use Filament\Actions\Action;
 use Filament\Pages\Page;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
-class Leagues extends Page
+final class Leagues extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -19,7 +16,7 @@ class Leagues extends Page
     protected function getHeaderWidgets(): array
     {
         return [
-            LeaguesWidget::class
+            LeaguesWidget::class,
         ];
     }
 }

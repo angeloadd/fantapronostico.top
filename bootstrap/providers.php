@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     App\Modules\ApiSport\ApiSportServiceProvider::class,
     App\Modules\Auth\AuthServiceProvider::class,

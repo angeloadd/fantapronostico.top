@@ -3,14 +3,12 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ChampionController;
-use App\Http\Controllers\GameModController;
 use App\Http\Controllers\GameNotAccessibleAction;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MiscController;
 use App\Http\Controllers\ModController;
 use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserModController;
 use App\Http\Middleware\LeagueEnricherMiddleware;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
