@@ -3,11 +3,13 @@
     @csrf
     @foreach($formControls as $formControl)
         <x-auth::shared.form-control
-            name="{{$formControl['name']}}"
-            type="{{$formControl['type']}}"
-            placeholder="{{$formControl['placeholder']}}"
-            prefix="{{$prefix}}"
-            value="{{$formControl['value'] ?? ''}}"
+            :name="$formControl['name']"
+            :type="$formControl['type']"
+            :placeholder="!empty($formControl['placeholder'] ?? null) ? $formControl['placeholder'] : null"
+            :prefix="$prefix"
+            :value="$formControl['value'] ?? null"
+            :checked="!empty($formControl['checked'] ?? null)"
+            :hidden="!empty($formControl['hidden'])"
         />
     @endforeach
     @if(isset($btnText) && ! isset($btn))
@@ -21,6 +23,6 @@
             <button class="btn btn-primary text-base-100 fp2024-title">{{$btnText}}</button>
         </div>
     @else
-    {{$btn}}
+        {{$btn}}
     @endif
 </form>

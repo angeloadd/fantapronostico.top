@@ -16,9 +16,10 @@
         ],
         [
             'name' => 'remember',
-            'type' => 'hidden',
-            'placeholder' => 'Remember',
-            'value' => '1',
+            'type' => 'checkbox',
+            'checked' => true,
+            'hidden' => true,
+            'value' => true
         ],
     ]"
         btnText="{{__('auth.login.btn')}}"

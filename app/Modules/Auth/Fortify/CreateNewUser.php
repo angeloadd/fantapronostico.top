@@ -37,7 +37,6 @@ final class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'remember_token' => Str::random(60),
         ]);
     }
 }
