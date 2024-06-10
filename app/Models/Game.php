@@ -274,12 +274,12 @@ final class Game extends Model
 
     public function isFinal(): bool
     {
-        return str_contains(self::FINAL, mb_strtolower($this->stage));
+        return str_contains(mb_strtolower($this->stage), self::FINAL);
     }
 
     public function isGroupStage(): bool
     {
-        return str_contains(self::GROUP, mb_strtolower($this->stage));
+        return str_contains(mb_strtolower($this->stage), self::GROUP);
     }
 
     public function scopeFromLatest($query): void

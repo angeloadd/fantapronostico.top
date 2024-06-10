@@ -7,7 +7,7 @@ use App\Http\Controllers\GameNotAccessibleAction;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MiscController;
 use App\Http\Controllers\PredictionController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\RankingController;
 use App\Http\Middleware\LeagueEnricherMiddleware;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Routing\Router;
@@ -45,12 +45,12 @@ Route::middleware(['auth', LeagueEnricherMiddleware::class])->group(static funct
         Route::get('/prossimo/incontro/{game}', [PredictionController::class, 'nextGameFromReference'])->name('bet.nextFromReference');
         Route::get('/precedente/incontro/{game}', [PredictionController::class, 'previousGameFromReference'])->name('bet.previousFromReference');
         Route::get('/pronostico/prossimo/incontro', [PredictionController::class, 'nextGame'])->name('bet.nextGame');
-        Route::get('/pronostici/incontro/{game}', [PredictionController::class, 'index'])->name('bet.index');
-        Route::get('/pronostico/incontro/{game}', [PredictionController::class, 'show'])->name('bet.show');
-        Route::get('/pronostico/incontro/{game}/crea', [PredictionController::class, 'create'])->name('bet.create');
-        Route::post('/pronostico/incontro/{game}/store', [PredictionController::class, 'store'])->name('bet.store');
-        Route::get('/pronostico/modifica/{bet}', [PredictionController::class, 'edit'])->name('bet.edit');
-        Route::put('/pronostico/aggiorna/{bet}', [PredictionController::class, 'update'])->name('bet.update');
+        Route::get('/pronostici/incontro/{game}', [PredictionController::class, 'index'])->name('prediction.index');
+        Route::get('/pronostico/incontro/{game}', [PredictionController::class, 'show'])->name('prediction.show');
+        Route::get('/pronostico/incontro/{game}/crea', [PredictionController::class, 'create'])->name('prediction.create');
+        Route::post('/pronostico/incontro/{game}/store', [PredictionController::class, 'store'])->name('prediction.store');
+        Route::get('/pronostico/modifica/{prediction}', [PredictionController::class, 'edit'])->name('prediction.edit');
+        Route::put('/pronostico/aggiorna/{prediction}', [PredictionController::class, 'update'])->name('prediction.update');
 
         /* CRUD per vincitore e capocannoniere */
         Route::get('/pronostico/vincitore/index', [ChampionController::class, 'index'])->name('champion.index');
@@ -63,7 +63,7 @@ Route::middleware(['auth', LeagueEnricherMiddleware::class])->group(static funct
     });
 
     // classifica
-    Route::get('classifica', [UserController::class, 'officialStanding'])->name('standing');
+    Route::get('classifica', [RankingController::class, 'officialStanding'])->name('standing');
 
     Route::get('albo', [MiscController::class, 'albo'])->name('albo');
     Route::get('terms', [MiscController::class, 'terms'])->name('terms');

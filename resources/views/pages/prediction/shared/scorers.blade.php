@@ -1,0 +1,14 @@
+@if(!$isGroupStage)
+    <x-prediction::shared.scorer-select
+        :teamName="$homeTeamName"
+        :players="$homeTeamPlayers"
+        label="home_scorer_id"
+        :$prediction
+    />
+    <x-prediction::shared.scorer-select
+        :teamName="$awayTeamName"
+        :players="$awayTeamPlayers"
+        label="away_scorer_id"
+        :$prediction
+    />
+@endif

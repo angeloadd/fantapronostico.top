@@ -11,9 +11,7 @@
                     clearInterval(x)
                     this.countdown = 0
                 }
-            },
-            1000
-        )
+            }, 1000)
         }
     }"
     class="grid grid-flow-col gap-5 text-center auto-cols-max"

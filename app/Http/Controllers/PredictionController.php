@@ -8,11 +8,13 @@ use App\Http\Requests\CreatePredictionRequest;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Prediction;
+use App\Modules\Tournament\Models\Team;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 final class PredictionController extends Controller
@@ -29,7 +31,7 @@ final class PredictionController extends Controller
     {
         $now = $this->timeManagementService->now();
         if ($this->gameRepository->nextGameExists($now)) {
-            return redirect(route('bet.index', ['game' => $this->gameRepository->getNextGameByDateTime($now)]))
+            return redirect(route('prediction.index', ['game' => $this->gameRepository->getNextGameByDateTime($now)]))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
@@ -39,7 +41,7 @@ final class PredictionController extends Controller
             return abort(404);
         }
 
-        return redirect(route('bet.index', ['game' => $last]))
+        return redirect(route('prediction.index', ['game' => $last]))
             ->with('message', session('message') ?: null)
             ->with('errore_message', session('error_message') ?: null);
     }
@@ -48,7 +50,7 @@ final class PredictionController extends Controller
     {
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
             return view(
-                'bet.index',
+                'pages.prediction.index',
                 [
                     'sortedBets' => $this->betRepository->getSortedDescByUpdatedAtByGame($game),
                     'games' => $this->gameRepository->getAll(),
@@ -57,7 +59,7 @@ final class PredictionController extends Controller
             );
         }
 
-        return redirect(route('bet.show', compact('game')))
+        return redirect(route('prediction.show', compact('game')))
             ->with('message', session('message') ?: null)
             ->with('errore_message', session('error_message') ?: null);
     }
@@ -65,7 +67,7 @@ final class PredictionController extends Controller
     public function show(Game $game): Renderable|RedirectResponse
     {
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-            return redirect(route('bet.index', compact('game')))
+            return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'La partita è iniziata');
         }
 
@@ -78,7 +80,7 @@ final class PredictionController extends Controller
         //Controllo per presenza pronostico da mostrare
         $prediction = $this->betRepository->getByGameAndUser($game, Auth::user());
         if (null === $prediction) {
-            return redirect(route('bet.create', compact('game')))
+            return redirect(route('prediction.create', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
@@ -98,13 +100,10 @@ final class PredictionController extends Controller
             $awayScorer = Player::where('id', $prediction->away_scorer_id)->first()?->displayed_name;
         }
 
-        return view('bet.show', [
+        return view('pages.prediction.show', [
             'games' => $this->gameRepository->getAll(),
             'game' => $game,
-            'userBet' => $prediction,
-            'updatedAtMillis' => $prediction->updated_at->format('u'),
-            'updatedAtTime' => $prediction->updated_at->format('H:i:s'),
-            'updatedAt' => $prediction->updated_at->format('d/m/Y'),
+            'prediction' => $prediction,
             'homeScorer' => $homeScorer ?? 0,
             'awayScorer' => $awayScorer ?? 0,
         ]);
@@ -114,7 +113,7 @@ final class PredictionController extends Controller
     {
         // controllo per display pronostici con sort per ordinarli
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-            return redirect(route('bet.index', compact('game')))
+            return redirect(route('prediction.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
@@ -131,15 +130,19 @@ final class PredictionController extends Controller
         }
 
         if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
-            return redirect(route('bet.show', compact('game')))
+            return redirect(route('prediction.show', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
 
         return view(
-            'bet.create',
+            'pages.prediction.create',
             compact('game'),
-            ['games' => $this->gameRepository->getAll()]
+            [
+                'games' => $this->gameRepository->getAll(),
+                'homeTeamPlayers' => $this->getTeamScorersList($game->home_team),
+                'awayTeamPlayers' => $this->getTeamScorersList($game->away_team),
+            ]
         );
     }
 
@@ -147,7 +150,7 @@ final class PredictionController extends Controller
     {
         //         Controllo per limite di tempo
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-            return redirect(route('bet.index', compact('game')))
+            return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
 
@@ -161,7 +164,7 @@ final class PredictionController extends Controller
         }
 
         if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
-            return redirect(route('bet.show', compact('game')))
+            return redirect(route('prediction.show', compact('game')))
                 ->with('error_message', 'Hai già pronosticato per questo incontro');
         }
 
@@ -178,18 +181,18 @@ final class PredictionController extends Controller
         return back()->with('message', 'Pronostico inserito con successo');
     }
 
-    public function edit(Prediction $bet): RedirectResponse|Renderable
+    public function edit(Prediction $prediction): RedirectResponse|Renderable
     {
         // controllo per accesso a pronostici diversi dal proprio
-        if (Auth::user()->id !== $bet->user_id) {
+        if (Auth::user()->id !== $prediction->user_id) {
             return abort(404);
         }
 
-        $game = $bet->game;
+        $game = $prediction->game;
 
         //Controllo per modifica oltre tempo limite
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-            return redirect(route('bet.index', compact('game')))
+            return redirect(route('prediction.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
@@ -206,21 +209,28 @@ final class PredictionController extends Controller
         }
 
         // Controllo per view edit
-        return view('bet.edit', compact('bet', 'game'));
+        return view(
+            'pages.prediction.edit',
+            compact('prediction', 'game'),
+            [
+                'homeTeamPlayers' => $this->getTeamScorersList($game->home_team),
+                'awayTeamPlayers' => $this->getTeamScorersList($game->away_team),
+            ]
+        );
     }
 
-    public function update(CreatePredictionRequest $request, Prediction $bet): RedirectResponse
+    public function update(CreatePredictionRequest $request, Prediction $prediction): RedirectResponse
     {
         // controllo per accesso a pronostici diversi dal proprio
-        if (Auth::user()->id !== $bet->user_id) {
+        if (Auth::user()->id !== $prediction->user_id) {
             return abort(404);
         }
 
-        $game = $bet->game;
+        $game = $prediction->game;
 
         // Controllo per caricamento pronostico oltre il limite
         if ($this->timeManagementService->isGameInThePast($game->started_at)) {
-            return redirect(route('bet.index', compact('game')))
+            return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
 
@@ -233,7 +243,7 @@ final class PredictionController extends Controller
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
 
-        $bet->update([
+        $prediction->update([
             'home_score' => $request->home_score,
             'away_score' => $request->away_score,
             'sign' => $request->sign,
@@ -242,7 +252,7 @@ final class PredictionController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect(route('bet.index', compact('game')))
+        return redirect(route('prediction.index', compact('game')))
             ->with('message', 'Pronostico modificato con successo');
     }
 
@@ -254,7 +264,7 @@ final class PredictionController extends Controller
             return abort(404);
         }
 
-        return redirect(route('bet.index', ['game' => $goToGame]));
+        return redirect(route('prediction.index', ['game' => $goToGame]));
     }
 
     public function previousGameFromReference(Game $game): RedirectResponse
@@ -265,6 +275,16 @@ final class PredictionController extends Controller
             return abort(404);
         }
 
-        return redirect(route('bet.index', ['game' => $goToGame]));
+        return redirect(route('prediction.index', ['game' => $goToGame]));
+    }
+
+    public function getTeamScorersList(Team $team): Collection
+    {
+        $players = $team->players
+            ->pluck('displayed_name', 'id');
+        $players[0] = 'NoGol';
+        $players[-1] = 'Autogol';
+
+        return $players->sortKeys();
     }
 }

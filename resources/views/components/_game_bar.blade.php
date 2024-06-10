@@ -1,4 +1,4 @@
-<div class="w-full flex justify-center items-center py-2 md:py-10">
+<div class="w-full flex justify-center items-center py-2 md:py-8">
     <div class="join">
         @if(!$game->isFirstGame())
             <a class="btn-error btn"
@@ -15,7 +15,7 @@
                 @foreach($games as $gameInBar)
                     @if($gameInBar->started_at >= today() && isset($gameInBar->home_team, $gameInBar->away_team))
                         <li>
-                            <a class="@if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('bet.index', ['game' => $gameInBar])}}">
+                            <a class="@if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('prediction.index', ['game' => $gameInBar])}}">
                                 {{$gameInBar->home_team->name}} - {{$gameInBar->away_team->name}}
                             </a>
                         </li>
@@ -27,7 +27,7 @@
                             @foreach($games as $gameInBar)
                                 @if($gameInBar->started_at < today() && isset($gameInBar->home_team, $gameInBar->away_team))
                                     <li>
-                                        <a class="@if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('bet.index', ['game' => $gameInBar])}}">
+                                        <a class="@if($game->id === $gameInBar->id) white-bg main-text @else white-text @endif" href="{{route('prediction.index', ['game' => $gameInBar])}}">
                                             {{$gameInBar->home_team->name}} - {{$gameInBar->away_team->name}}
                                         </a>
                                     </li>
@@ -53,7 +53,7 @@
     <script>
         function goTo() {
             console.log('ciao')
-            window.location.assign('{{route('bet.index', ['game' => $gameInBar])}}')
+            window.location.assign('{{route('prediction.index', ['game' => $gameInBar])}}')
         }
     </script>
 @endpush

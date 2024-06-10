@@ -66,6 +66,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $leagues_count
  * @property-read Collection<int, \App\Modules\Auth\Models\Role> $roles
  * @property-read int|null $roles_count
+ * @property-read bool $admin
  *
  * @mixin Eloquent
  */

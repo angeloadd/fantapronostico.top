@@ -1,4 +1,4 @@
-<x-home::shared.card title="Prossimo Incontro" link="{{!empty($game ?? null) ? route('bet.create', ['game' => $game]) : null}}" linkText="Crea un Pronostico">
+<x-home::shared.card title="Prossimo Incontro" link="{{!empty($game ?? null) ? route('prediction.create', ['game' => $game]) : null}}" linkText="Crea un Pronostico">
     <div @class([
     'flex w-full items-center',
     'justify-center' => !isset($game),

@@ -147,7 +147,7 @@
                     </li>
                     <li class=" col-4 flex justify-center items-center @if($key%2 === 0) bg-primary text-base-100 @else bg-white text-dark @endif">
                         @if($bet->game->timestamp > time() && auth()->user()->id === $userRank->user()->id)
-                            <a class="btn  btn-error text-base-100" role="button" href="{{route('bet.index', ['game' => $bet->game])}}">
+                            <a class="btn  btn-error text-base-100" role="button" href="{{route('prediction.index', ['game' => $bet->game])}}">
                                 Modifica
                             </a>
                         @else
