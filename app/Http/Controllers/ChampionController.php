@@ -143,8 +143,8 @@ final class ChampionController extends Controller
         }
 
         return view(
-            'champion.index',
-            ['champion' => Champion::all()]
+            'pages.champion.index',
+            ['champions' => Champion::all()]
         );
     }
 

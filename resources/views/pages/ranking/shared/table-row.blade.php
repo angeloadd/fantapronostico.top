@@ -2,6 +2,7 @@
     @class([
         '[&>*]:bg-accent [&>*]:text-base-100' => Auth::user()?->id === $rank->userId() && ($isHome ?? false),
         '[&>*]:bg-purple-500/90 [&>*]:text-base-100' => Auth::user()?->id === $rank->userId() && !($isHome ?? false),
+        '[&>*]:text-lg text-center'
     ])
 >
     <th>

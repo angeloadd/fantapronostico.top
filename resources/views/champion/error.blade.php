@@ -1,4 +1,5 @@
 <x-_champion_card>
+    <x-partials.heaader.header text="Vincitore e Capocannoniere" bgColor="bg-secondary" />
     <div class="w-full pt-20 px-3 flex justify-center items-center">
         <div role="alert" class="alert alert-error sm:w-3/5">
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
