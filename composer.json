@@ -68,7 +68,8 @@
             "@php artisan ide-helper:meta",
             "@php artisan ide-helper:models --write",
             "@fix"
-        ]
+        ],
+        "deploy": "git pull && @php artisan optimize && npm run build"
     },
     "extra": {
         "branch-alias": {
