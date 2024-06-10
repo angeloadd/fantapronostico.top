@@ -1,1 +1,1 @@
-* * * * * LOG_CHANNEL=schedule;: php /var/www/html/fantapronostico.top/artisan schedule:run >> /dev/null 2>&1
+* * * * * php /var/www/html/fantapronostico.top/artisan schedule:run >> /dev/null 2>&1
