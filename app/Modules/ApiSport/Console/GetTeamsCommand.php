@@ -10,6 +10,7 @@ use App\Modules\Tournament\Models\Team;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class GetTeamsCommand extends Command
@@ -29,24 +30,24 @@ final class GetTeamsCommand extends Command
      */
     public function handle(ApiSportServiceInterface $apiSportService): int
     {
+        $logger = Log::channel('schedule');
         $teamsDto = $apiSportService->getTeamsBySeasonAndLeague(new GetTeamsRequest(4, 2024));
-
-        $numberOfTeams = count($teamsDto->teams());
 
         DB::beginTransaction();
         try {
             Team::upsertTeamsDto($teamsDto);
             DB::commit();
+            $numberOfTeams = count($teamsDto->teams());
+            $logger->info('Successfully updated ' . $numberOfTeams . ' teams');
+            $this->info('Successfully updated ' . $numberOfTeams . ' teams');
+
+            return self::SUCCESS;
         } catch (Throwable $exception) {
             DB::rollBack();
             $this->error('Error updating teams: ' . $exception->getMessage());
-            Log::error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
 
             return self::FAILURE;
         }
-
-        $this->info('Successfully updated ' . $numberOfTeams . ' teams');
-
-        return self::SUCCESS;
     }
 }

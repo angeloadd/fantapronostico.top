@@ -1,7 +1,7 @@
 <x-layouts.with-drawer>
     <div class="h-full w-full justify-center items-start">
         <x-partials.header.header text="Pronostico" bgColor="bg-primary"/>
-        <x-_game_bar :games="$games" :game="$game"/>
+        <x-prediction::shared.game-bar :games="$games" :game="$game"/>
         <div class="flex w-full justify-center items-center">
             <div class="px-3 w-full sm:w-1/2 shadow-lg bg-warning mx-3 rounded-md border-success">
                 <h2 class="text-center fs-1 pt-3 mb-0">
@@ -13,7 +13,7 @@
                     L'incontro si giocherà il {{str($game->started_at->isoFormat('D MMMM YYYY HH:mm'))->title()}}
                 </div>
                 <div class="flex items-center justify-center display-5 fp2024-title py-3">
-                    <x-partials.countdown.main :date="$game->started_at"/>
+                    <x-partials.countdown.main bgColor="bg-yellow-500" :date="$game->started_at"/>
                 </div>
             </div>
         </div>

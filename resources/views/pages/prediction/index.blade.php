@@ -1,5 +1,5 @@
 <x-prediction::shared.layout>
-    <x-_game_bar :games="$games" :game="$game"/>
+    <x-prediction::shared.game-bar :games="$games" :game="$game"/>
     <x-prediction::shared.table :$game>
         @foreach($sortedBets as $key => $prediction)
             <x-prediction::shared.table-row

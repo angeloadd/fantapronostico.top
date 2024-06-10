@@ -1,5 +1,5 @@
 <x-prediction::shared.layout>
-    <x-_game_bar :games="$games" :game="$game"/>
+    <x-prediction::shared.game-bar :games="$games" :game="$game"/>
     <div>
         <x-prediction::shared.card>
             <x-prediction::shared.form

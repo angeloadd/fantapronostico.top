@@ -16,8 +16,8 @@
     }"
     class="grid grid-flow-col gap-5 text-center auto-cols-max"
 >
-    <x-partials.countdown.page value="Math.floor(countdown / (1000 * 60 * 60 * 24))" text="days" />
-    <x-partials.countdown.page value="Math.floor((countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))" text="hours" />
-    <x-partials.countdown.page value="Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60))" text="min" />
-    <x-partials.countdown.page value="Math.floor((countdown % (1000 * 60)) / 1000)" text="sec" />
+    <x-partials.countdown.page :bgColor="$bgColor ?? 'bg-accent/30'" value="Math.floor(countdown / (1000 * 60 * 60 * 24))" text="days" />
+    <x-partials.countdown.page :bgColor="$bgColor ?? 'bg-accent/30'" value="Math.floor((countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))" text="hours" />
+    <x-partials.countdown.page :bgColor="$bgColor ?? 'bg-accent/30'" value="Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60))" text="min" />
+    <x-partials.countdown.page :bgColor="$bgColor ?? 'bg-accent/30'" value="Math.floor((countdown % (1000 * 60)) / 1000)" text="sec" />
 </div>

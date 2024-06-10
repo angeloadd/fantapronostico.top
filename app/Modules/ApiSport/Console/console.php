@@ -11,7 +11,6 @@ try {
     /** @var ?Carbon $finalStartedAt */
     $finalStartedAt = Tournament::first()?->final_started_at;
     if ($finalStartedAt->addHours(10)->isFuture()) {
-        Schedule::call(static fn() => Log::channel('schedule')->info(env('LOG_CHANNEL')))->everyMinute();
         Schedule::command('fp:teams:get')
             ->dailyAt('01:05');
         Schedule::command('fp:fetch:games')
