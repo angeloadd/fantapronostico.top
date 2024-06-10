@@ -1,10 +1,9 @@
 <x-layouts.with-drawer>
-    <div class="h-screen w-full justify-center items-start">
+    <div class="h-full w-full justify-center items-start">
         <x-partials.header.header text="Pronostico" bgColor="bg-primary"/>
         <x-_game_bar :games="$games" :game="$game"/>
         <div class="flex w-full justify-center items-center">
-
-            <div class="px-3 w-1/2 shadow-lg bg-warning mx-3 rounded-md border-success">
+            <div class="px-3 w-full sm:w-1/2 shadow-lg bg-warning mx-3 rounded-md border-success">
                 <h2 class="text-center fs-1 pt-3 mb-0">
                     {{__($game->home_team->name).' vs '.__($game->away_team->name)}}
                     <br>

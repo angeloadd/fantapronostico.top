@@ -69,7 +69,7 @@
             "@php artisan ide-helper:models --write",
             "@fix"
         ],
-        "deploy": "COMPOSER_ALLOW_SUPERUSER=1 git pull && @php artisan optimize && npm run build"
+        "deploy": "COMPOSER_ALLOW_SUPERUSER=1 git pull && php artisan optimize && npm run build"
     },
     "extra": {
         "branch-alias": {
