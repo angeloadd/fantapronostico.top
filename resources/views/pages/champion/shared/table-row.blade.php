@@ -1,6 +1,6 @@
 <tr
     @class([
-        '[&>*]:bg-secondary [&>*]:text-base-100' => Auth::user()?->id === $champion->user->id,
+        '[&>*]:bg-secondary [&>*]:text-base-100' => Auth::user()?->id === $champion->user->id && ($isIndex ?? false),
         '[&>*]:text-lg [&>*]:text-center'
     ])
 >

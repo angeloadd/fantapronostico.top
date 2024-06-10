@@ -6,8 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChampionRequest;
 use App\Models\Champion;
-use App\Models\Game;
 use App\Models\Player;
+use App\Models\Tournament;
 use App\Modules\Tournament\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
@@ -36,12 +36,16 @@ final class ChampionController extends Controller
             return redirect(route('champion.show', compact('champion')));
         }
 
+        $tournament = Tournament::first();
+
         return view(
-            'champion.create',
+            'pages.champion.create',
             [
                 'teams' => Team::all(),
                 'players' => Player::getInfoForAll(),
                 'firstMatchDate' => $this->getFirstMatchStartDate(),
+                'tournamentLogo' => $tournament?->logo,
+                'tournamentName' => $tournament?->name,
             ]
         );
     }
@@ -80,13 +84,17 @@ final class ChampionController extends Controller
             abort(404);
         }
 
+        $tournament = Tournament::first();
+
         return view(
-            'champion.edit',
+            'pages.champion.edit',
             [
                 'teams' => Team::all(),
                 'players' => Player::getInfoForAll(),
                 'champion' => $champion,
                 'firstMatchDate' => $this->getFirstMatchStartDate(),
+                'tournamentLogo' => $tournament?->logo,
+                'tournamentName' => $tournament?->name,
             ]
         );
     }
@@ -124,14 +132,15 @@ final class ChampionController extends Controller
             abort(404);
         }
 
+        $tournament = Tournament::first();
+
         return view(
-            'champion.show',
+            'pages.champion.show',
             compact('champion'),
             [
                 'firstMatchDate' => $this->getFirstMatchStartDate(),
-                'updatedAtMillis' => $champion->updated_at->format('u'),
-                'updatedAtTime' => $champion->updated_at->format('H:i:s'),
-                'updatedAt' => $champion->updated_at->format('d/m/Y - H:i:s'),
+                'tournamentLogo' => $tournament?->logo,
+                'tournamentName' => $tournament?->name,
             ]
         );
     }
@@ -139,7 +148,7 @@ final class ChampionController extends Controller
     public function index(): Renderable
     {
         if ( ! $this->competitionStarted()) {
-            abort(404, 'not found');
+            redirect(route('champion.create'));
         }
 
         return view(
@@ -150,17 +159,17 @@ final class ChampionController extends Controller
 
     public function error(): Renderable
     {
-        return view('champion.error', ['championSettableFrom' => $this->getChampionSettableFrom()]);
+        return view('pages.champion.409', ['championSettableFrom' => $this->getChampionSettableFrom()]);
     }
 
     public function getFirstMatchStartDate(): ?Carbon
     {
-        return Game::orderBy('started_at', 'asc')?->first()?->started_at;
+        return Tournament::first()?->first()?->started_at;
     }
 
     private function getChampionSettableFrom(): ?Carbon
     {
-        return Carbon::create($this->getFirstMatchStartDate()?->subDays(2))?->timezone('Europe/Rome');
+        return $this->getFirstMatchStartDate()?->subDays(2);
     }
 
     private function isChampionBetAvailableByDate(): bool
@@ -170,8 +179,6 @@ final class ChampionController extends Controller
 
     private function competitionStarted(): bool
     {
-        $firstGameStartedAtTimestamp = Game::orderBy('started_at', 'asc')?->first()?->started_at?->unix();
-
-        return now()->unix() >= $firstGameStartedAtTimestamp;
+        return $this->getFirstMatchStartDate()?->isPast();
     }
 }
