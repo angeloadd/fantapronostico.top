@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.with-drawer>
     <div class="row p-3">
         <div class="card col main-bg white-text">
             <div class="card-body">
@@ -182,4 +182,4 @@
             </p>
         </div>
     </div>
-</x-layout>
+</x-layouts.with-drawer>
