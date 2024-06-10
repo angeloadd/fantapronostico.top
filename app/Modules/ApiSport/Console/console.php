@@ -10,7 +10,8 @@ try {
     // Run Schedules maximum 10 hours after final started
     /** @var ?Carbon $finalStartedAt */
     $finalStartedAt = Tournament::first()?->final_started_at;
-    if (now()->lt($finalStartedAt->addHours(10))) {
+    if ($finalStartedAt->addHours(10)->isFuture()) {
+        Schedule::call(static fn() => Log::info('schedule is running'));
         Schedule::command('fp:teams:get')
             ->timezone('Europe/Rome')
             ->dailyAt('01:05');
