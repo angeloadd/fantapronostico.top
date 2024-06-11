@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 final class GameNotAccessibleAction extends Controller
 {
     public function __construct(
-        private GameRepositoryInterface $gameRepository,
-        private TimeManagementServiceInterface $timeManagementService
+        private readonly GameRepositoryInterface $gameRepository,
+        private readonly TimeManagementServiceInterface $timeManagementService
     ) {
     }
 
@@ -27,7 +27,7 @@ final class GameNotAccessibleAction extends Controller
         }
 
         return view(
-            'errors.nextGame.notAccessible',
+            'pages.prediction.409',
             [
                 'games' => Game::all(),
                 'game' => $gameRef,
