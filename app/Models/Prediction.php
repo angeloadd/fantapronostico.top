@@ -18,11 +18,9 @@ use Illuminate\Support\Carbon;
  * App\Models\Bet
  *
  * @property int $id
- * @property int|null $home_result
- * @property int|null $away_result
- * @property string|null $sign
- * @property string|null $home_score
- * @property string|null $away_score
+ * @property string $sign
+ * @property int $home_score
+ * @property int $away_score
  * @property int $user_id
  * @property int $game_id
  * @property Carbon $created_at
@@ -48,9 +46,7 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $away_scorer_name
  * @property-read mixed $home_scorer_name
  * @property int|null $home_scorer_id
- * @property bool $is_home_own
  * @property int|null $away_scorer_id
- * @property int|null $is_away_own
  *
  * @method static Builder|Prediction whereAwayScorerId($value)
  * @method static Builder|Prediction whereHomeScorerId($value)
@@ -71,8 +67,6 @@ final class Prediction extends Model
         'away_scorer_id',
         'user_id',
         'game_id',
-        'is_home_own',
-        'is_away_own',
         'created_at',
         'updated_at',
     ];

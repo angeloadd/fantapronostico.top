@@ -4,8 +4,8 @@
             <x-prediction::shared.form
                 method="PUT"
                 action="{{route('prediction.update', ['prediction' => $prediction])}}"
-                :homeTeamName="$game->home_team->name"
-                :awayTeamName="$game->away_team->name"
+                :homeTeamName="__($game->home_team->name)"
+                :awayTeamName="__($game->away_team->name)"
                 :homeTeamLogo="$game->home_team->logo"
                 :awayTeamLogo="$game->away_team->logo"
                 :$homeTeamPlayers

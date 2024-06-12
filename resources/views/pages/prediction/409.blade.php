@@ -8,9 +8,9 @@
                 </strong>
             </h3>
             <div class="flex w-full items-center justify-between text-neutral">
-                <x-home::shared.team-display :name="$game->home_team->name" src="{{$game->home_team->logo}}" alt="{{$game->home_team->name}} Flag"/>
+                <x-home::shared.team-display :name="__($game->home_team->name)" src="{{$game->home_team->logo}}" alt="{{$game->home_team->name}} Flag"/>
                 <x-home::shared.game-date :date="$game->started_at"/>
-                <x-home::shared.team-display :name="$game->away_team->name" src="{{$game->away_team->logo}}" alt="{{$game->away_team->name}} Flag"/>
+                <x-home::shared.team-display :name="__($game->away_team->name)" src="{{$game->away_team->logo}}" alt="{{$game->away_team->name}} Flag"/>
             </div>
             <x-partials.countdown.main bgColor="bg-yellow-500" :date="$game->started_at"/>
         </div>

@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
+use App\Helpers\Ranking\Sorter;
 use App\Modules\League\Models\League;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
@@ -36,8 +37,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->registerPagesNamespace();
 
-        $this->registerCollectionMacro();
-
         $this->registerRequestMacro();
     }
 
@@ -53,31 +52,6 @@ final class AppServiceProvider extends ServiceProvider
                         ->last(static fn ($folder) => '' !== $folder)
                 );
             }
-        }
-    }
-
-    private function registerCollectionMacro(): void
-    {
-        if ( ! Collection::hasMacro('sortAggregate')) {
-            Collection::macro(
-                'sortAggregate',
-                static function (Collection $collection, array $sorters) {
-                    function internalRecursiveCallOnCollectionProvided(Collection $collection, array $sorters, int $index): Collection
-                    {
-                        $currentSorter = $sorters[$index];
-
-                        if ($index === (count($sorters) - 1)) {
-                            return $collection->sortBy($currentSorter);
-                        }
-
-                        return $collection->sortByDesc($currentSorter)
-                            ->groupBy($currentSorter)
-                            ->map(static fn (Collection $collection) => internalRecursiveCallOnCollectionProvided($collection, $sorters, $index + 1));
-                    }
-
-                    return internalRecursiveCallOnCollectionProvided($collection, $sorters, 0)->flatten()->values();
-                }
-            );
         }
     }
 

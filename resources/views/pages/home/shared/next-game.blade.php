@@ -5,9 +5,9 @@
     'justify-between' => isset($game),
 ])>
         @if(!empty($game ?? null) && !$hasFinalStarted)
-            <x-home::shared.team-display :name="$game->home_team->name" src="{{$game->home_team->logo}}" alt="{{$game->home_team->name}} Flag"/>
+            <x-home::shared.team-display :name="__($game->home_team->name)" src="{{$game->home_team->logo}}" alt="{{$game->home_team->name}} Flag"/>
             <x-home::shared.game-date :date="$game->started_at"/>
-            <x-home::shared.team-display :name="$game->away_team->name" src="{{$game->away_team->logo}}" alt="{{$game->away_team->name}} Flag"/>
+            <x-home::shared.team-display :name="__($game->away_team->name)" src="{{$game->away_team->logo}}" alt="{{$game->away_team->name}} Flag"/>
         @else
             <x-home::shared.illustration img="waiting.svg" alt="A cartoon figure waiting and laying on a tree">
                 @if($hasFinalStarted)

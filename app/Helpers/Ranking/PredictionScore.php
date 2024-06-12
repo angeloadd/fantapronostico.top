@@ -8,16 +8,25 @@ use InvalidArgumentException;
 
 final readonly class PredictionScore
 {
+    private const RESULT_POINTS = 4;
+    private const SIGN_POINTS = 1;
+    private const SCORER_POINTS = 2;
+
     public function __construct(
-        public GameResult $gameResult,
-        public int $userId,
-        public int $predictionId,
         public bool $sign,
-        public int $numberOfResult,
-        public int $numberOfScorer,
+        public bool $result,
+        public bool $homeScorer,
+        public bool $awayScorer,
+        public bool $isFinal,
+        public int $timestamp
     ) {
-        if ($this->numberOfResult > 2 || $this->numberOfScorer > 2) {
-            throw new InvalidArgumentException(sprintf('Invalid number of result[%s] or scorer[%s]', $this->numberOfResult, $this->numberOfScorer));
-        }
+    }
+
+    public function total(): int
+    {
+        return ($this->result * self::RESULT_POINTS) +
+            ($this->sign * self::SIGN_POINTS) +
+            ($this->homeScorer * self::SCORER_POINTS) +
+            ($this->awayScorer * self::SCORER_POINTS);
     }
 }

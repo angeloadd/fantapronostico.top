@@ -57,9 +57,9 @@ use Throwable;
  * @property-read Collection<int, Prediction> $predictions
  * @property-read int|null $predictions_count
  * @property-read int $away_score
- * @property-read mixed $away_scorers
+ * @property-read int[] $away_scorers
  * @property-read int $home_score
- * @property-read mixed $home_scorers
+ * @property-read int[] $home_scorers
  * @property-read string|null $sign
  * @property-read Carbon $predictable_from
  *
