@@ -1,4 +1,4 @@
-<x-_message sessionKey="status"/>
+<x-partials.notifications.toast-message sessionKey="status"/>
 
 <div class="flex flex-col justify-center items-center w-full space-y-1">
     <h2 class="text-xl">
