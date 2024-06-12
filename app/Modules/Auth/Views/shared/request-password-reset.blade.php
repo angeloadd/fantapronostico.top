@@ -1,4 +1,4 @@
-<x-_message sessionKey="status"/>
+<x-partials.notifications.toast-message sessionKey="status"/>
 
 <div class="w-full space-y-1">
     <span class="w-full text-center text-sm">{{__('auth.request_password_reset.paragraph')}}</span>
