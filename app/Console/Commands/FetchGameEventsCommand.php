@@ -10,9 +10,11 @@ use App\Models\Game;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Exceptions\ExternalSystemUnavailableException;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
+use App\Modules\League\Models\League;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use Throwable;
 
 final class FetchGameEventsCommand extends Command
@@ -81,8 +83,12 @@ final class FetchGameEventsCommand extends Command
         }
 
         if ($count > 0) {
-            Cache::forget('usersRank');
-            app(RankingCalculatorInterface::class)->get();
+            $league = League::first();
+            if (null === $league) {
+                throw new InvalidArgumentException('Could not find a league for rank');
+            }
+            Cache::forget('league-' . $league->id . '-rank');
+            app(RankingCalculatorInterface::class)->get($league);
         }
 
         $this->info('updated ' . $count . ' matches');

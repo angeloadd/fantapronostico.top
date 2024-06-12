@@ -20,7 +20,7 @@ final class LeagueEnricherMiddleware
 
         $hasUserALeague = $user->leagues->filter(static fn (League $league) => $league->pivot->user_id === $user->id && 'pending' !== $league->pivot->status)->count() > 0;
         if ($hasUserALeague) {
-            $request->merge(['league_id' => $user->leagues->first()->id]);
+            $request->merge(['league' => $user->leagues->first()]);
 
             return $next($request);
         }

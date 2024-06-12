@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Helpers\Ranking;
 
 use App\Models\Prediction;
-use App\Models\Tournament;
 use App\Modules\Auth\Models\User;
-use Carbon\Carbon;
+use App\Modules\League\Models\League;
 use Throwable;
 
 final class UserRank
@@ -20,6 +19,7 @@ final class UserRank
 
     public function __construct(
         private readonly User $user,
+        private readonly League $league,
         private int $total = 0,
         private int $numberOfResults = 0,
         private int $numberOfSigns = 0,
@@ -46,12 +46,12 @@ final class UserRank
             return;
         }
         $result = $this->user->predictions()->with(['game'])->get()->filter(fn (Prediction $bet) => 'finished' === $bet->game->status)->reduce(
-            static function (array $acc, Prediction $bet) {
+            static function (array $acc, Prediction $prediction) {
                 try {
-                    $game = $bet->game;
+                    $game = $prediction->game;
 
-                    if ($game->home_score === $bet->home_score &&
-                        $game->away_score === $bet->away_score
+                    if ($game->home_score === $prediction->home_score &&
+                        $game->away_score === $prediction->away_score
                     ) {
                         if ($game->isFinal()) {
                             $acc['finalTotal'] += self::RESULT_POINTS;
@@ -59,9 +59,9 @@ final class UserRank
                         $acc['results']++;
                     }
 
-                    $sign = $bet->game->sign;
+                    $sign = $prediction->game->sign;
 
-                    if ($sign === $bet->sign) {
+                    if ($sign === $prediction->sign) {
                         if ($game->isFinal()) {
                             $acc['finalTotal'] += self::SIGN_POINTS;
                         }
@@ -69,7 +69,7 @@ final class UserRank
                     }
 
                     if (in_array(
-                        $bet->home_scorer_id,
+                        $prediction->home_scorer_id,
                         $game->home_scorers ?? [],
                         true
                     )) {
@@ -80,7 +80,7 @@ final class UserRank
                     }
 
                     if (in_array(
-                        $bet->away_scorer_id,
+                        $prediction->away_scorer_id,
                         $game->away_scorers ?? [],
                         true
                     )) {
@@ -91,7 +91,7 @@ final class UserRank
                     }
 
                     if ($game->isFinal()) {
-                        $acc['finalTimestamp'] = Carbon::create($bet->updated_at)->unix();
+                        $acc['finalTimestamp'] = $prediction->updated_at->unix();
                     }
 
                     return $acc;
@@ -138,12 +138,12 @@ final class UserRank
         return $result;
     }
 
-    public function finalBetTimestamp(): int
+    public function finalPredictionTimestamp(): int
     {
         return $this->finalBetTimestamp;
     }
 
-    public function finalBetTotal(): int
+    public function finalPredictionTotal(): int
     {
         return $this->finalBetTotal;
     }
@@ -195,11 +195,12 @@ final class UserRank
 
     private function getChampionInfo(): void
     {
-        $winner = Tournament::first()?->teams?->where('is_winner', true)?->first();
+        $tournament = $this->league->tournament;
+        $winner = $tournament->teams?->where('is_winner', true)?->first();
         if (null === $winner) {
             return;
         }
-        $topScorer = Tournament::first()?->players?->where('is_top_scorer', true)?->first();
+        $topScorer = $tournament->players?->where('is_top_scorer', true)?->first();
 
         if (null === $topScorer) {
             return;

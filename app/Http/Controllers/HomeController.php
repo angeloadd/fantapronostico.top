@@ -10,6 +10,7 @@ use App\Models\Game;
 use App\Models\Tournament;
 use App\Repository\Game\GameRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 final class HomeController extends Controller
@@ -22,11 +23,9 @@ final class HomeController extends Controller
 
     public function index(): Renderable
     {
-        $collection = $this->calculator->get();
-        if ($this->isWinnerDeclared()) {
-            return view('winner', ['ranking' => $collection]);
-        }
-
+        $league = Request::getCurrentLeague();
+        $tournament = $league->tournament;
+        $ranking = $this->calculator->get($league);
         $nextGame = $this->gameRepository->getNextGame();
         if (isset($nextGame) &&
             Auth::user() &&
@@ -37,35 +36,31 @@ final class HomeController extends Controller
         }
 
         return view('pages.home.index', [
-            'ranking' => $collection->filter(static fn (UserRank $rank, int $index) => Auth::user()?->id === $rank->userId() || $index <= 13),
+            'ranking' => $ranking->filter(static fn (UserRank $rank, int $index) => Auth::user()?->id === $rank->userId() || $index <= 13),
             'nextGame' => $nextGame,
             'champion' => auth()->user()->champion,
-            'hasTournamentStarted' => $this->hasTournamentStarted(),
-            'hasFinalStarted' => $this->hasFinalStarted(),
+            'hasTournamentStarted' => $this->hasTournamentStarted($tournament),
+            'hasFinalStarted' => $this->hasFinalStarted($tournament),
             'lastResults' => $this->gameRepository->getLastThreeGames(now()),
+            'isWinnerDeclared' => $this->isWinnerDeclared($tournament),
+            'winnerName' => $ranking->first()->userName(),
+            'leagueName' => $league->name,
         ]);
     }
 
-    private function isWinnerDeclared(): bool
+    private function isWinnerDeclared(Tournament $tournament): bool
     {
-        return Tournament::first()?->final_started_at->addHours(2)->isPast() &&
-            Game::all()->every('status', '=', 'completed');
+        return $tournament->final_started_at->isPast() &&
+            $tournament->games->every('status', '=', 'completed');
     }
 
-    private function hasTournamentStarted(): bool
+    private function hasTournamentStarted(Tournament $tournament): bool
     {
-        $game = Game::first();
-
-        return null !== $game && $game->started_at->lte(now());
+        return $tournament->started_at->lte(now());
     }
 
-    private function hasFinalStarted(): bool
+    private function hasFinalStarted(Tournament $tournament): bool
     {
-        return Tournament::first()?->final_started_at->isPast();
-    }
-
-    private function areGameTeamsSet($nextGame): bool
-    {
-        return isset($nextGame?->home_team, $nextGame?->away_team);
+        return $tournament->final_started_at->isPast();
     }
 }

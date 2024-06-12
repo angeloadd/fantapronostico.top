@@ -1,5 +1,5 @@
-<x-partials.fireworks.fireworks/>
 <x-layouts.with-drawer>
+<x-partials.fireworks.fireworks/>
     <div class="h-screen w-full flex flex-col justify-start items-center">
         <x-partials.header.header text="Albo D'Oro" bgColor="bg-amber-400"/>
         <div class="w-full h-full flex justify-center items-center">

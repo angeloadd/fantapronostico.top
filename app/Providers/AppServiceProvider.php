@@ -6,13 +6,16 @@ namespace App\Providers;
 
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
+use App\Modules\League\Models\League;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -33,29 +36,9 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->registerPagesNamespace();
 
-        if ( ! Collection::hasMacro('sortByMulti')) {
-            Collection::macro(
-                'sortByMulti',
-                static function (Collection $collection, array $callbacks) {
-                    function internalRecursiveCallOnCollectionProvided(Collection $collection, array $callbacks): Collection
-                    {
-                        if (key($callbacks) === (count($callbacks) - 1)) {
-                            return $collection->sortByDesc(current($callbacks));
-                        }
+        $this->registerCollectionMacro();
 
-                        return $collection->sortByDesc(current($callbacks))
-                            ->groupBy(current($callbacks))
-                            ->map(static function (Collection $collection) use ($callbacks) {
-                                next($callbacks);
-
-                                return internalRecursiveCallOnCollectionProvided($collection, $callbacks);
-                            });
-                    }
-
-                    return internalRecursiveCallOnCollectionProvided($collection, $callbacks);
-                }
-            );
-        }
+        $this->registerRequestMacro();
     }
 
     private function registerPagesNamespace(): void
@@ -70,6 +53,45 @@ final class AppServiceProvider extends ServiceProvider
                         ->last(static fn ($folder) => '' !== $folder)
                 );
             }
+        }
+    }
+
+    private function registerCollectionMacro(): void
+    {
+        if ( ! Collection::hasMacro('sortAggregate')) {
+            Collection::macro(
+                'sortAggregate',
+                static function (Collection $collection, array $sorters) {
+                    function internalRecursiveCallOnCollectionProvided(Collection $collection, array $sorters, int $index): Collection
+                    {
+                        $currentSorter = $sorters[$index];
+
+                        if ($index === (count($sorters) - 1)) {
+                            return $collection->sortBy($currentSorter);
+                        }
+
+                        return $collection->sortByDesc($currentSorter)
+                            ->groupBy($currentSorter)
+                            ->map(static fn (Collection $collection) => internalRecursiveCallOnCollectionProvided($collection, $sorters, $index + 1));
+                    }
+
+                    return internalRecursiveCallOnCollectionProvided($collection, $sorters, 0)->flatten()->values();
+                }
+            );
+        }
+    }
+
+    private function registerRequestMacro(): void
+    {
+        if ( ! Request::hasMacro('getCurrentLeague')) {
+            Request::macro('getCurrentLeague', static function (): League {
+                $league = request()->league;
+                if ( ! $league instanceof League) {
+                    throw new InvalidArgumentException('Current league cannot be retrieved');
+                }
+
+                return $league;
+            });
         }
     }
 }

@@ -11,29 +11,29 @@ use Illuminate\Support\Facades\Cache;
 
 final class RankingCalculator implements RankingCalculatorInterface
 {
-    public function get(): Collection
+    public function get(League $league): Collection
     {
         return Cache::remember(
-            'usersRank',
+            'league-' . $league->id . '-rank',
             now()->addDay(),
-            static function () {
-                $users = League::first()
+            static function () use ($league) {
+                $ranks = $league
                     ->users
-                    ->filter(static fn (User $user) => 'accepted' === $user->pivot->status);
+                    ->filter(static fn (User $user) => 'accepted' === $user->pivot->status)
+                    ->map(static fn (User $user): UserRank => (new UserRank($user, $league))->calculate());
 
-                return Collection::sortByMulti(
-                    $users->map(static fn (User $user): UserRank => (new UserRank($user))->calculate()),
+                return Collection::sortAggregate(
+                    $ranks,
                     [
-                        static fn (UserRank $item): int => $item->total(),
-                        static fn (UserRank $item): int => $item->results(),
-                        static fn (UserRank $item): int => $item->scorers(),
-                        static fn (UserRank $item): int => $item->signs(),
-                        static fn (UserRank $item): int => $item->finalBetTotal(),
-                        static fn (UserRank $item): int => $item->finalBetTimestamp(),
-                        static fn (UserRank $item): string => $item->userName(),
+                        static fn (UserRank $userRank): int => $userRank->total(),
+                        static fn (UserRank $userRank): int => $userRank->results(),
+                        static fn (UserRank $userRank): int => $userRank->scorers(),
+                        static fn (UserRank $userRank): int => $userRank->signs(),
+                        static fn (UserRank $userRank): int => $userRank->finalPredictionTotal(),
+                        static fn (UserRank $userRank): int => $userRank->finalPredictionTimestamp(),
+                        static fn (UserRank $userRank): string => $userRank->userName(),
                     ]
-                )->flatten()
-                    ->values();
+                );
             }
         );
     }

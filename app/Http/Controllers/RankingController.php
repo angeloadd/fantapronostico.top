@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Helpers\Ranking\RankingCalculatorInterface;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 final class RankingController extends Controller
@@ -15,10 +16,10 @@ final class RankingController extends Controller
     }
 
     // classifica completa
-    public function officialStanding(): View
+    public function officialStanding(Request $request): View
     {
         return view('pages.ranking.index', [
-            'ranking' => $this->calculator->get(),
+            'ranking' => $this->calculator->get($request->input('league')),
         ]);
     }
 }

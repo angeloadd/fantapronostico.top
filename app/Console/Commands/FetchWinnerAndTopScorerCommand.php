@@ -39,10 +39,10 @@ final class FetchWinnerAndTopScorerCommand extends Command
         $players = [];
         $winner = 0;
         try {
-            $response = $apisport->get('players/topscorers?league=1&season=2022');
+            $response = $apisport->get('players/topscorers', ['league' => 4, 'season' => 2024]);
             $players = TopScorers::fromArray($response['response']);
             unset($response);
-            $response = $apisport->get('fixtures?league=1&season=2022&round=Final');
+            $response = $apisport->get('fixtures', ['league' => 4, 'season' => 2024, 'round' => 'Final']);
             $winner = Winner::fromArray($response['response']);
             unset($response);
         } catch (ExternalSystemUnavailableException|InvalidApisportTokenException $e) {
@@ -62,13 +62,13 @@ final class FetchWinnerAndTopScorerCommand extends Command
         try {
             foreach ($players->toArray() as $player) {
                 $player = Player::find($player['id']);
-                Tournament::first()->players()->attach($player, ['top_scorer' => true]);
+                Tournament::first()?->players()->updateExistingPivot($player->id, ['is_top_scorer' => true]);
 
                 $player->save();
             }
             if ($winner->toInt()) {
                 $winner = Team::find($winner->toInt());
-                Tournament::first()->teams()->attach($winner, ['winner' => true]);
+                Tournament::first()?->teams()->updateExistingPivot($winner->id, ['is_winner' => true]);
                 $winner->save();
             }
         } catch (Throwable $e) {

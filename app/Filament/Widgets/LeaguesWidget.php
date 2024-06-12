@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use InvalidArgumentException;
 
 final class LeaguesWidget extends BaseWidget
 {
@@ -38,11 +39,16 @@ final class LeaguesWidget extends BaseWidget
                     ->disabled(static fn (User $user) => 'accepted' === $user->leagues->first()?->pivot->status)
                     ->action(
                         static function (User $user): void {
-                            $user->leagues()->updateExistingPivot($user->leagues->first()?->id, ['status' => 'accepted']);
+                            $league = $user->leagues->first();
+                            if (null === $league) {
+                                throw new InvalidArgumentException('Could not find a league to accept the user in');
+                            }
+
+                            $user->leagues()->updateExistingPivot($league->id, ['status' => 'accepted']);
                             $user->save();
 
-                            Cache::forget('usersRank');
-                            app(RankingCalculatorInterface::class)->get();
+                            Cache::forget('league-' . $league->id . '-rank');
+                            app(RankingCalculatorInterface::class)->get($league);
                         }
                     ),
             ]);

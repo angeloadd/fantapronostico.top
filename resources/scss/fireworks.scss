@@ -1,20 +1,19 @@
-@use 'sass:math';
-
 $particles: 50;
-$width: 500px;
-$height: 500px;
+$width: 600;
+$height: 600;
 
 // Create the explosion...
 $box-shadow: ();
 $box-shadow2: ();
 @for $i from 0 through $particles {
-  $box-shadow: $box-shadow,
-  (math.random(math.div($width, 1px)) * 1px)- calc($width / 2)
-      (math.random(math.div($height, 1px)) * 1px)- calc($height / 1.2)
-               hsl((math.random(math.div(360%, 1%)) * 1%), 100%, 50%);
-  $box-shadow2: $box-shadow2, 0 0 #fff
+    $x: (random($width) * 1px) - calc($width / 2);
+    $y: (random($height) * 1px) - calc($height / 1.2);
+    $hue: random(360);
+    $box-shadow: $box-shadow, $x $y hsl($hue, 100%, 50%);
+    $box-shadow2: $box-shadow2, 0 0 #fff
 }
-@mixin keyframes ($animationName) {
+
+@mixin keyframes($animationName) {
     @-webkit-keyframes #{$animationName} {
         @content;
     }
@@ -36,7 +35,7 @@ $box-shadow2: ();
     }
 }
 
-@mixin animation-delay ($settings) {
+@mixin animation-delay($settings) {
     -moz-animation-delay: $settings;
     -webkit-animation-delay: $settings;
     -o-animation-delay: $settings;
@@ -44,7 +43,7 @@ $box-shadow2: ();
     animation-delay: $settings;
 }
 
-@mixin animation-duration ($settings) {
+@mixin animation-duration($settings) {
     -moz-animation-duration: $settings;
     -webkit-animation-duration: $settings;
     -o-animation-duration: $settings;
@@ -52,7 +51,7 @@ $box-shadow2: ();
     animation-duration: $settings;
 }
 
-@mixin animation ($settings) {
+@mixin animation($settings) {
     -moz-animation: $settings;
     -webkit-animation: $settings;
     -o-animation: $settings;
@@ -60,7 +59,7 @@ $box-shadow2: ();
     animation: $settings;
 }
 
-@mixin transform ($settings) {
+@mixin transform($settings) {
     transform: $settings;
     -moz-transform: $settings;
     -webkit-transform: $settings;
@@ -69,51 +68,53 @@ $box-shadow2: ();
 }
 
 .pyro > .before, .pyro > .after {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  box-shadow: $box-shadow2;
-  @include animation((1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards));
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 30%;
+    top: 0;
+    left: 0;
+    box-shadow: $box-shadow2;
+    @include animation((1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards));
 }
 
 .pyro > .after {
-  @include animation-delay((1.25s, 1.25s, 1.25s));
-  @include animation-duration((1.25s, 1.25s, 6.25s));
+    @include animation-delay((1.25s, 1.25s, 1.25s));
+    @include animation-duration((1.25s, 1.25s, 6.25s));
 }
 
 @include keyframes(bang) {
-  to {
-    box-shadow:$box-shadow;
-  }
+    to {
+        box-shadow: $box-shadow;
+    }
 }
 
-@include keyframes(gravity)  {
-  to {
-    @include transform(translateY(200px));
-    opacity: 0;
-  }
+@include keyframes(gravity) {
+    to {
+        @include transform(translateY(200px));
+        opacity: 0;
+    }
 }
 
 @include keyframes(position) {
-  0%, 19.9% {
-    margin-top: 10%;
-    margin-left: 40%;
-  }
-  20%, 39.9% {
-    margin-top: 40%;
-    margin-left: 30%;
-  }
-  40%, 59.9% {
-    margin-top: 20%;
-    margin-left: 70%
-  }
-  60%, 79.9% {
-    margin-top: 30%;
-    margin-left: 20%;
-  }
-  80%, 99.9% {
-    margin-top: 30%;
-    margin-left: 80%;
-  }
+    0%, 19.9% {
+        margin-top: 10%;
+        margin-left: 40%;
+    }
+    20%, 39.9% {
+        margin-top: 40%;
+        margin-left: 30%;
+    }
+    40%, 59.9% {
+        margin-top: 20%;
+        margin-left: 70%;
+    }
+    60%, 79.9% {
+        margin-top: 30%;
+        margin-left: 20%;
+    }
+    80%, 99.9% {
+        margin-top: 30%;
+        margin-left: 80%;
+    }
 }

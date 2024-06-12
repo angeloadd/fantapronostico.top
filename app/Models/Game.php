@@ -43,7 +43,6 @@ use Throwable;
  * @method static Builder|Game newQuery()
  * @method static Builder|Game query()
  * @method static Builder|Game whereCreatedAt($value)
- * @method static Builder|Game whereGameStart($value)
  * @method static Builder|Game whereId($value)
  * @method static Builder|Game whereStage($value)
  * @method static Builder|Game whereStatus($value)
