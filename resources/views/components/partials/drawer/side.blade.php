@@ -6,8 +6,8 @@
                 <x-partials.logo.large primary="#e5e7eb"/>
             </li>
             <x-partials.drawer.item routeName="home" svg="home" text="Home"/>
-            <x-partials.drawer.item routeName="bet.nextGame" active="prediction.create" svg="bet" text="Pronostico"/>
-            <x-partials.drawer.item routeName="champion.create" active="champion.index" svg="winner" text="Vincente"/>
+            <x-partials.drawer.item routeName="prediction.next-from-ref" active="prediction" svg="bet" text="Pronostico"/>
+            <x-partials.drawer.item routeName="champion.create" active="champion" svg="winner" text="Vincente"/>
             <x-partials.drawer.item routeName="standing" svg="rank" text="Classifica"/>
             <x-partials.drawer.item routeName="albo" svg="albo" text="Albo d'oro"/>
             <x-partials.drawer.item routeName="terms" svg="terms" text="Regolamento"/>

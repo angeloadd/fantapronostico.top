@@ -19,40 +19,28 @@ use Illuminate\Support\Facades\Auth;
 final class PredictionController extends Controller
 {
     public function __construct(
-        private readonly PredictionRepositoryInterface $betRepository,
+        private readonly PredictionRepositoryInterface $predictionRepository,
         private readonly GameRepositoryInterface $gameRepository,
     ) {
         $this->middleware(['auth']);
     }
 
-    public function nextGame(): Renderable|RedirectResponse
+    public function index(Game $game): Renderable|RedirectResponse
     {
-        $nextGame = $this->gameRepository->getNextGame() ?? Game::all()->last();
-        if (null !== $nextGame) {
-            return redirect(route('prediction.index', ['game' => $nextGame]))
+        if ($game->started_at->isFuture()) {
+            return redirect(route('prediction.show', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
 
-        return abort(404);
-    }
-
-    public function index(Game $game): Renderable|RedirectResponse
-    {
-        if ($game->started_at->isPast()) {
-            return view(
-                'pages.prediction.index',
-                [
-                    'sortedBets' => $this->betRepository->getSortedDescByUpdatedAtByGame($game),
-                    'games' => $this->gameRepository->getAll(),
-                ],
-                compact('game')
-            );
-        }
-
-        return redirect(route('prediction.show', compact('game')))
-            ->with('message', session('message') ?: null)
-            ->with('errore_message', session('error_message') ?: null);
+        return view(
+            'pages.prediction.index',
+            [
+                'predictions' => $this->predictionRepository->getSortedDescByUpdatedAtByGame($game),
+                'games' => $this->gameRepository->getAll(),
+            ],
+            compact('game')
+        );
     }
 
     public function show(Game $game): Renderable|RedirectResponse
@@ -63,13 +51,13 @@ final class PredictionController extends Controller
         }
 
         if ($game->isNotPredictableYet()) {
-            return redirect(route('errors.gameNotAccessible', compact('game')))
+            return redirect(route('prediction.409', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
 
         //Controllo per presenza pronostico da mostrare
-        $prediction = $this->betRepository->getByGameAndUser($game, Auth::user());
+        $prediction = $this->predictionRepository->getByGameAndUser($game, Auth::user());
         if (null === $prediction) {
             return redirect(route('prediction.create', compact('game')))
                 ->with('message', session('message') ?: null)
@@ -115,12 +103,12 @@ final class PredictionController extends Controller
 
         //        Controllo per non anticipare troppo i pronostici
         if ($game->isNotPredictableYet()) {
-            return redirect(route('errors.gameNotAccessible', compact('game')))
+            return redirect(route('prediction.409', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
 
-        if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
+        if ($this->predictionRepository->existsByGameAndUser($game, Auth::user())) {
             return redirect(route('prediction.show', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -150,11 +138,11 @@ final class PredictionController extends Controller
         }
 
         if ($game->isNotPredictableYet()) {
-            return redirect(route('errors.gameNotAccessible', compact('game')))
+            return redirect(route('prediction.409', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
 
-        if ($this->betRepository->existsByGameAndUser($game, Auth::user())) {
+        if ($this->predictionRepository->existsByGameAndUser($game, Auth::user())) {
             return redirect(route('prediction.show', compact('game')))
                 ->with('error_message', 'Hai già pronosticato per questo incontro');
         }
@@ -194,7 +182,7 @@ final class PredictionController extends Controller
 
         //Controllo per non anticipare troppo i pronostici
         if ($game->isNotPredictableYet()) {
-            return redirect(route('errors.gameNotAccessible', compact('game')))
+            return redirect(route('prediction.409', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
@@ -230,7 +218,7 @@ final class PredictionController extends Controller
         }
 
         if ($game->isNotPredictableYet()) {
-            return redirect(route('errors.gameNotAccessible', compact('game')))
+            return redirect(route('prediction.409', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
 
@@ -247,15 +235,20 @@ final class PredictionController extends Controller
             ->with('message', 'Pronostico modificato con successo');
     }
 
-    public function nextGameFromReference(Game $game): RedirectResponse
+    public function nextGame(?Game $game = null): RedirectResponse
     {
-        $goToGame = $this->gameRepository->getNextGameByOtherGame($game) ?? $game;
+        $nextGame = null;
+        if (null === $game) {
+            $nextGame = $this->gameRepository->getNextGame() ?? Game::all()->last();
+        } else {
+            $nextGame = $this->gameRepository->getNextGameByOtherGame($game) ?? $game;
+        }
 
-        if ( ! $this->gameRepository->areGameTeamsSet($goToGame)) {
+        if (null === $nextGame) {
             return abort(404);
         }
 
-        return redirect(route('prediction.index', ['game' => $goToGame]));
+        return redirect(route('prediction.index', ['game' => $nextGame]));
     }
 
     public function previousGameFromReference(Game $game): RedirectResponse
@@ -269,7 +262,18 @@ final class PredictionController extends Controller
         return redirect(route('prediction.index', ['game' => $goToGame]));
     }
 
-    public function getTeamScorersList(Team $team): Collection
+    public function gameNotPredictable(Game $game): Renderable
+    {
+        return view(
+            'pages.prediction.409',
+            [
+                'games' => Game::all(),
+                'game' => $game,
+            ]
+        );
+    }
+
+    private function getTeamScorersList(Team $team): Collection
     {
         $players = $team->players
             ->pluck('displayed_name', 'id');

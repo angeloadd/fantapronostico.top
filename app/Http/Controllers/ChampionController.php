@@ -24,7 +24,7 @@ final class ChampionController extends Controller
     public function create(): Renderable|RedirectResponse
     {
         if ($this->isChampionBetAvailableByDate()) {
-            return redirect(route('champion.error'))->with('La competizione non è ancora iniziata');
+            return redirect(route('champion.409'))->with('La competizione non è ancora iniziata');
         }
 
         if ($this->competitionStarted()) {

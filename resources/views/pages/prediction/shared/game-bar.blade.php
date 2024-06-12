@@ -3,7 +3,7 @@
         @if(!$game->isFirstGame())
             <a class="btn-error btn rounded-r-none rounded-l-3xl"
                id="previousGameBtn"
-               href="{{route('bet.previousFromReference', compact('game'))}}"
+               href="{{route('prediction.previous-from-ref', compact('game'))}}"
             >
                 <img width="20px" src="{{Vite::asset('resources/img/previous.svg')}}" alt="Backward arrow">
                 <span class="hidden md:inline px-2">Precedente</span>
@@ -47,7 +47,7 @@
         @if(!$game->isFinal())
             <a class="btn btn-error rounded-l-none rounded-r-3xl"
                id="nextGameBtn"
-               href="{{route('bet.nextFromReference', compact('game'))}}"
+               href="{{route('prediction.next-from-ref', compact('game'))}}"
             >
                 <span class="hidden md:inline px-2">Prossimo</span>
                 <img width="20px" src="{{Vite::asset('resources/img/next.svg')}}" alt="Foreward arrow">

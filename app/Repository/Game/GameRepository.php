@@ -12,15 +12,9 @@ final class GameRepository implements GameRepositoryInterface
 {
     public function getNextGame(): ?Game
     {
-        $game = Game::where('started_at', '>', now())
-            ->first();
+        $game = Game::firstWhere('started_at', '>', now());
 
         return $game instanceof Game ? $game : null;
-    }
-
-    public function nextGameExists(): bool
-    {
-        return Game::where('started_at', '>', now())->exists();
     }
 
     public function getAll(): Collection
@@ -30,7 +24,7 @@ final class GameRepository implements GameRepositoryInterface
 
     public function areGameTeamsSet(Game $game): bool
     {
-        return isset($game->home_team, $game->away_team);
+        return null !== $game->home_team && null !== $game->away_team;
     }
 
     public function getPreviousGameByOtherGame(Game $game): ?Game

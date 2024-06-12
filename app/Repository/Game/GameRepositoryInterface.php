@@ -20,7 +20,5 @@ interface GameRepositoryInterface
 
     public function getPreviousGameByOtherGame(Game $game): ?Game;
 
-    public function nextGameExists(): bool;
-
     public function getAll(): Collection;
 }
