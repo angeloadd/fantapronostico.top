@@ -14,7 +14,11 @@ use Tests\Unit\UnitTestCase;
 
 final class ApiSportServiceTest extends UnitTestCase
 {
-    private ApiSportClientInterface|MockObject $client;
+    private ApiSportClientInterface&MockObject $client;
+
+    private MapperInterface&MockObject $mapper;
+
+    private ApiSportService $subject;
 
     protected function setUp(): void
     {

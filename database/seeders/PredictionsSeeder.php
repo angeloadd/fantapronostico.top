@@ -31,22 +31,22 @@ final class PredictionsSeeder extends Seeder
         //            'password' => Hash::make('123123123'),
         //        ]);
         //        $this->now = now()->subDays(5);
-//        $this->tournament = Tournament::factory()->euro()->create([
-//            'final_started_at' => $this->createDateFromDelayInDays(28, 21),
-//        ]);
+        //        $this->tournament = Tournament::factory()->euro()->create([
+        //            'final_started_at' => $this->createDateFromDelayInDays(28, 21),
+        //        ]);
         //
         $users = User::all();
         League::first()->users()->attach($users, ['status' => 'accepted']);
 
-//        $users->each(function (User $user): void {
-//            $teams = Team::all();
-//            $players = Player::all();
-//            Champion::create([
-//                'user_id' => $user->id,
-//                'team_id' => $teams->random()->id,
-//                'player_id' => $players->random()->id,
-//            ]);
-//        });
+        //        $users->each(function (User $user): void {
+        //            $teams = Team::all();
+        //            $players = Player::all();
+        //            Champion::create([
+        //                'user_id' => $user->id,
+        //                'team_id' => $teams->random()->id,
+        //                'player_id' => $players->random()->id,
+        //            ]);
+        //        });
 
         Game::all()->each(function (Game $game) use ($users): void {
             if (now()->gte($game->started_at)) {
@@ -78,7 +78,7 @@ final class PredictionsSeeder extends Seeder
             timezone: 'Europe/Rome'
         );
 
-        if (!$time) {
+        if ( ! $time) {
             $time = now();
         }
 

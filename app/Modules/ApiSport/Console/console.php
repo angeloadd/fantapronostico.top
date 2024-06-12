@@ -12,12 +12,10 @@ try {
     $finalStartedAt = Tournament::first()?->final_started_at;
     if ($finalStartedAt->addHours(10)->isFuture()) {
         Schedule::command('fp:teams:get')
-            ->dailyAt('01:05');
+            ->dailyAt('02:05');
         Schedule::command('fp:fetch:games')
-            ->dailyAt('01:10');
+            ->dailyAt('02:10');
         Schedule::command('fp:fetch:players')
-            ->dailyAt('01:15');
-        Schedule::command('fp:players:fix')
             ->dailyAt('02:15');
 
         Schedule::command('fp:fetch:games:events')

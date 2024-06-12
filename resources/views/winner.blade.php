@@ -5,7 +5,7 @@
         <div class="mb-5">
             <div class="flex justify-center items-center">
                 <div class="w-full rounded-xl bg-base-100 border border-success text-success shadow-lg py-1 px-4">
-                    <h1 class="my-1 text-center">Benvenuto {{Auth::user()->full_name ?? 'Guest'}}</h1>
+                    <h1 class="my-1 text-center">Benvenuto {{Auth::user()->name ?? 'Guest'}}</h1>
                 </div>
             </div>
         </div>

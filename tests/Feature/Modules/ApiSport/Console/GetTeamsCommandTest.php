@@ -7,6 +7,7 @@ namespace Tests\Feature\Modules\ApiSport\Console;
 use App\Models\Tournament;
 use Config;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Testing\PendingCommand;
 use Tests\TestCase;
 
 final class GetTeamsCommandTest extends TestCase
@@ -43,7 +44,11 @@ final class GetTeamsCommandTest extends TestCase
 
     public function test_handle(): void
     {
-        $this->artisan('fp:teams:get')
+        /**
+         * @var PendingCommand $pendingCommand
+         */
+        $pendingCommand = $this->artisan('fp:teams:get');
+        $pendingCommand
             ->expectsOutput('Successfully updated 2 teams')
             ->assertExitCode(0);
 
@@ -51,6 +56,9 @@ final class GetTeamsCommandTest extends TestCase
         $this->assertDatabaseHas('teams', self::SECOND_DTO);
     }
 
+    /**
+     * @return array{parameters: array{league: int}, response: array{array{team: array{id: int, national: bool, code: string, name: string, logo: string}}}}
+     */
     private function getResponse(): array
     {
         return [

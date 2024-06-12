@@ -26,12 +26,12 @@ final class TimeManagementService implements TimeManagementServiceInterface
 
     public function isGameNotPredictableYet(DateTimeInterface $dateTime): bool
     {
-        $now = $this->now()->getTimestamp();
-
         $daySpan = self::TWENTY_FOUR_HOURS_IN_SECONDS;
-        if ($dateTime === Tournament::first()->started_at) {
+        if (Tournament::first()?->started_at->equalTo($dateTime)) {
             $daySpan *= 2;
         }
+
+        $now = $this->now()->getTimestamp();
 
         return $dateTime->getTimestamp() > $now &&
             $daySpan < ($dateTime->getTimestamp() - $now);

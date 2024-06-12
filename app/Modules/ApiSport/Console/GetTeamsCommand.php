@@ -9,7 +9,7 @@ use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use App\Modules\Tournament\Models\Team;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class GetTeamsCommand extends Command
@@ -27,9 +27,8 @@ final class GetTeamsCommand extends Command
     /**
      * @throws Throwable
      */
-    public function handle(ApiSportServiceInterface $apiSportService): int
+    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
     {
-        $logger = Log::channel('schedule');
         $teamsDto = $apiSportService->getTeamsBySeasonAndLeague(new GetTeamsRequest(4, 2024));
 
         DB::beginTransaction();

@@ -46,7 +46,7 @@ use Illuminate\Support\Carbon;
  * @property string $logo
  * @property int $season
  * @property int $api_id
- * @property string $started_at
+ * @property Carbon $started_at
  * @property Carbon $final_started_at
  *
  * @method static Builder|Tournament whereApiId($value)
