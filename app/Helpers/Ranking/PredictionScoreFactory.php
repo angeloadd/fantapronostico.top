@@ -8,7 +8,6 @@ use App\Models\Prediction;
 
 final readonly class PredictionScoreFactory
 {
-
     public static function create(Prediction $prediction): PredictionScore
     {
         $game = $prediction->game;
@@ -19,7 +18,7 @@ final readonly class PredictionScoreFactory
             in_array($prediction->home_scorer_id, $game->home_scorers, true),
             in_array($prediction->away_scorer_id, $game->away_scorers, true),
             $game->isFinal(),
-            $prediction->updated_at->unix()
+            $prediction->updated_at->unix(),
         );
     }
 }

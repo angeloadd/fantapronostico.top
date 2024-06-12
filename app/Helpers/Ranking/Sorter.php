@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 final class Sorter
 {
     /**
-     * @param Closure[] $sorters
+     * @param  Closure[]  $sorters
      */
     public function __invoke(Collection $collection, array $sorters): Collection
     {
@@ -29,5 +29,4 @@ final class Sorter
             ->groupBy($currentSorter)
             ->map(fn (Collection $collection) => $this->sortCollectionByCallback($collection, $sorters, $index + 1));
     }
-
 }

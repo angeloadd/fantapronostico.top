@@ -14,6 +14,7 @@ final class RankingCalculator implements RankingCalculatorInterface
     public function get(League $league): Collection
     {
         Cache::clear();
+
         return Cache::remember(
             'league-' . $league->id . '-rank',
             now()->addDay(),
@@ -23,7 +24,7 @@ final class RankingCalculator implements RankingCalculatorInterface
                     ->filter(static fn (User $user) => 'accepted' === $user->pivot->status)
                     ->map(static fn (User $user): UserRank => (new UserRank($user, $league))->calculate());
 
-                return (new Sorter)(
+                return (new Sorter())(
                     $ranks,
                     [
                         static fn (UserRank $userRank): int => $userRank->total(),

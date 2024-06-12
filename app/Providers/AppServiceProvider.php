@@ -6,14 +6,12 @@ namespace App\Providers;
 
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
-use App\Helpers\Ranking\Sorter;
 use App\Modules\League\Models\League;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;

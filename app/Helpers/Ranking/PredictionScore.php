@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
-use InvalidArgumentException;
-
 final readonly class PredictionScore
 {
     private const RESULT_POINTS = 4;
+
     private const SIGN_POINTS = 1;
+
     private const SCORER_POINTS = 2;
 
     public function __construct(
