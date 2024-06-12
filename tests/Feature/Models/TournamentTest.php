@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
-use App\Helpers\Constants;
 use App\Models\Player;
 use App\Models\Tournament;
 use App\Modules\Tournament\Models\Team;
+use DateTimeInterface;
 use Illuminate\Support\Collection;
 use Tests\Feature\Helpers\FactoryHelper;
 use Tests\TestCase;
@@ -74,7 +74,12 @@ final class TournamentTest extends TestCase
         $this->assertSame($attributes['logo'], $tournament->logo);
         $this->assertSame($attributes['country'], $tournament->country);
         $this->assertSame($attributes['is_cup'], $tournament->is_cup);
-        $this->assertSame($attributes['started_at'], $tournament->started_at->format(Constants::ISO8601_DATE_FORMAT));
-        $this->assertSame($attributes['final_started_at'], $tournament->final_started_at->format(Constants::DISPLAY_DATE_FORMAT));
+        $this->assertSame($attributes['started_at'], $this->getDbFormat($tournament->started_at));
+        $this->assertSame($attributes['final_started_at'], $this->getDbFormat($tournament->final_started_at));
+    }
+
+    private function getDbFormat(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d\TH:i:s.u\Z');
     }
 }

@@ -17,8 +17,6 @@ use Throwable;
 
 final class FetchGameEventsCommand extends Command
 {
-    private const TWO_HOURS_UNIX = 60 * 60 * 2;
-
     /**
      * The name and signature of the console command.
      *
@@ -37,10 +35,7 @@ final class FetchGameEventsCommand extends Command
     {
         $count = 0;
         try {
-            $games = Game::all();
-            if (0 === $games->count()) {
-                return self::INVALID;
-            }
+            $games = Game::notCompletedToday();
 
             /** @var Game $game */
             foreach ($games as $key => $game) {

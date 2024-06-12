@@ -1,4 +1,4 @@
-<div class="w-full flex justify-center items-center py-2 md:py-8">
+<div class="w-full flex justify-center items-center py-2 py-8 md:py-8">
     <div class="join">
         @if(!$game->isFirstGame())
             <a class="btn-error btn rounded-r-none rounded-l-3xl"

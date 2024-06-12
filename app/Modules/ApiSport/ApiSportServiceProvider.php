@@ -46,10 +46,17 @@ final class ApiSportServiceProvider extends ServiceProvider
 
     private function provideScheduleLogger(): void
     {
-        $bindLoggerInCommand = static fn ($command, Application $app) => $command->handle($app->make(ApiSportServiceInterface::class), $app->make(LoggerInterface::class)->channel('schedule'));
         $this->app->bindMethod(
             [GetTeamsCommand::class, 'handle'],
-            $bindLoggerInCommand
+            static fn (GetTeamsCommand $command, Application $app) => $command->handle(
+                $app->make(ApiSportServiceInterface::class),
+                $app->make(LoggerInterface::class)->channel('schedule')
+            )
         );
+
+        $this->app->when(ExceptionMapperDecorator::class)
+            ->needs(LoggerInterface::class)
+            ->give(static fn (Application $app) => $app->make(LoggerInterface::class)->channel('schedule'));
+
     }
 }

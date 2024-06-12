@@ -96,6 +96,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'pgsql_dump' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_DUMP_URL'),
+            'host' => env('DB_DUMP_HOST', '127.0.0.1'),
+            'port' => env('DB_DUMP_PORT', '5432'),
+            'database' => env('DB_DUMP_DATABASE', 'laravel'),
+            'username' => env('DB_DUMP_USERNAME', 'root'),
+            'password' => env('DB_DUMP_PASSWORD', ''),
+            'charset' => env('DB_DUMP_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

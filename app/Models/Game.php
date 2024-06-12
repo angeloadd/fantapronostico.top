@@ -62,6 +62,7 @@ use Throwable;
  * @property-read int $home_score
  * @property-read mixed $home_scorers
  * @property-read string|null $sign
+ * @property-read Carbon $predictable_from
  *
  * @mixin Eloquent
  */
@@ -97,15 +98,17 @@ final class Game extends Model
             ->limit(3);
     }
 
-    public static function notCompletedToday(Carbon $now): Collection
+    public static function notCompletedToday(): Collection
     {
         return self::where(
             'started_at',
             '>',
-            Carbon::create($now->format('d-m-Y'))->addSecond()->unix()
-        )->where('started_at', '<', $now->unix())
-            ->where('status', 'not_complete')
-            ->get();
+            today()->startOfDay()->subHours(4)
+        )->where(
+            'started_at',
+            '<',
+            today()->endOfDay()
+        )->where('status', 'not_started')->get();
     }
 
     public static function upsertMany(GameMapperCollection $games): void
@@ -170,6 +173,13 @@ final class Game extends Model
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class)->withPivot('is_away');
+    }
+
+    public function predictableFrom(): Attribute
+    {
+        return Attribute::get(
+            fn (): Carbon => $this->started_at->subDays($this->isFirstGame() ? 2 : 1)
+        );
     }
 
     /**
@@ -359,12 +369,7 @@ final class Game extends Model
 
     public function isNotPredictableYet(): bool
     {
-        $daySpan = 1;
-        if (Tournament::first()?->started_at->equalTo($this->started_at)) {
-            $daySpan *= 2;
-        }
-
-        return $this->started_at->isFuture() && $this->started_at->subDays($daySpan)->isPast();
+        return $this->predictable_from->isFuture();
     }
 
     protected static function booted(): void

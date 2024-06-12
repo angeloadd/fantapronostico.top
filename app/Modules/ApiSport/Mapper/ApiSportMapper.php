@@ -6,9 +6,13 @@ namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\TeamDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
+use ErrorException;
 
 final class ApiSportMapper implements MapperInterface
 {
+    /**
+     * @throws ErrorException
+     */
     public function mapTeamsResponse(array $externalResponse): TeamsDto
     {
         return new TeamsDto(

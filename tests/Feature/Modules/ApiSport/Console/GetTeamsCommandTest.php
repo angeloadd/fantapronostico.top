@@ -50,7 +50,8 @@ final class GetTeamsCommandTest extends TestCase
         $pendingCommand = $this->artisan('fp:teams:get');
         $pendingCommand
             ->expectsOutput('Successfully updated 2 teams')
-            ->assertExitCode(0);
+            ->assertOk()
+            ->run();
 
         $this->assertDatabaseHas('teams', self::FIRST_DTO);
         $this->assertDatabaseHas('teams', self::SECOND_DTO);

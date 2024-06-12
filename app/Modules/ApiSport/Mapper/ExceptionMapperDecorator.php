@@ -7,21 +7,24 @@ namespace App\Modules\ApiSport\Mapper;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
 use ErrorException;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 
-final class ExceptionMapperDecorator implements MapperInterface
+final readonly class ExceptionMapperDecorator implements MapperInterface
 {
-    public function __construct(private MapperInterface $mapper)
+    public function __construct(private MapperInterface $mapper, private LoggerInterface $logger)
     {
 
     }
 
+    /**
+     * @throws ApiSportParsingException
+     */
     public function mapTeamsResponse(array $externalResponse): TeamsDto
     {
         try {
             return $this->mapper->mapTeamsResponse($externalResponse);
         } catch (ErrorException $exception) {
-            Log::error(
+            $this->logger->error(
                 $exception->getMessage(),
                 [
                     'trace' => $exception->getTraceAsString(),

@@ -1,5 +1,5 @@
 <div>
-    <h3 class="font-bold text-center text-sm sm:text-lg pb-3">{{$text}} il pronostico entro la data di inizio dell'Europeo</h3>
+    <h3 class="font-bold text-center text-sm sm:text-lg pb-3">{!! $text !!}</h3>
     <div class="flex items-center justify-center">
         <div class="w-12 h-12 sm:h-36 sm:w-36 flex justify-center items-center">
             <img
@@ -8,6 +8,6 @@
                 alt="{{$tournamentName}} Logo"
             >
         </div>
-        <x-partials.countdown.main bgColor="bg-secondary/40" date="{{$firstMatchDate}}"/>
+        <x-partials.countdown.main bgColor="{{$countdownBg ?? 'bg-secondary/40'}}" date="{{$firstMatchDate}}"/>
     </div>
 </div>

@@ -1,6 +1,11 @@
 <x-champion::shared.layout>
     <x-champion::shared.card>
-        <x-champion::shared.card-header :$tournamentLogo :$tournamentName :$firstMatchDate text="Inserici"/>
+        <x-champion::shared.card-header
+            :$tournamentLogo
+            :$tournamentName
+            :$firstMatchDate
+            text="Inserici il pronostico entro la data di inizio dell'Europeo"
+        />
         <x-champion::shared.form
             btnText="Pronostica"
             btnBg="bg-secondary"

@@ -1,12 +1,14 @@
 <x-champion::shared.layout>
-    <div class="p-2 sm:p-8 flex justify-center items-center">
+    <div class="p-2 sm:p-8 pt-8 flex justify-center items-center">
         <div role="alert" class="alert alert-warning flex flex-col justify-center items-center shadow-lg">
-            <h3 class="font-bold">Il pronostico non è ancora disponibile</h3>
-            <p class="text-lg pb-3">
-                I pronostici saranno aperti dal
-                {{str($championSettableFrom->isoFormat('D MMMM YYYY \a\l\l\e H:mm'))->replaceMatches('/(?<=\s)[a-z]/', static fn($match) => ucfirst($match[0]), 1)}}
-            </p>
-            <x-partials.countdown.main bgColor="bg-yellow-500" date="{{$championSettableFrom}}"/>
+            <x-champion::shared.card-header
+                text="<span class='font-normal text-neutral'>Il pronostico Vincente e Capocannoniere sarà aperto dal</span>
+             <span class='text-neutral'>{{str($championSettableFrom->isoFormat('D MMMM YYYY \a\l\l\e H:mm'))->replaceMatches('/(?<=\s)[a-z]/', static fn($match) => ucfirst($match[0]), 1)}}</span>"
+                :tournamentLogo="\App\Models\Tournament::first()?->logo"
+                :tournamentName="\App\Models\Tournament::first()?->name"
+                :firstMatchDate="\App\Models\Tournament::first()?->started_at"
+                countdownBg="bg-yellow-500"
+            />
         </div>
     </div>
 </x-champion::shared.layout>

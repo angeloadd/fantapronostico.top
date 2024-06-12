@@ -4,37 +4,29 @@ declare(strict_types=1);
 
 use App\Models\Game;
 use App\Models\Tournament;
-use Illuminate\Support\Carbon;
 
-try {
-    // Run Schedules maximum 10 hours after final started
-    /** @var ?Carbon $finalStartedAt */
-    $finalStartedAt = Tournament::first()?->final_started_at;
-    if ($finalStartedAt->addHours(10)->isFuture()) {
-        Schedule::command('fp:teams:get')
-            ->dailyAt('02:05');
-        Schedule::command('fp:fetch:games')
-            ->dailyAt('02:10');
-        Schedule::command('fp:fetch:players')
-            ->dailyAt('02:15');
+$doScheduleBeforeTournamentIsFinished = static fn () => ! empty(Tournament::first()
+    ?->final_started_at
+    ?->addHours(6)
+    ?->isFuture()
+);
 
-        Schedule::command('fp:fetch:games:events')
-            ->hourlyAt(['15', '30'])
-            ->between('17:00', '18:00');
-        Schedule::command('fp:fetch:games:events')
-            ->hourlyAt(['15', '30'])
-            ->between('19:00', '10:00');
-        Schedule::command('fp:fetch:games:events')
-            ->hourlyAt(['15', '30'])
-            ->between('23:00', '23:50');
-
-        $isPast = $finalStartedAt?->isPast();
-        $areAllGamesFinished = Game::all()->every('status', '=', 'finished');
-        if ($isPast && $areAllGamesFinished) {
-            Schedule::command('fp:fetch:champions')
-                ->everyThreeMinutes();
-        }
+Schedule::call(
+    static function (): void {
+        Artisan::call('fp:teams:get', ['--league' => 4, '--season' => 2024]);
+        Artisan::call('fp:fetch:games');
+        Artisan::call('fp:fetch:players');
     }
-} catch (Throwable $e) {
-    Log::error($e->getMessage());
-}
+)->dailyAt('04:00')
+    ->when($doScheduleBeforeTournamentIsFinished);
+
+Schedule::command('fp:fetch:games:events')
+    ->everyThirtyMinutes()
+    ->between('16:30', '02:00');
+
+Schedule::command('fp:fetch:champions')
+    ->everyFiveMinutes()
+    ->when(
+        static fn () => Tournament::first()?->final_started_at?->isPast() &&
+        Game::all()->every('status', '=', 'finished')
+    );

@@ -9,10 +9,23 @@ use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\ExceptionMapperDecorator;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Tests\Unit\UnitTestCase;
 
 final class ExceptionMapperDecoratorTest extends UnitTestCase
 {
+    private ExceptionMapperDecorator $subject;
+
+    private LoggerInterface&MockObject $logger;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->subject = new ExceptionMapperDecorator(new ApiSportMapper(), $this->logger);
+    }
+
     public function test_mapTeamsResponse_returns_a_dto(): void
     {
         $teamDto = new TeamDto(1, 'name', 'code', 'logo', false);
@@ -25,12 +38,12 @@ final class ExceptionMapperDecoratorTest extends UnitTestCase
                 ['team' => ['id' => $teamDto2->apiId, 'name' => $teamDto2->name, 'code' => $teamDto2->code, 'logo' => $teamDto2->logo, 'national' => $teamDto2->isNational]],
             ],
         ];
-        $this->assertEquals($dto, (new ExceptionMapperDecorator(new ApiSportMapper()))->mapTeamsResponse($response));
+        $this->assertEquals($dto, $this->subject->mapTeamsResponse($response));
     }
 
     public function test_mapTeamsResponse_throws_for_unexpected_response(): void
     {
         $this->expectException(ApiSportParsingException::class);
-        (new ExceptionMapperDecorator(new ApiSportMapper()))->mapTeamsResponse(['invalid']);
+        $this->subject->mapTeamsResponse(['invalid']);
     }
 }
