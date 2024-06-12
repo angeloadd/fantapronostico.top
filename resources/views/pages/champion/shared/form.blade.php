@@ -14,12 +14,12 @@
         >
             <option
                 value=""
-                @selected(null === old('winner', ($prediction ?? null)?->team))
+                @selected(null === old('winner', ($prediction ?? null)?->team->id))
             >-- Seleziona Squadra Vincente --</option>
             @foreach($teams as $team)
                 <option
                     value="{{$team->id}}"
-                    @selected(old('winner', ($prediction ?? null)?->team->id) === $team->id)>{{$team->name}}</option>
+                    @selected(old('winner', ($prediction ?? null)?->team->id) === $team->id)>{{__($team->name)}}</option>
             @endforeach
         </select>
     </div>
@@ -36,7 +36,7 @@
             @foreach($players as $player)
                 <option value="{{$player['id']}}" @selected(old('topScorer', ($prediction ?? null)?->player->id) === $player['id'])>
                     {{$player['name']}} -
-                    {{$teams->where(static fn ($team) => $team->id === $player['team_id'])->first()->name}}
+                    {{__($teams->where(static fn ($team) => $team->id === $player['team_id'])->first()->name)}}
                 </option>
             @endforeach
         </select>

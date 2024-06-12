@@ -1,23 +1,39 @@
-<x-home::shared.card title="Pronostico Vincente" link="{{route('champion.index')}}" linkText="Vai ai Pronostici">
-    @if(!empty($champion ?? null) && $hasTournamentStarted)
-        <x-home::shared.illustration img="forgot_champion.svg" alt="puzzled girl">
+@php
+    if($hasTournamentStarted){
+        $linkText = 'Vai ai Pronostici';
+    }elseif(empty($champion ?? null)){
+        $linkText = 'Crea Pronostico';
+    }else{
+        $linkText = 'Modifica Pronostico';
+    }
+@endphp
+
+<x-home::shared.card
+    title="Pronostico Vincente"
+    link="{{route('champion.index')}}"
+    :$linkText
+>
+    @if($hasTournamentStarted || !empty($champion ?? null))
+        <x-home::shared.illustration img="remember_champion.svg" alt="guy doing ok">
             <div class="w-full flex flex-col justify-center items-center">
                 <span class="font-normal text-sm">Vincitore</span>
-                <span class="text-center lg:text-lg mb-2">{{$champion->team->name}}</span>
+                <span class="text-center lg:text-lg mb-2">{{__($champion->team->name)}}</span>
                 <span class="font-normal text-sm">Capocannoniere</span>
                 <span class="text-center lg:text-lg">{{$champion->player->displayed_name}}</span>
             </div>
         </x-home::shared.illustration>
     @else
         <x-home::shared.illustration
-            :img="false ? 'forgot_champion.svg' : 'remember_champion.svg'"
-            :alt="false ? 'puzzled girl' : 'guy doing ok'"
+            img="remember_champion.svg"
+            alt="guy doing ok"
         >
-            @if(false)
-                Il Pronostico non<br/> è più Disponibile
-            @else
-                Pronostica Vincente<br/> e Capocannoniere
-            @endif
+            Pronostica Vincente<br/> e Capocannoniere
+        </x-home::shared.illustration>
+    @endif
+
+    @if($hasTournamentStarted && empty($champion ?? null))
+        <x-home::shared.illustration img="forgot_champion.svg" alt="puzzled girl">
+            Il Pronostico non<br/> è più Disponibile
         </x-home::shared.illustration>
     @endif
 </x-home::shared.card>

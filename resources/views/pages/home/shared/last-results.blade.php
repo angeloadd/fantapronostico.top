@@ -1,4 +1,4 @@
-<x-home::shared.card title="Ultimi Partite">
+<x-home::shared.card title="Ultimi Risultati">
     <ul class="join join-vertical space-y-3">
         @foreach($lastResults as $game)
             <li class="pb-1 border-b border-accent/20">
