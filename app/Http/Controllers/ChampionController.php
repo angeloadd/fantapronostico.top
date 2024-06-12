@@ -145,10 +145,10 @@ final class ChampionController extends Controller
         );
     }
 
-    public function index(): Renderable
+    public function index(): RedirectResponse|Renderable
     {
         if ( ! $this->competitionStarted()) {
-            redirect(route('champion.create'));
+            return redirect(route('champion.create'));
         }
 
         return view(

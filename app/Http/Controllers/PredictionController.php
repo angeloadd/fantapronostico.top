@@ -11,7 +11,6 @@ use App\Models\Prediction;
 use App\Modules\Tournament\Models\Team;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepositoryInterface;
-use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -20,7 +19,6 @@ use Illuminate\Support\Facades\Auth;
 final class PredictionController extends Controller
 {
     public function __construct(
-        private readonly TimeManagementServiceInterface $timeManagementService,
         private readonly PredictionRepositoryInterface $betRepository,
         private readonly GameRepositoryInterface $gameRepository,
     ) {
@@ -29,26 +27,19 @@ final class PredictionController extends Controller
 
     public function nextGame(): Renderable|RedirectResponse
     {
-        $now = $this->timeManagementService->now();
-        if ($this->gameRepository->nextGameExists($now)) {
-            return redirect(route('prediction.index', ['game' => $this->gameRepository->getNextGameByDateTime($now)]))
+        $nextGame = $this->gameRepository->getNextGame() ?? Game::all()->last();
+        if (null !== $nextGame) {
+            return redirect(route('prediction.index', ['game' => $nextGame]))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
         }
 
-        $last = Game::all()->last();
-        if ( ! $last) {
-            return abort(404);
-        }
-
-        return redirect(route('prediction.index', ['game' => $last]))
-            ->with('message', session('message') ?: null)
-            ->with('errore_message', session('error_message') ?: null);
+        return abort(404);
     }
 
     public function index(Game $game): Renderable|RedirectResponse
     {
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return view(
                 'pages.prediction.index',
                 [
@@ -66,12 +57,12 @@ final class PredictionController extends Controller
 
     public function show(Game $game): Renderable|RedirectResponse
     {
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'La partita è iniziata');
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+        if ($game->isNotPredictableYet()) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -112,7 +103,7 @@ final class PredictionController extends Controller
     public function create(Game $game): Renderable|RedirectResponse
     {
         // controllo per display pronostici con sort per ordinarli
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return redirect(route('prediction.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -123,7 +114,7 @@ final class PredictionController extends Controller
         }
 
         //        Controllo per non anticipare troppo i pronostici
-        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+        if ($game->isNotPredictableYet()) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -149,7 +140,7 @@ final class PredictionController extends Controller
     public function store(CreatePredictionRequest $request, Game $game): RedirectResponse
     {
         //         Controllo per limite di tempo
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
@@ -158,7 +149,7 @@ final class PredictionController extends Controller
             abort(404);
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+        if ($game->isNotPredictableYet()) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }
@@ -191,7 +182,7 @@ final class PredictionController extends Controller
         $game = $prediction->game;
 
         //Controllo per modifica oltre tempo limite
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return redirect(route('prediction.index', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -202,7 +193,7 @@ final class PredictionController extends Controller
         }
 
         //Controllo per non anticipare troppo i pronostici
-        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+        if ($game->isNotPredictableYet()) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('message', session('message') ?: null)
                 ->with('errore_message', session('error_message') ?: null);
@@ -229,7 +220,7 @@ final class PredictionController extends Controller
         $game = $prediction->game;
 
         // Controllo per caricamento pronostico oltre il limite
-        if ($this->timeManagementService->isGameInThePast($game->started_at)) {
+        if ($game->started_at->isPast()) {
             return redirect(route('prediction.index', compact('game')))
                 ->with('error_message', 'Hai superato il limite di tempo!');
         }
@@ -238,7 +229,7 @@ final class PredictionController extends Controller
             return abort(404);
         }
 
-        if ($this->timeManagementService->isGameNotPredictableYet($game->started_at)) {
+        if ($game->isNotPredictableYet()) {
             return redirect(route('errors.gameNotAccessible', compact('game')))
                 ->with('error_message', 'L\'incontro non è ancora accessibile');
         }

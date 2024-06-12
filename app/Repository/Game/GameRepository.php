@@ -10,17 +10,17 @@ use Illuminate\Support\Collection;
 
 final class GameRepository implements GameRepositoryInterface
 {
-    public function getNextGameByDateTime(DateTimeInterface $dateTime): ?Game
+    public function getNextGame(): ?Game
     {
-        $game = Game::where('started_at', '>', $dateTime)
+        $game = Game::where('started_at', '>', now())
             ->first();
 
         return $game instanceof Game ? $game : null;
     }
 
-    public function nextGameExists(DateTimeInterface $dateTime): bool
+    public function nextGameExists(): bool
     {
-        return Game::where('started_at', '>', $dateTime)->exists();
+        return Game::where('started_at', '>', now())->exists();
     }
 
     public function getAll(): Collection

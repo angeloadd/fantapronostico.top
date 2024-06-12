@@ -14,13 +14,13 @@ interface GameRepositoryInterface
 
     public function getLastThreeGames(DateTimeInterface $dateTime): Collection;
 
-    public function getNextGameByDateTime(DateTimeInterface $dateTime): ?Game;
+    public function getNextGame(): ?Game;
 
     public function getNextGameByOtherGame(Game $game): ?Game;
 
     public function getPreviousGameByOtherGame(Game $game): ?Game;
 
-    public function nextGameExists(DateTimeInterface $dateTime): bool;
+    public function nextGameExists(): bool;
 
     public function getAll(): Collection;
 }

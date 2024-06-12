@@ -73,6 +73,8 @@ final class Game extends Model
 
     private const GROUP = 'group';
 
+    private const TWENTY_FOUR_HOURS_IN_SECONDS = 60 * 60 * 24;
+
     public mixed $timestamp;
 
     protected $fillable = [
@@ -353,6 +355,16 @@ final class Game extends Model
 
         $this->status = 'finished';
         $this->save();
+    }
+
+    public function isNotPredictableYet(): bool
+    {
+        $daySpan = 1;
+        if (Tournament::first()?->started_at->equalTo($this->started_at)) {
+            $daySpan *= 2;
+        }
+
+        return $this->started_at->isFuture() && $this->started_at->subDays($daySpan)->isPast();
     }
 
     protected static function booted(): void

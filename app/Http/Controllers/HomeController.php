@@ -9,7 +9,6 @@ use App\Helpers\Ranking\UserRank;
 use App\Models\Game;
 use App\Models\Tournament;
 use App\Repository\Game\GameRepositoryInterface;
-use App\Service\TimeManagementServiceInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +17,6 @@ final class HomeController extends Controller
     public function __construct(
         private readonly RankingCalculatorInterface $calculator,
         private readonly GameRepositoryInterface $gameRepository,
-        private readonly TimeManagementServiceInterface $timeManagementService,
     ) {
     }
 
@@ -29,7 +27,7 @@ final class HomeController extends Controller
             return view('winner', ['ranking' => $collection]);
         }
 
-        $nextGame = $this->gameRepository->getNextGameByDateTime($this->timeManagementService->now());
+        $nextGame = $this->gameRepository->getNextGame();
         if (isset($nextGame) &&
             Auth::user() &&
             Game::where('started_at', $nextGame->started_at)->count() > 1 &&
@@ -44,7 +42,7 @@ final class HomeController extends Controller
             'champion' => auth()->user()->champion,
             'hasTournamentStarted' => $this->hasTournamentStarted(),
             'hasFinalStarted' => $this->hasFinalStarted(),
-            'lastResults' => $this->gameRepository->getLastThreeGames($this->timeManagementService->now()),
+            'lastResults' => $this->gameRepository->getLastThreeGames(now()),
         ]);
     }
 

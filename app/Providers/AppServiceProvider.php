@@ -10,8 +10,6 @@ use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
-use App\Service\TimeManagementService;
-use App\Service\TimeManagementServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -25,7 +23,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
-        $this->app->bind(TimeManagementServiceInterface::class, TimeManagementService::class);
         $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
     }
 
