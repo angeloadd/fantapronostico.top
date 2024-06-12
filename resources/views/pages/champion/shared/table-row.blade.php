@@ -11,5 +11,5 @@
         {{$champion->user->name}}
     </td>
     <td>{{__($champion->team->name)}}</td>
-    <td>{{$champion->player->displayed_name}} ({{$champion->player->national->name}})</td>
+    <td>{{$champion->player->displayed_name}} ({{__($champion->player->national->name)}})</td>
 </tr>
