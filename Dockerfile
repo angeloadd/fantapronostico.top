@@ -12,7 +12,7 @@ ARG NODE_VERSION=21
 # Conditional build. By Injecting this argument we include dev build or prod build
 ARG BUILD_VERSION=prod
 # Add arguments in composer run
-ARG COMPOSER_ARGS="--no-dev"
+ARG COMPOSER_ARGS="--no-dev --optimize-autoloader"
 
 ### BASE BUILD STAGE ###
 
@@ -32,9 +32,8 @@ COPY . /var/www/html
 # Run composer install. Add possible flags as argument as we could need different flags depending on env
 RUN composer install ${COMPOSER_ARGS} \
     && mkdir -p storage/logs \
-    && php artisan optimize:clear \
+#    && php artisan optimize:clear \
     && chown -R www-data:www-data /var/www/html \
-    && sed -i 's/protected \$proxies/protected \$proxies = "*"/g' app/Http/Middleware/TrustProxies.php \
     && echo "MAILTO=\"\"\n* * * * * www-data /usr/bin/php /var/www/html/artisan schedule:run" > /etc/cron.d/laravel \
     && cp .fly/entrypoint.sh /entrypoint \
     && chmod +x /entrypoint

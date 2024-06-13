@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "fp2024"
+app = "fantapronostico"
 primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = 30
@@ -17,22 +17,20 @@ COMPOSER_ARGS= ""
 [env]
 APP_ENV = "production"
 APP_URL="http://0.0.0.0:8080"
-APP_NAME = "https://fp2024.fly.dev"
+APP_NAME = "fantapronostico.top"
 APP_LOCALE = "it"
-DB_CONNECTION = "pgsql"
+APP_TIMEZONE = "Europe/Rome"
+DB_CONNECTION = "fly"
 LOG_CHANNEL = "stderr"
 LOG_LEVEL = "debug"
 LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
 # This is needed for none file session drive as multiple instances don't look in the same place for csrf token
 SESSION_DRIVER = "database"
-CACHE_DRIVER = "database"
-MAIL_MAILER = "smtp"
-MAIL_HOST = "email-smtp.eu-north-1.amazonaws.com"
-MAIL_PORT = 465
-MAIL_USERNAME = "AKIAQ3EGUOY4ELVKMSVB"
-MAIL_ENCRYPTION= "tls"
-MAIL_FROM_ADDRESS="no-replay@support.fantapronostico.top"
-MAIL_FROM_NAME="fantapronostico"
+CACHE_STORE = "database"
+QUEUE_CONNECTION = "database"
+MAIL_MAILER = "resend"
+MAIL_FROM_ADDRESS= "support@fantapronostico.top"
+MAIL_FROM_NAME = "Fantapronostico"
 
 [[mounts]]
 source = "storage_vol"
