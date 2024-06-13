@@ -11,16 +11,15 @@ $doScheduleBeforeTournamentIsFinished = static fn () => Tournament::first()
     ?->addHours(6)
     ?->isFuture();
 
-
-    Schedule::command('fp:teams:get')
-    ->everyMinute()
+Schedule::command('fp:teams:get')
+    ->dailyAt('04:00')
     ->when($doScheduleBeforeTournamentIsFinished);
 Schedule::command('fp:fetch:games')
-->everyMinute()
-->when($doScheduleBeforeTournamentIsFinished);
+    ->dailyAt('04:05')
+    ->when($doScheduleBeforeTournamentIsFinished);
 Schedule::command('fp:fetch:players')
-->everyMinute()
-->when($doScheduleBeforeTournamentIsFinished);
+    ->dailyAt('04:10')
+    ->when($doScheduleBeforeTournamentIsFinished);
 
 Schedule::command('fp:fetch:games:events')
     ->everyThirtyMinutes()
