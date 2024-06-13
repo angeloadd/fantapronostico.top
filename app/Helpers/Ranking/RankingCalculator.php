@@ -13,8 +13,6 @@ final class RankingCalculator implements RankingCalculatorInterface
 {
     public function get(League $league): Collection
     {
-        Cache::clear();
-
         return Cache::remember(
             'league-' . $league->id . '-rank',
             now()->addDay(),
