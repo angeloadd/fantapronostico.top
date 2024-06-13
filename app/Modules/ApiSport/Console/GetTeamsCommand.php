@@ -17,6 +17,7 @@ use Throwable;
 
 final class GetTeamsCommand extends Command
 {
+    private const OUTPUT = '%s: Successfully updated %s teams';
     /**
      * @var string
      */
@@ -52,8 +53,8 @@ final class GetTeamsCommand extends Command
         DB::commit();
 
         $numberOfTeams = count($teamsDto->teams());
-        $logger->info('Successfully updated ' . $numberOfTeams . ' teams');
-        $this->info('Successfully updated ' . $numberOfTeams . ' teams');
+        $logger->info(sprintf(self::OUTPUT, 'logger', $numberOfTeams));
+        $this->info(sprintf(self::OUTPUT, 'console', $numberOfTeams));
 
         return self::SUCCESS;
     }
