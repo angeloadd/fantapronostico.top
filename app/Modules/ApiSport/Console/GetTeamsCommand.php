@@ -4,30 +4,35 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Console;
 
+use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
 use App\Modules\ApiSport\Request\GetTeamsRequest;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use App\Modules\Tournament\Models\Team;
+use ErrorException;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\DB;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class GetTeamsCommand extends Command
 {
-    public const EURO_2024 = 2024;
-
-    public const EURO_API_ID = 4;
-
     /**
      * @var string
      */
-    protected $signature = 'fp:teams:get {--L|leagueId= : League ID to get tournament api id and seson associated}';
+    protected $signature = 'fp:teams:get';
 
     /**
      * @var string
      */
     protected $description = 'Get teams from api sports by season and league';
 
+    /**
+     * @throws Throwable
+     * @throws ConnectionException
+     * @throws InvalidApisportTokenException
+     * @throws ErrorException
+     */
     public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
     {
         $teamsDto = $apiSportService->getTeamsBySeasonAndLeague(new GetTeamsRequest(4, 2024));

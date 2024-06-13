@@ -13,6 +13,7 @@ use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Service\ApiSportService;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
 
@@ -34,7 +35,7 @@ final class ApiSportServiceProvider extends ServiceProvider
         $this->app->bind(MapperInterface::class, ApiSportMapper::class);
         $this->app->extend(
             MapperInterface::class,
-            static fn (MapperInterface $mapper) => new ExceptionMapperDecorator($mapper)
+            static fn (MapperInterface $mapper) => new ExceptionMapperDecorator($mapper, Log::channel('schedule'))
         );
 
         $this->provideScheduleLogger();

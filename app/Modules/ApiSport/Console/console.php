@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 use App\Models\Game;
 use App\Models\Tournament;
+use App\Modules\League\Models\League;
 
-$doScheduleBeforeTournamentIsFinished = static fn () => ! empty(Tournament::first()
+$doScheduleBeforeTournamentIsFinished = static fn () => Tournament::first()
     ?->final_started_at
     ?->addHours(6)
-    ?->isFuture()
-);
+    ?->isFuture();
 
-Schedule::call(
-    static function (): void {
-        Artisan::call('fp:teams:get', ['--league' => 4, '--season' => 2024]);
-        Artisan::call('fp:fetch:games');
-        Artisan::call('fp:fetch:players');
-    }
-)->dailyAt('04:00')
+
+    Schedule::command('fp:teams:get')
+    ->everyMinute()
     ->when($doScheduleBeforeTournamentIsFinished);
+Schedule::command('fp:fetch:games')
+->everyMinute()
+->when($doScheduleBeforeTournamentIsFinished);
+Schedule::command('fp:fetch:players')
+->everyMinute()
+->when($doScheduleBeforeTournamentIsFinished);
 
 Schedule::command('fp:fetch:games:events')
     ->everyThirtyMinutes()
@@ -28,5 +30,5 @@ Schedule::command('fp:fetch:champions')
     ->everyFiveMinutes()
     ->when(
         static fn () => Tournament::first()?->final_started_at?->isPast() &&
-        Game::all()->every('status', '=', 'finished')
+            Game::all()->every('status', '=', 'finished')
     );

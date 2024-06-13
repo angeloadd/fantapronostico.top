@@ -24,6 +24,7 @@ services:
     command: postgres
     volumes:
       - .fly/data/:/var/lib/postgresql/
+      -
     ports:
       - "5433:5432"
     environment:
