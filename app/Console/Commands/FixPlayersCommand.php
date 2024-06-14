@@ -33,7 +33,14 @@ final class FixPlayersCommand extends Command
     public function handle(): int
     {
         try {
-            $this->info('Nothing to fix');
+            Player::create([
+                'id' => 864,
+                'display_name' => 'E. Can',
+                'first_name' => 'Emre',
+                'last_name' => 'Can',
+                'club_id' => null,
+                'national_id' => 10,
+            ]);
 
             return self::SUCCESS;
         } catch (Throwable $e) {
