@@ -35,7 +35,7 @@ final class FixPlayersCommand extends Command
         try {
             Player::create([
                 'id' => 864,
-                'display_name' => 'E. Can',
+                'displayed_name' => 'E. Can',
                 'first_name' => 'Emre',
                 'last_name' => 'Can',
                 'club_id' => null,
