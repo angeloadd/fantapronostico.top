@@ -187,7 +187,7 @@ final class Game extends Model
     public function homeTeam(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => ! $team->pivot->is_away)->first()
+            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => !$team->pivot->is_away)->first()
         );
     }
 
@@ -205,8 +205,8 @@ final class Game extends Model
     {
         return Attribute::make(
             get: fn (): int => $this->goals->filter(
-                fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && ! $goal->is_autogoal
-            )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && $goal->is_autogoal)->count(),
+                    fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && !$goal->is_autogoal
+                )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && $goal->is_autogoal)->count(),
         );
     }
 
@@ -214,8 +214,8 @@ final class Game extends Model
     {
         return Attribute::get(
             fn (): int => $this->goals->filter(
-                fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && ! $goal->is_autogoal
-            )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && $goal->is_autogoal)->count(),
+                    fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && !$goal->is_autogoal
+                )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && $goal->is_autogoal)->count(),
         );
     }
 
@@ -241,7 +241,7 @@ final class Game extends Model
         return Attribute::get(
             function () {
                 $homeScorers = [];
-                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && ! $gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$homeScorers): void {
+                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && !$gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$homeScorers): void {
                     $homeScorers[] = $gameGoal->player->id;
                 });
                 if ($this->goals->some(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && $gameGoal->is_autogoal)) {
@@ -262,7 +262,7 @@ final class Game extends Model
         return Attribute::get(
             function () {
                 $awayScorers = [];
-                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && ! $gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$awayScorers): void {
+                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && !$gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$awayScorers): void {
                     $awayScorers[] = $gameGoal->player->id;
                 });
                 if ($this->goals->some(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && $gameGoal->is_autogoal)) {
@@ -326,40 +326,18 @@ final class Game extends Model
     public function addGameEvent(array $toArray): void
     {
         foreach ($toArray['home_scorers'] as $scorer) {
-            try {
-                $this->goals()->create([
-                    'player_id' => $scorer['id'],
-                    'is_autogoal' => $scorer['is_autogoal'] ?? false,
-                    'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
-                ]);
-            } catch (Throwable $exception) {
-                if (str_contains($exception->getMessage(), 'violates foreign key')) {
-                    Player::factory()->create([
-                        'id' => $scorer['id'],
-                        'national_id' => $this->home_team->id,
-                    ]);
-                } else {
-                    throw $exception;
-                }
-            }
+            $this->goals()->create([
+                'player_id' => $scorer['id'],
+                'is_autogoal' => $scorer['is_autogoal'] ?? false,
+                'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
+            ]);
         }
         foreach ($toArray['away_scorers'] as $scorer) {
-            try {
-                $this->goals()->create([
-                    'player_id' => $scorer['id'],
-                    'is_autogoal' => $scorer['is_autogoal'] ?? false,
-                    'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
-                ]);
-            } catch (Throwable $exception) {
-                if (str_contains($exception->getMessage(), 'violates foreign key')) {
-                    Player::factory()->create([
-                        'id' => $scorer['id'],
-                        'national_id' => $this->away_team->id,
-                    ]);
-                } else {
-                    throw $exception;
-                }
-            }
+            $this->goals()->create([
+                'player_id' => $scorer['id'],
+                'is_autogoal' => $scorer['is_autogoal'] ?? false,
+                'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
+            ]);
         }
 
         $this->status = 'finished';

@@ -53,8 +53,10 @@ final class FetchGameEventsCommand extends Command
                 if ( ! in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
-                $response = $apisport->get('fixtures/events', ['id' => $game->id, 'type' => 'Goal']);
+                $response = $apisport->get('fixtures/events', ['fixture' => $game->id, 'type' => 'Goal']);
+
                 $events = GameEventsMapper::fromArray($response['response'], $game);
+
                 $game->addGameEvent($events->toArray());
                 $count++;
             }

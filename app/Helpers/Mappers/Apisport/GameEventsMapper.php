@@ -16,10 +16,10 @@ final class GameEventsMapper
 
     public static function fromArray(array $response, Game $game): self
     {
-        $homeScorers = self::getList($response, $game->home_team->id);
-        $awayScorers = self::getList($response, $game->away_team->id);
-        $homeResult = self::inferResult($homeScorers);
-        $awayResult = self::inferResult($awayScorers);
+        $homeScorers = self::getList($response, $game->home_team->api_id);
+        $awayScorers = self::getList($response, $game->away_team->api_id);
+        $homeResult = count($homeScorers);
+        $awayResult = count($awayScorers);
 
         return new self([
             'home_score' => $homeResult,
@@ -58,16 +58,6 @@ final class GameEventsMapper
         }
 
         return $scorerList;
-    }
-
-    private static function inferResult(array $list): int
-    {
-        return count(
-            array_filter(
-                $list,
-                static fn (array $goalEvent) => ! $goalEvent['is_autogoal']
-            )
-        );
     }
 
     private static function getGameSign(?int $home, ?int $away): ?string
