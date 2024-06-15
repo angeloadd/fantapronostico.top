@@ -19,5 +19,5 @@ foreach ($consoleFromModules as $moduleConsolePath) {
     require $moduleConsolePath;
 }
 
-//Schedule::command('fp:bot:telegram')
-//    ->everyMinute();
+Schedule::command('fp:bot:telegram')
+    ->everyThirtyMinutes();
