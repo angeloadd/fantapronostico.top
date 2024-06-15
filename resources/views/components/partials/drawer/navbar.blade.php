@@ -1,4 +1,4 @@
-<div class="sticky z-10 top-0 w-full navbar bg-accent mb-2 flex justify-between items-center lg:hidden">
+<div class="sticky z-10 top-0 w-full navbar bg-accent flex justify-between items-center lg:hidden">
     <div>
         <x-partials.logo.large primary="#e5e7eb"/>
     </div>
