@@ -18,3 +18,7 @@ if ( ! $consoleFromModules) {
 foreach ($consoleFromModules as $moduleConsolePath) {
     require $moduleConsolePath;
 }
+
+
+Schedule::command('fp:bot:telegram')
+    ->everyMinute();
