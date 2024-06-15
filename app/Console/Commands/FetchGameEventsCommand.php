@@ -61,7 +61,7 @@ final class FetchGameEventsCommand extends Command
                 $count++;
             }
         } catch (ExternalSystemUnavailableException|InvalidApisportTokenException $e) {
-            Log::error(
+            Log::channel('schedule')->error(
                 'Failed to fetch: ' . $e->getMessage(),
                 [
                     'message' => $e->getMessage(),
@@ -73,7 +73,7 @@ final class FetchGameEventsCommand extends Command
 
             return self::FAILURE;
         } catch (Throwable $e) {
-            Log::error(
+            Log::channel('schedule')->error(
                 $e->getMessage(),
                 [
                     'message' => $e->getMessage(),
