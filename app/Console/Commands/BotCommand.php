@@ -39,6 +39,10 @@ class BotCommand extends Command
                 ->first();
         }
 
+        if($game === null){
+            return 1;
+        }
+
         try {
             $ciao = Telegram::bot('fpbot');
             $ciao->sendMessage([
