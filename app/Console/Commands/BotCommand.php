@@ -15,7 +15,7 @@ class BotCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:bot-command';
+    protected $signature = 'fp:bot:telegram';
 
     /**
      * The console command description.
