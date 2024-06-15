@@ -14,7 +14,7 @@
             <x-home::shared.ranking :ranking="$ranking"/>
         </div>
         <div>
-            <x-home::shared.last-results :$lastResults :$champion/>
+            <x-home::shared.last-results :$lastResults :$champion :$games :game="$nextGame"/>
         </div>
         <div class="row-start-3">
             <x-home::shared.champion :champion="$champion" :hasTournamentStarted="$hasTournamentStarted"/>

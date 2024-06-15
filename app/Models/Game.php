@@ -94,6 +94,7 @@ final class Game extends Model
     {
         return $query->fromLatest()
             ->where('started_at', '<', $now)
+            ->where('status', 'finished')
             ->limit(3);
     }
 

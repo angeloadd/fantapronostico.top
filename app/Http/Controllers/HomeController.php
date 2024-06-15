@@ -45,6 +45,7 @@ final class HomeController extends Controller
             'isWinnerDeclared' => $this->isWinnerDeclared($tournament),
             'winnerName' => $ranking->first()->userName(),
             'leagueName' => $league->name,
+            'games' => $this->gameRepository->getAll(),
         ]);
     }
 
