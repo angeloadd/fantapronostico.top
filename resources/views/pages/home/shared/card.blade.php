@@ -26,7 +26,7 @@
                                 <a @class([
                         'bg-accent text-accent-content' => $game->id === $gameInBar->id,
                         ]) href="{{route('prediction.index', ['game' => $gameInBar])}}">
-                                    {{$gameInBar->home_team->name}} - {{$gameInBar->away_team->name}}
+                                    {{__($gameInBar->home_team->name)}} - {{__($gameInBar->away_team->name)}}
                                 </a>
                             </li>
                         @endforeach
