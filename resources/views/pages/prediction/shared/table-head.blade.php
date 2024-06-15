@@ -1,5 +1,5 @@
 @php
-    $results='Risultato<span class="sm:hidden">%s - %s</span><span class="hidden sm:block">%s - %s</span>';
+    $results='Risultato <span class="sm:hidden">%s - %s</span><span class="hidden sm:block">%s - %s</span>';
 @endphp
 
 <x-table.head
