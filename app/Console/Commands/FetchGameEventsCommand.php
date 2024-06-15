@@ -44,13 +44,14 @@ final class FetchGameEventsCommand extends Command
                 if (($key + 1) % 5 === 0) {
                     sleep(60);
                 }
-                $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $date = $game->started_at;
-                if ($date->addHours(2)->addMinutes(10)->gte(now())) {
+                if ($date->addMinutes(119)->isFuture()) {
                     continue;
                 }
+
+                $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $isFinished = $apisport->get('fixtures', ['id' => $game->id]);
-                if ( ! in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
+                if (!in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
                 $response = $apisport->get('fixtures/events', ['fixture' => $game->id, 'type' => 'Goal']);
