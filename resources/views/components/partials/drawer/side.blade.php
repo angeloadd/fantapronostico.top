@@ -19,7 +19,7 @@
             <li>
                 <div class="dropdown dropdown-top dropdown-start flex hover:bg-neutral/30">
                     <div tabindex="0" role="button" class=" flex items-center w-full">
-                        <img src="{{Vite::asset('resources/img/sidebar/profile.svg')}}"
+                        <img src="{{Vite::asset('resources/assets/images/profile.svg')}}"
                              alt="grind"
                              width="32"
                              class="rounded-circle me-2">

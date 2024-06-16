@@ -21,7 +21,6 @@ final class GameMapperCollection
                         'away_team' => $item['teams']['away']['id'],
                         'started_at' => $item['fixture']['timestamp'],
                         'stage' => self::getGameType($item['league']['round']),
-                        'status' => 'not_started',
                         'tournament_id' => 4,
                     ];
                 },
