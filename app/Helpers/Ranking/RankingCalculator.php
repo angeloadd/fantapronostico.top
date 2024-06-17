@@ -20,8 +20,7 @@ final class RankingCalculator implements RankingCalculatorInterface
                 $ranks = $league
                     ->users
                     ->filter(static fn (User $user) => 'accepted' === $user->pivot->status)
-                    ->map(static fn (User $user): UserRank => (new UserRank($user, $league))->calculate());
-
+                    ->map(static fn (User $user): UserRank => (new UserRank($user->id, $user->name, $league->id))->calculate());
                 return (new Sorter())(
                     $ranks,
                     [

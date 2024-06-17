@@ -15,6 +15,15 @@ final readonly class TeamDto
     ) {
     }
 
+    /**
+     * @return array{
+     *     api_id: int,
+     *     name: string,
+     *     code: string,
+     *     logo: string,
+     *     is_national: bool,
+     * }
+     */
     public function toArray(): array
     {
         return [

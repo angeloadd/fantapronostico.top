@@ -8,6 +8,9 @@ use ReflectionClass;
 
 trait HasQuery
 {
+    /**
+     * @return array<string, int|string>
+     */
     public function toQuery(): array
     {
         $query = [];

@@ -11,6 +11,10 @@ use Illuminate\Http\Client\ConnectionException;
 interface ApiSportClientInterface
 {
     /**
+     * @param array<string, string|int> $query
+     *
+     * @return array<string, array<string, int|string>>
+     *
      * @throws ExternalSystemUnavailableException
      * @throws InvalidApisportTokenException
      * @throws ConnectionException

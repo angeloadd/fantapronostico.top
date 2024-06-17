@@ -21,6 +21,7 @@ final class GameMapperCollection
                         'away_team' => $item['teams']['away']['id'],
                         'started_at' => $item['fixture']['timestamp'],
                         'stage' => self::getGameType($item['league']['round']),
+                        'status' => self::getGameStatus($item['fixture']['status']['short']),
                         'tournament_id' => 4,
                     ];
                 },
@@ -32,6 +33,15 @@ final class GameMapperCollection
     public function toArray(): array
     {
         return $this->teamMappers;
+    }
+
+    private static function getGameStatus(string $status): string
+    {
+        if (in_array($status, ['FT', 'AET', 'PEN'])) {
+            return 'finished';
+        }
+
+        return 'not_started';
     }
 
     private static function getGameType(string $round): string

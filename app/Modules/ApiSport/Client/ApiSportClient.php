@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Http;
 final readonly class ApiSportClient implements ApiSportClientInterface
 {
     private const API_SPORT_AUTH_HEADER = 'x-apisports-key';
-
     private const API_SPORT_INVALID_TOKEN_KEY = 'errors.token';
-
     private const RESPONSE_KEY = 'response';
 
     public function __construct(
@@ -25,9 +23,12 @@ final readonly class ApiSportClient implements ApiSportClientInterface
     }
 
     /**
-     * @throws ExternalSystemUnavailableException
-     * @throws InvalidApisportTokenException
+     * @param array<string, int> $query
+     *
+     * @return array<string, array<string, int|string>>
+     *
      * @throws ConnectionException
+     * @throws InvalidApisportTokenException
      */
     public function get(string $endpoint, array $query = []): array
     {
@@ -35,13 +36,14 @@ final readonly class ApiSportClient implements ApiSportClientInterface
             ->withHeaders([self::API_SPORT_AUTH_HEADER => $this->apiToken])
             ->get($endpoint, $query);
 
+        /** @var array<string, array<string, int|string>> $json */
         $json = $response->json();
 
         if (Arr::has($json, self::API_SPORT_INVALID_TOKEN_KEY)) {
             throw InvalidApisportTokenException::create();
         }
 
-        if ( ! Arr::has($json, self::RESPONSE_KEY)) {
+        if (!Arr::has($json, self::RESPONSE_KEY)) {
             throw ExternalSystemUnavailableException::fromResponse((string) $response);
         }
 

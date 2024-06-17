@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Game;
 use App\Models\Tournament;
-use App\Modules\League\Models\League;
 
 $doScheduleBeforeTournamentIsFinished = static fn () => Tournament::first()
     ?->final_started_at
@@ -14,7 +13,7 @@ $doScheduleBeforeTournamentIsFinished = static fn () => Tournament::first()
 Schedule::command('fp:teams:get')
     ->dailyAt('04:00')
     ->when($doScheduleBeforeTournamentIsFinished);
-Schedule::command('fp:fetch:games')
+Schedule::command('fp:games:get')
     ->dailyAt('04:05')
     ->when($doScheduleBeforeTournamentIsFinished);
 Schedule::command('fp:fetch:players')

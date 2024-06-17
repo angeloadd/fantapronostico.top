@@ -18,6 +18,7 @@ use Throwable;
 final class GetTeamsCommand extends Command
 {
     private const OUTPUT = '%s: Successfully updated %s teams';
+
     /**
      * @var string
      */

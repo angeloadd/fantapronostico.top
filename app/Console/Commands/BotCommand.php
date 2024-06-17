@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Game;
@@ -8,7 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
-class BotCommand extends Command
+final class BotCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -33,13 +35,13 @@ class BotCommand extends Command
             ->where('started_at', '>', now()->addMinutes(59))
             ->first();
 
-        if ($game === null) {
+        if (null === $game) {
             $game = Game::where('started_at', '<', now()->addMinutes(60 * 24))
                 ->where('started_at', '>', now()->addMinutes((60 * 23) + 59))
                 ->first();
         }
 
-        if($game === null){
+        if (null === $game) {
             return 1;
         }
 

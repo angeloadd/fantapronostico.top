@@ -67,41 +67,41 @@ final class RankCalculatorTest extends TestCase
         ]);
 
         Prediction::factory([
-                'game_id' => $game->id,
-                'sign' => 'x',
-                'home_score' => '1',
-                'away_score' => '0',
-                'home_scorer_id' => $scorerId,
-                'away_scorer_id' => 0,
+            'game_id' => $game->id,
+            'sign' => 'x',
+            'home_score' => '1',
+            'away_score' => '0',
+            'home_scorer_id' => $scorerId,
+            'away_scorer_id' => 0,
             'user_id' => $this->users[0]->id,
-            ])->create();
-       Prediction::factory([
-                'game_id' => $game->id,
-                'sign' => 'x',
-                'home_score' => '1',
-                'away_score' => '0',
-                'home_scorer_id' => 0,
-                'away_scorer_id' => -1,
+        ])->create();
+        Prediction::factory([
+            'game_id' => $game->id,
+            'sign' => 'x',
+            'home_score' => '1',
+            'away_score' => '0',
+            'home_scorer_id' => 0,
+            'away_scorer_id' => -1,
             'user_id' => $this->users[1]->id,
-            ])->create();
+        ])->create();
         Prediction::factory([
-                'game_id' => $game->id,
-                'sign' => '2',
-                'home_score' => '0',
-                'away_score' => '1',
-                'home_scorer_id' => 0,
-                'away_scorer_id' => $game->away_team->players->first()->id,
+            'game_id' => $game->id,
+            'sign' => '2',
+            'home_score' => '0',
+            'away_score' => '1',
+            'home_scorer_id' => 0,
+            'away_scorer_id' => $game->away_team->players->first()->id,
             'user_id' => $this->users[2]->id,
-            ])->create();
+        ])->create();
         Prediction::factory([
-                'game_id' => $game->id,
-                'sign' => '2',
-                'home_score' => '0',
-                'away_score' => '1',
-                'home_scorer_id' => $scorerId,
-                'away_scorer_id' => 0,
-                'user_id' => $this->users[3]->id,
-            ])->create();
+            'game_id' => $game->id,
+            'sign' => '2',
+            'home_score' => '0',
+            'away_score' => '1',
+            'home_scorer_id' => $scorerId,
+            'away_scorer_id' => 0,
+            'user_id' => $this->users[3]->id,
+        ])->create();
 
         $homeTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
         $awayTeam->players->map(static fn (Player $player) => $player->games()->attach($game));

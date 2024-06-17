@@ -15,8 +15,9 @@ final class UserRank
     private const WINNER_TEAM_POINTS = 15;
 
     public function __construct(
-        private readonly User $user,
-        private readonly League $league,
+        public readonly int $userId,
+        public readonly string $userName,
+        public readonly int $leagueId,
         private int $total = 0,
         private int $numberOfResults = 0,
         private int $numberOfSigns = 0,
@@ -66,27 +67,23 @@ final class UserRank
 
     public function userName(): string
     {
-        return $this->user->name;
+        return $this->userName;
     }
 
     public function userId(): int
     {
-        return $this->user->id;
-    }
-
-    public function user(): User
-    {
-        return $this->user;
+        return $this->userId;
     }
 
     private function calculateResult(): void
     {
-        if (null === $this->user->predictions) {
+        $user = User::find($this->userId);
+        if (null === $user->predictions) {
             return;
         }
 
         //TODO: Relation league_prediction
-        $predictions = $this->user->predictions->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status);
+        $predictions = $user->predictions->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status);
         $predictions = $predictions->map(fn (Prediction $prediction) => PredictionScoreFactory::create($prediction));
 
         $predictions->each(function (PredictionScore $prediction) {
@@ -119,7 +116,7 @@ final class UserRank
 
     private function addWinnerAndTopScorerScores(): void
     {
-        $tournament = $this->league->tournament;
+        $tournament = League::find($this->leagueId)->tournament;
         $winner = $tournament->teams?->where('is_winner', true)?->first();
         if (null === $winner) {
             return;

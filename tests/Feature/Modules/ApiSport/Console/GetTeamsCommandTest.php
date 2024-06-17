@@ -12,20 +12,22 @@ use Tests\TestCase;
 
 final class GetTeamsCommandTest extends TestCase
 {
-    private const SECOND_DTO = [
-        'id' => 2,
-        'is_national' => false,
-        'code' => 'AFR',
-        'name' => 'Country',
-        'logo' => 'Logo 2',
-    ];
+    use GetMockResponseTrait;
 
     private const FIRST_DTO = [
-        'id' => 1,
+        'api_id' => 1,
         'is_national' => true,
-        'code' => 'CNR',
-        'name' => 'Nation',
-        'logo' => 'Logo 1',
+        'code' => 'BEL',
+        'name' => 'Belgium',
+        'logo' => 'https://media.api-sports.io/football/teams/1.png',
+    ];
+
+    private const SECOND_DTO = [
+        'api_id' => 2,
+        'is_national' => true,
+        'code' => 'FRA',
+        'name' => 'France',
+        'logo' => 'https://media.api-sports.io/football/teams/2.png',
     ];
 
     protected function setUp(): void
@@ -36,7 +38,7 @@ final class GetTeamsCommandTest extends TestCase
         }
         Config::set('api-sport.host', 'api-sport-host');
         Http::fake([
-            'api-sport-host/*' => Http::response($this->getResponse()),
+            'api-sport-host/*' => Http::response($this->getResponse('teams.json')),
         ]);
 
         Tournament::factory()->euro()->create();
@@ -49,41 +51,11 @@ final class GetTeamsCommandTest extends TestCase
          */
         $pendingCommand = $this->artisan('fp:teams:get');
         $pendingCommand
-            ->expectsOutput('Successfully updated 2 teams')
+            ->expectsOutput('console: Successfully updated 24 teams')
             ->assertOk()
             ->run();
 
         $this->assertDatabaseHas('teams', self::FIRST_DTO);
         $this->assertDatabaseHas('teams', self::SECOND_DTO);
-    }
-
-    /**
-     * @return array{parameters: array{league: int}, response: array{array{team: array{id: int, national: bool, code: string, name: string, logo: string}}}}
-     */
-    private function getResponse(): array
-    {
-        return [
-            'parameters' => ['league' => 1],
-            'response' => [
-                [
-                    'team' => [
-                        'id' => 1,
-                        'national' => true,
-                        'code' => 'CNR',
-                        'name' => 'Nation',
-                        'logo' => 'Logo 1',
-                    ],
-                ],
-                [
-                    'team' => [
-                        'id' => 2,
-                        'national' => false,
-                        'code' => 'AFR',
-                        'name' => 'Country',
-                        'logo' => 'Logo 2',
-                    ],
-                ],
-            ],
-        ];
     }
 }

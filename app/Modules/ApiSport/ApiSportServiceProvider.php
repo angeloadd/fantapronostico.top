@@ -6,6 +6,7 @@ namespace App\Modules\ApiSport;
 
 use App\Modules\ApiSport\Client\ApiSportClient;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Console\GetGamesCommand;
 use App\Modules\ApiSport\Console\GetTeamsCommand;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\ExceptionMapperDecorator;
@@ -28,7 +29,7 @@ final class ApiSportServiceProvider extends ServiceProvider
 
         $this->app->bind(
             ApiSportClientInterface::class,
-            static fn () => new ApiSportClient(config('api-sport.host'), config('api-sport.token'))
+            static fn () => new ApiSportClient((string) config('api-sport.host'), (string) config('api-sport.token'))
         );
 
         $this->app->bind(ApiSportServiceInterface::class, ApiSportService::class);
@@ -51,13 +52,20 @@ final class ApiSportServiceProvider extends ServiceProvider
             [GetTeamsCommand::class, 'handle'],
             static fn (GetTeamsCommand $command, Application $app) => $command->handle(
                 $app->make(ApiSportServiceInterface::class),
-                $app->make(LoggerInterface::class)->channel('schedule')
+                Log::channel('schedule')
+            )
+        );
+        $this->app->bindMethod(
+            [GetGamesCommand::class, 'handle'],
+            static fn (GetGamesCommand $command, Application $app) => $command->handle(
+                $app->make(ApiSportServiceInterface::class),
+                Log::channel('schedule')
             )
         );
 
         $this->app->when(ExceptionMapperDecorator::class)
             ->needs(LoggerInterface::class)
-            ->give(static fn (Application $app) => $app->make(LoggerInterface::class)->channel('schedule'));
+            ->give(static fn (Application $app) => Log::channel('schedule'));
 
     }
 }

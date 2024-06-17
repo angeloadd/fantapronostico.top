@@ -46,7 +46,7 @@
         "test:coverage": "XDEBUG_MODE=coverage @test --coverage",
         "check": "vendor/bin/pint --test",
         "fix": "vendor/bin/pint",
-        "stan": "vendor/bin/phpstan analyse",
+        "stan": "vendor/bin/phpstan analyse --memory-limit 1G",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
@@ -70,7 +70,14 @@
             "@php artisan ide-helper:models --write",
             "@fix"
         ],
-        "deploy": "COMPOSER_ALLOW_SUPERUSER=1 git pull && php artisan optimize && npm run build"
+        "deploy":[
+            "git pull",
+            "composer install -q",
+            "php artisan migrate",
+            "php artisan optimize",
+            "npm run build",
+            "chown -R www-data:www-data storage/ bootstrap/cache/"
+        ]
     },
     "extra": {
         "branch-alias": {

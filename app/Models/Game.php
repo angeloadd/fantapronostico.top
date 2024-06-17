@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Helpers\Mappers\Apisport\GameMapperCollection;
+use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\Tournament\Models\Team;
 use Database\Factories\GameFactory;
 use DateTimeInterface;
@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Throwable;
 
 /**
  * App\Models\Game
@@ -111,25 +110,35 @@ final class Game extends Model
         )->where('status', 'not_started')->get();
     }
 
-    public static function upsertMany(GameMapperCollection $games): void
+    public static function upsertMany(GamesDto $games): void
     {
         $tournamentId = null;
-        foreach ($games->toArray() as $game) {
+        foreach ($games->games() as $game) {
             if (null === $tournamentId) {
-                $tournamentId = Tournament::where('api_id', $game['tournament_id'])->firstOrFail()->id;
+                $tournamentId = Tournament::whereApiId($game->tournamentApiId)
+                    ->firstOrFail()
+                    ->id;
             }
-            $homeId = $game['home_team'];
-            $awayId = $game['away_team'];
-            unset($game['home_team'], $game['away_team']);
-
-            $game['tournament_id'] = $tournamentId;
 
             /**
              * @var Game $gameModel
              */
-            $gameModel = self::updateOrCreate(['id' => $game['id']], $game);
-            $gameModel->teams()->attach(Team::where('api_id', $homeId)->firstOrFail()->id, ['is_away' => false]);
-            $gameModel->teams()->attach(Team::where('api_id', $awayId)->firstOrFail()->id, ['is_away' => true]);
+            $gameModel = self::updateOrCreate(['id' => $game->apiId], [
+                'id' => $game->apiId,
+                'started_at' => $game->startedAt,
+                'stage' => $game->stage,
+                'status' => $game->status,
+                'tournament_id' => $tournamentId,
+            ]);
+
+            if ( ! isset($gameModel->home_team, $gameModel->away_team)) {
+                $gameModel->teams()
+                    ->attach([
+                        Team::whereApiId($game->homeTeamApiId)->firstOrFail()->id => ['is_away' => false],
+                        Team::whereApiId($game->awayTeamApiId)->firstOrFail()->id => ['is_away' => true],
+                    ]);
+            }
+
             $gameModel->save();
         }
     }
@@ -188,7 +197,7 @@ final class Game extends Model
     public function homeTeam(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => !$team->pivot->is_away)->first()
+            get: fn (): ?Team => $this->teams->filter(static fn (Team $team): bool => ! $team->pivot->is_away)->first()
         );
     }
 
@@ -206,8 +215,8 @@ final class Game extends Model
     {
         return Attribute::make(
             get: fn (): int => $this->goals->filter(
-                    fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && !$goal->is_autogoal
-                )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && $goal->is_autogoal)->count(),
+                fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && ! $goal->is_autogoal
+            )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && $goal->is_autogoal)->count(),
         );
     }
 
@@ -215,8 +224,8 @@ final class Game extends Model
     {
         return Attribute::get(
             fn (): int => $this->goals->filter(
-                    fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && !$goal->is_autogoal
-                )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && $goal->is_autogoal)->count(),
+                fn (GameGoal $goal): bool => $goal->player->national_id === $this->away_team->id && ! $goal->is_autogoal
+            )->count() + $this->goals->filter(fn (GameGoal $goal): bool => $goal->player->national_id === $this->home_team->id && $goal->is_autogoal)->count(),
         );
     }
 
@@ -242,7 +251,7 @@ final class Game extends Model
         return Attribute::get(
             function () {
                 $homeScorers = [];
-                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && !$gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$homeScorers): void {
+                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && ! $gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$homeScorers): void {
                     $homeScorers[] = $gameGoal->player->id;
                 });
                 if ($this->goals->some(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && $gameGoal->is_autogoal)) {
@@ -263,7 +272,7 @@ final class Game extends Model
         return Attribute::get(
             function () {
                 $awayScorers = [];
-                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && !$gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$awayScorers): void {
+                $this->goals->filter(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->away_team->id && ! $gameGoal->is_autogoal)->each(function (GameGoal $gameGoal) use (&$awayScorers): void {
                     $awayScorers[] = $gameGoal->player->id;
                 });
                 if ($this->goals->some(fn (GameGoal $gameGoal) => $gameGoal->player->national_id === $this->home_team->id && $gameGoal->is_autogoal)) {

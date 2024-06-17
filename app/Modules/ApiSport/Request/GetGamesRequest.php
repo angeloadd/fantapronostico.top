@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Request;
 
-final readonly class GetTeamsRequest
+final readonly class GetGamesRequest
 {
     use HasQuery;
 
-    public const ENDPOINT = 'teams';
+    public const ENDPOINT = 'fixtures';
 
     public function __construct(
         public int $league,
