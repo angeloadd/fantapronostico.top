@@ -9,5 +9,6 @@ use Illuminate\Support\Collection;
 
 interface RankingCalculatorInterface
 {
+    public function calculate(League $league): Collection;
     public function get(League $league): Collection;
 }

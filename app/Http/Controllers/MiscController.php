@@ -26,7 +26,7 @@ final class MiscController extends Controller
 
     public function statistics(User $user): Renderable
     {
-        $rank = $this->calculator->get()->where(static fn ($item) => $item->user()->id === $user->id)->map(
+        $rank = $this->calculator->calculate()->where(static fn ($item) => $item->user()->id === $user->id)->map(
             static function ($item, $key) {
                 return [
                     'userPosition' => $key,

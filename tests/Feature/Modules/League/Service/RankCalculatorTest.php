@@ -107,7 +107,7 @@ final class RankCalculatorTest extends TestCase
         $awayTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
 
         $calculator = new RankingCalculator();
-        $rank = $calculator->get($this->league);
+        $rank = $calculator->calculate($this->league);
 
         $this->assertSame(8, $rank[0]->total());
         $this->assertSame($this->users[0]->id, $rank[0]->userId());
@@ -193,7 +193,7 @@ final class RankCalculatorTest extends TestCase
         $awayTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
 
         $calculator = new RankingCalculator();
-        $rank = $calculator->get($league);
+        $rank = $calculator->calculate($league);
         Cache::clear();
 
         $this->assertSame(5, $rank[0]->total());

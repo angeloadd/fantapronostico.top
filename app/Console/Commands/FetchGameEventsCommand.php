@@ -90,8 +90,7 @@ final class FetchGameEventsCommand extends Command
             if (null === $league) {
                 throw new InvalidArgumentException('Could not find a league for rank');
             }
-            Cache::forget('league-' . $league->id . '-rank');
-            app(RankingCalculatorInterface::class)->get($league);
+            app(RankingCalculatorInterface::class)->calculate($league);
         }
 
         $this->info('updated ' . $count . ' matches');

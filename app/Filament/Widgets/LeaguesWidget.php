@@ -48,7 +48,7 @@ final class LeaguesWidget extends BaseWidget
                             $user->save();
 
                             Cache::forget('league-' . $league->id . '-rank');
-                            app(RankingCalculatorInterface::class)->get($league);
+                            app(RankingCalculatorInterface::class)->calculate($league);
                         }
                     ),
             ]);
