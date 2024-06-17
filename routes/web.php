@@ -61,7 +61,6 @@ Route::middleware(['auth', LeagueEnricherMiddleware::class])->group(static funct
 
     // classifica
     Route::get('classifica', [RankingController::class, 'officialStanding'])->name('standing');
-    Route::get('rank', [RankingController::class, 'rank'])->name('rank');
 
     Route::get('albo', [MiscController::class, 'albo'])->name('albo');
     Route::get('terms', [MiscController::class, 'terms'])->name('terms');
