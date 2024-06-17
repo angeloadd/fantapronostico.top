@@ -12,7 +12,7 @@ interface GameRepositoryInterface
 {
     public function areGameTeamsSet(Game $game): bool;
 
-    public function getLastThreeGames(DateTimeInterface $dateTime): Collection;
+    public function getLastResults(DateTimeInterface $dateTime): Collection;
 
     public function getNextGame(): ?Game;
 

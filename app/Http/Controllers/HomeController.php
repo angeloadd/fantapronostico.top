@@ -41,7 +41,7 @@ final class HomeController extends Controller
             'champion' => auth()->user()->champion,
             'hasTournamentStarted' => $this->hasTournamentStarted($tournament),
             'hasFinalStarted' => $this->hasFinalStarted($tournament),
-            'lastResults' => $this->gameRepository->getLastThreeGames(now()),
+            'lastResults' => $this->gameRepository->getLastResults(now()),
             'isWinnerDeclared' => $this->isWinnerDeclared($tournament),
             'winnerName' => $ranking->first()->userName(),
             'leagueName' => $league->name,

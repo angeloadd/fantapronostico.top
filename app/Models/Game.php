@@ -50,7 +50,7 @@ use Throwable;
  * @method static Builder|Game whereUpdatedAt($value)
  * @method static Builder|Game whereStartedAt($value)
  * @method static Builder|Game fromLatest()
- * @method static Builder|Game lastThreeGames(\DateTimeInterface $now)
+ * @method static Builder|Game lastResults(\DateTimeInterface $now)
  *
  * @property-read Collection<int, GameGoal> $goals
  * @property-read int|null $goals_count
@@ -90,12 +90,12 @@ final class Game extends Model
      */
     protected $appends = ['home_team', 'away_team', 'away_score', 'home_score', 'sign'];
 
-    public static function scopeLastThreeGames($query, DateTimeInterface $now): Builder
+    public static function scopeLastResults($query, DateTimeInterface $now): Builder
     {
         return $query->fromLatest()
             ->where('started_at', '<', $now)
             ->where('status', 'finished')
-            ->limit(3);
+            ->limit(4);
     }
 
     public static function notCompletedToday(): Collection

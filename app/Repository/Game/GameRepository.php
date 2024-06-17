@@ -59,8 +59,8 @@ final class GameRepository implements GameRepositoryInterface
         return Game::where('started_at', '>', $game->started_at)->first();
     }
 
-    public function getLastThreeGames(DateTimeInterface $dateTime): Collection
+    public function getLastResults(DateTimeInterface $dateTime): Collection
     {
-        return Game::lastThreeGames($dateTime)->get();
+        return Game::lastResults($dateTime)->get();
     }
 }

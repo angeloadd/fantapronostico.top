@@ -2,7 +2,7 @@
 <x-partials.fireworks.fireworks/>
     <div class="h-screen w-full flex flex-col justify-start items-center">
         <x-partials.header.header text="Albo D'Oro" bgColor="bg-amber-400"/>
-        <div class="w-full h-full flex justify-center items-center">
+        <div class="size-full flex justify-center items-center">
             <ul class="timeline timeline-vertical text-xl sm:text-3xl">
                 <li>
                     <time class="timeline-start">2024</time>
