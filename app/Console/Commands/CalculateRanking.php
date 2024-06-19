@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Modules\League\Models\League;
 use Illuminate\Console\Command;
 
-class CalculateRanking extends Command
+final class CalculateRanking extends Command
 {
     /**
      * The name and signature of the console command.
@@ -25,7 +27,7 @@ class CalculateRanking extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         app(RankingCalculatorInterface::class)->calculate(League::first());
     }

@@ -39,7 +39,7 @@ final readonly class GameDto
      *     away_team_id: int,
      *     started_at: int,
      *     stage: string,
-     *     status: string,
+     *     status: GameStatus,
      *     tournament_id: int
      * }
      */
@@ -51,7 +51,7 @@ final readonly class GameDto
             'away_team_id' => $this->awayTeamApiId,
             'started_at' => $this->startedAt,
             'stage' => $this->stage,
-            'status' => $this->status->value,
+            'status' => $this->status,
             'tournament_id' => $this->tournamentApiId,
         ];
     }

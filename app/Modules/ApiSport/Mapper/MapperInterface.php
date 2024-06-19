@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Dto\NationalDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use ErrorException;
 
@@ -60,4 +61,6 @@ interface MapperInterface
      * @throws ErrorException
      */
     public function mapGamesResponse(array $externalResponse): GamesDto;
+
+    public function mapPlayersResponse(array $response): NationalDto;
 }

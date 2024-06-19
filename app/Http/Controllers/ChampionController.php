@@ -42,7 +42,7 @@ final class ChampionController extends Controller
             'pages.champion.create',
             [
                 'teams' => Team::all(),
-                'players' => Player::getInfoForAll(),
+                'players' => Player::getAllPlayerCached(),
                 'firstMatchDate' => $this->getFirstMatchStartDate(),
                 'tournamentLogo' => $tournament?->logo,
                 'tournamentName' => $tournament?->name,
@@ -90,7 +90,7 @@ final class ChampionController extends Controller
             'pages.champion.edit',
             [
                 'teams' => Team::all(),
-                'players' => Player::getInfoForAll(),
+                'players' => Player::getAllPlayerCached(),
                 'champion' => $champion,
                 'firstMatchDate' => $this->getFirstMatchStartDate(),
                 'tournamentLogo' => $tournament?->logo,

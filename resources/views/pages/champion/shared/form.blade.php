@@ -34,9 +34,9 @@
         >
             <option value="" @selected(null === old('topScorer', ($prediction ?? null)?->player))>-- Seleziona Capocannoniere --</option>
             @foreach($players as $player)
-                <option value="{{$player['id']}}" @selected(old('topScorer', ($prediction ?? null)?->player->id) === $player['id'])>
-                    {{$player['name']}} -
-                    {{__($teams->where(static fn ($team) => $team->id === $player['team_id'])->first()->name)}}
+                <option value="{{$player['id']}}" @selected(old('topScorer', ($prediction ?? null)?->player->id) === $player->id)>
+                    {{$player->displayed_name}} -
+                    {{__($teams->where(static fn ($team) => $team->id === $player->national_id)->first()->name)}}
                 </option>
             @endforeach
         </select>

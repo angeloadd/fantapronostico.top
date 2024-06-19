@@ -15,22 +15,6 @@ final class GetGamesCommandTest extends TestCase
 {
     use GetMockResponseTrait;
 
-    private const SECOND_DTO = [
-        'id' => 2,
-        'is_national' => false,
-        'code' => 'AFR',
-        'name' => 'Country',
-        'logo' => 'Logo 2',
-    ];
-
-    private const FIRST_DTO = [
-        'id' => 1,
-        'is_national' => true,
-        'code' => 'CNR',
-        'name' => 'Nation',
-        'logo' => 'Logo 1',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -16,7 +16,7 @@ Schedule::command('fp:teams:get')
 Schedule::command('fp:games:get')
     ->dailyAt('04:05')
     ->when($doScheduleBeforeTournamentIsFinished);
-Schedule::command('fp:fetch:players')
+Schedule::command('fp:players:get')
     ->dailyAt('04:10')
     ->when($doScheduleBeforeTournamentIsFinished);
 

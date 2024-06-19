@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Modules\Auth\Models\User;
+use Closure;
 use Database\Factories\PredictionFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -95,5 +96,29 @@ final class Prediction extends Model
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function homeScorer(): Attribute
+    {
+        return Attribute::get(
+            get: $this->mapScorer($this->away_scorer_id),
+        );
+    }
+
+    public function awayScorer(): Attribute
+    {
+        return Attribute::get(
+            get: $this->mapScorer($this->away_scorer_id),
+        );
+    }
+
+    private function mapScorer(?int $scorerId): Closure
+    {
+        return static fn () => match ($scorerId) {
+            null => 'ammaccabanane',
+            -1 => 'Autogol',
+            0 => 'No Gol',
+            default => Player::find($scorerId)?->displayed_name,
+        };
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\ApiSport\Mapper;
 
 use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Dto\NationalDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
 use ErrorException;
@@ -83,11 +84,17 @@ final readonly class ExceptionMapperDecorator implements MapperInterface
         }
     }
 
+    public function mapPlayersResponse(array $response): NationalDto
+    {
+        try {
+            return $this->mapper->mapPlayersResponse($response);
+        } catch (ErrorException $exception) {
+            $this->logAndThrow($exception, $response);
+        }
+    }
+
     /**
-     * @param Exception|ErrorException $exception
-     * @param mixed[] $externalResponse
-     *
-     * @return never
+     * @param  mixed[]  $externalResponse
      */
     private function logAndThrow(Exception|ErrorException $exception, array $externalResponse): never
     {

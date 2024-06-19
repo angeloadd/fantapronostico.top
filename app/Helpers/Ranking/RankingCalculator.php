@@ -8,7 +8,6 @@ use App\Modules\Auth\Models\User;
 use App\Modules\League\Models\League;
 use DB;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use stdClass;
 
 final class RankingCalculator implements RankingCalculatorInterface
@@ -28,7 +27,7 @@ final class RankingCalculator implements RankingCalculatorInterface
             'scorers' => $rank->scorers(),
             'signs' => $rank->signs(),
             'final_total' => $rank->finalPredictionTotal(),
-            'final_timestamp' => $rank->finalPredictionTimestamp() === 0 ? null : $rank->finalPredictionTimestamp(),
+            'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : $rank->finalPredictionTimestamp(),
         ]);
 
         foreach ($ranking as $rank) {

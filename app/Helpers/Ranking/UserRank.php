@@ -11,6 +11,7 @@ use App\Modules\League\Models\League;
 final class UserRank
 {
     public const TOP_SCORER_POINTS = 10;
+
     private const WINNER_TEAM_POINTS = 15;
 
     public function __construct(

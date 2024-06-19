@@ -12,7 +12,6 @@ use App\Modules\ApiSport\Exceptions\ExternalSystemUnavailableException;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
 use App\Modules\League\Models\League;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Throwable;

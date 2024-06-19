@@ -11,7 +11,7 @@
     <td>{{$prediction->sign}}</td>
     <td>{{$prediction->home_score}} - {{$prediction->away_score}}</td>
     @if(!$prediction->game->isGroupStage())
-        <td>{{\App\Models\Player::getScorer($prediction->home_scorer_id)}}</td>
-        <td>{{\App\Models\Player::getScorer($prediction->away_scorer_id)}}</td>
+        <td>{{$prediction->home_scorer}}</td>
+        <td>{{$prediction->away_scorer}}</td>
     @endif
 </tr>

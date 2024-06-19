@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Helpers\Mappers\Apisport\PlayerMapperCollection;
 use App\Models\Exceptions\ClubAndNationalTeamsCannotBeTheSameException;
 use App\Models\Exceptions\ClubTeamCannotBeNationalException;
 use App\Models\Exceptions\NationalTeamCannotBeClubException;
-use App\Modules\Auth\Database\Factory\PlayerFactory;
+use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\Tournament\Models\Team;
+use Database\Factories\PlayerFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -69,57 +69,35 @@ final class Player extends Model
         'club_id',
     ];
 
-    public static function getScorer(null|string|int $id): string
-    {
-        if (null === $id) {
-            return 'N/A';
-        }
-        if (0 === (int) $id) {
-            return 'No Gol';
-        }
-
-        if (-1 === (int) $id) {
-            return 'Auto Gol';
-        }
-
-        return self::find($id)?->displayed_name;
-    }
-
-    public static function getInfoForAll(): array
-    {
-        return self::playersNamesAndIdsAndTeams(self::all());
-    }
-
-    public static function namesByTeam(int $teamId): array
-    {
-        return self::playersNamesAndIdsAndTeams(self::where('team_id', $teamId)->get());
-    }
-
-    public static function playersNamesAndIdsAndTeams($players): array
+    public static function getAllPlayerCached(string $sortBy = 'national_id'): array
     {
         return Cache::remember(
-            'updatedPlayers',
-            Carbon::create('tomorrow at 4:00'),
-            static function () use ($players) {
-                return $players->map(
-                    static function (Player $player): array {
-                        return [
-                            'id' => $player->id,
-                            'team_id' => $player->national_id,
-                            'name' => $player->getDisplayableName(),
-                        ];
-                    }
-                )->sortBy('team_id')->toArray();
-            }
+            'playersList',
+            Carbon::create('tomorrow at 5:00'),
+            static fn (): Collection => Player::all()->sortBy($sortBy)
         );
     }
 
-    public static function upsertMany(PlayerMapperCollection $players): void
+    public static function upsertMany(NationalsDto $nationals): void
     {
-        foreach ($players->toArray() as $player) {
-            $player['national_id'] = Team::where('api_id', $player['national_id'])->firstOrFail()->id;
-            self::updateOrCreate(['id' => $player['id']], $player);
-            Tournament::first()?->players()->attach($player['id']);
+        foreach ($nationals->nationals() as $national) {
+            /** @var Team $nationalModel */
+            $nationalModel = Team::whereApiId($national->nationalApiId)
+                ->firstOrFail();
+
+            foreach ($national->players() as $player) {
+                $nationalModel->players()
+                    ->updateOrCreate(['id' => $player->apiId], [
+                        'id' => $player->apiId,
+                        'displayed_name' => $player->name,
+                        'national_id' => $nationalModel->id,
+                        'club_id' => null,
+                        'first_name' => '',
+                        'last_name' => '',
+                    ]);
+            }
+
+            $nationalModel->tournaments->first()?->players()->attach($player->apiId);
         }
     }
 
@@ -161,15 +139,6 @@ final class Player extends Model
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(Game::class);
-    }
-
-    public function getDisplayableName(): string
-    {
-        $name = self::where('last_name', $this->last_name)->get()->count() > 1 ?
-            $this->displayed_name :
-            $this->last_name;
-
-        return empty(trim($name)) ? $this->last_name : $name;
     }
 
     protected static function booted(): void

@@ -7,6 +7,8 @@ namespace App\Modules\ApiSport\Mapper;
 use App\Enums\GameStatus;
 use App\Modules\ApiSport\Dto\GameDto;
 use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Dto\NationalDto;
+use App\Modules\ApiSport\Dto\PlayerDto;
 use App\Modules\ApiSport\Dto\TeamDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use ErrorException;
@@ -30,7 +32,6 @@ final class ApiSportMapper implements MapperInterface
      * } $externalResponse
      *
      * @throws ErrorException
-     *
      */
     public function mapTeamsResponse(array $externalResponse): TeamsDto
     {
@@ -77,7 +78,6 @@ final class ApiSportMapper implements MapperInterface
      * } $externalResponse
      *
      * @throws ErrorException
-     *
      */
     public function mapGamesResponse(array $externalResponse): GamesDto
     {
@@ -95,6 +95,20 @@ final class ApiSportMapper implements MapperInterface
                     (int) $externalResponse['parameters']['league'],
                 ),
                 $externalResponse['response']
+            )
+        );
+    }
+
+    /**
+     * @throws ErrorException
+     */
+    public function mapPlayersResponse(array $response): NationalDto
+    {
+        return new NationalDto(
+            $response['response'][0]['team']['id'],
+            ...array_map(
+                static fn (array $player) => new PlayerDto($player['id'], $player['name']),
+                $response['response'][0]['players']
             )
         );
     }
