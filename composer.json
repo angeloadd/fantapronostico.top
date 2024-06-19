@@ -72,7 +72,7 @@
         ],
         "deploy":[
             "git pull",
-            "composer install -q",
+            "composer install --no-dev --optimize-autoloader -q",
             "php artisan migrate",
             "php artisan optimize",
             "npm run build",

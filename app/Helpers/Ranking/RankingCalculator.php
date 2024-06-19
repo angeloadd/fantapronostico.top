@@ -47,8 +47,8 @@ final class RankingCalculator implements RankingCalculatorInterface
                 $league->id,
                 $rank->total,
                 $rank->results,
-                $rank->scorers,
                 $rank->signs,
+                $rank->scorers,
                 $rank->final_total ?? 0,
                 $rank->final_timestamp ?? 0
             )
