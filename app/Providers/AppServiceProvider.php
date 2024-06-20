@@ -6,6 +6,8 @@ namespace App\Providers;
 
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
+use App\Helpers\Ranking\Sorter;
+use App\Helpers\Ranking\SorterInterface;
 use App\Modules\League\Models\League;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
@@ -26,6 +28,15 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
+        $this->app->bind(SorterInterface::class, static fn () => new Sorter(
+            'total',
+            'numberOfResults',
+            'numberOfScorers',
+            'numberOfSigns',
+            'finalBetTotal',
+            'finalBetTimestamp',
+            'userName',
+        ));
     }
 
     /**
@@ -56,7 +67,7 @@ final class AppServiceProvider extends ServiceProvider
     private function registerRequestMacro(): void
     {
         if ( ! Request::hasMacro('getCurrentLeague')) {
-            Request::macro('getCurrentLeague', static function (): League {
+            Request::macro('getCurrentLeague', function (): League {
                 $league = request()->league;
                 if ( ! $league instanceof League) {
                     throw new InvalidArgumentException('Current league cannot be retrieved');

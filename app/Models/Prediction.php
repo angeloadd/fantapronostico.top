@@ -54,6 +54,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Prediction whereIsAwayOwn($value)
  * @method static Builder|Prediction whereIsHomeOwn($value)
  *
+ * @property-read mixed $away_scorer
+ * @property-read mixed $home_scorer
+ *
  * @mixin Eloquent
  */
 final class Prediction extends Model

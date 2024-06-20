@@ -13,20 +13,44 @@ final class GameResultMapper
     {
         $game = $prediction->game;
 
-        $closure = static function (int $scorerId): string {
-            $player = Player::find($scorerId);
-
-            return $player->name . ' (' . __($player->team->name) . ')';
-        };
-
         return new GameResult(
             PredictionScoreFactory::create($prediction),
             $game->id,
             $game->home_score,
             $game->away_score,
             $game->sign,
-            array_map($closure, $game->home_scorers),
-            array_map($closure, $game->away_scorers)
+            self::mapScorers($game->home_scorers),
+            self::mapScorers($game->away_scorers),
+        );
+    }
+
+    /**
+     * @param  int[]  $scorers
+     * @return string[]
+     */
+    public static function mapScorers(array $scorers): array
+    {
+        return array_map(
+            static function (?int $scorerId): string {
+                if (null === $scorerId) {
+                    return 'N/A';
+                }
+                if (-1 === $scorerId) {
+                    return 'Autogol';
+                }
+
+                if (0 === $scorerId) {
+                    return 'No Gol';
+                }
+
+                $player = Player::find($scorerId);
+                if (null === $player) {
+                    return 'N/A';
+                }
+
+                return $player->displayed_name . ' (' . __($player->national->name) . ')';
+            },
+            $scorers
         );
     }
 }

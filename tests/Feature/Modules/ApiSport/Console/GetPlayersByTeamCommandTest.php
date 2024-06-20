@@ -51,7 +51,7 @@ final class GetPlayersByTeamCommandTest extends TestCase
     {
         Sleep::fake();
         $this->artisan('fp:players:get')
-            ->expectsOutput('console: Updated 84 players')
+            ->expectsOutput('console: successfully updated 84 players')
             ->assertOk();
 
         $this->assertDatabaseCount('players', 84);

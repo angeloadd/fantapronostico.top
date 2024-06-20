@@ -7,26 +7,43 @@ namespace App\Helpers\Ranking;
 use Closure;
 use Illuminate\Support\Collection;
 
-final class Sorter
+final class Sorter implements SorterInterface
 {
     /**
-     * @param  Closure[]  $sorters
+     * @var array<int, string|Closure>
      */
-    public function __invoke(Collection $collection, array $sorters): Collection
+    private array $sorters;
+
+    public function __construct(Closure|string ...$sorters)
     {
-        return $this->sortCollectionByCallback($collection, $sorters, 0)->flatten()->values();
+        $this->sorters = $sorters;
     }
 
-    private function sortCollectionByCallback(Collection $collection, array $sorters, int $index): Collection
+    /**
+     * @param Collection<UserRank $collection
+     * @return Collection<UserRank
+     */
+    public function sortAggregate(Collection $collection): Collection
     {
-        $currentSorter = $sorters[$index];
+        return $this->sortCollectionByCallback($collection)
+            ->flatten()
+            ->values();
+    }
 
-        if ($index === (count($sorters) - 1)) {
+    /**
+     * @param  Collection<mixed>  $collection
+     * @return Collection<mixed>
+     */
+    private function sortCollectionByCallback(Collection $collection, int $index = 0): Collection
+    {
+        $currentSorter = $this->sorters[$index];
+
+        if ($index === (count($this->sorters) - 1)) {
             return $collection->sortBy($currentSorter);
         }
 
         return $collection->sortByDesc($currentSorter)
             ->groupBy($currentSorter)
-            ->map(fn (Collection $collection) => $this->sortCollectionByCallback($collection, $sorters, $index + 1));
+            ->map(fn (Collection $collection) => $this->sortCollectionByCallback($collection, $index + 1));
     }
 }

@@ -6,6 +6,10 @@ namespace App\Helpers\Ranking;
 
 final readonly class GameResult
 {
+    /**
+     * @param  string[]  $homeScorers
+     * @param  string[]  $awayScorers
+     */
     public function __construct(
         public PredictionScore $predictionScore,
         public int $gameId,

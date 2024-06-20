@@ -19,7 +19,7 @@ final readonly class PredictionScoreFactory
             self::getHomeScorerPredictionResult($prediction, $game),
             self::getAwayScorerPredictionResult($prediction, $game),
             $game->isFinal(),
-            $prediction->updated_at->unix(),
+            $prediction->updated_at->getTimestamp(),
         );
     }
 

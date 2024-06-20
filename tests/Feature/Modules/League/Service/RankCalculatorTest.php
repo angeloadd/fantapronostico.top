@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Modules\League\Service;
 
 use App\Helpers\Ranking\RankingCalculator;
+use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Models\Game;
 use App\Models\GameGoal;
 use App\Models\Player;
@@ -106,8 +107,10 @@ final class RankCalculatorTest extends TestCase
         $homeTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
         $awayTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
 
-        $calculator = new RankingCalculator();
-        $rank = $calculator->calculate($this->league);
+        $calculator = app(RankingCalculatorInterface::class);
+        $this->assertInstanceOf(RankingCalculator::class, $calculator);
+        $calculator->calculate($this->league);
+        $rank = $calculator->get($this->league);
 
         $this->assertSame(8, $rank[0]->total());
         $this->assertSame($this->users[0]->id, $rank[0]->userId());
@@ -192,8 +195,9 @@ final class RankCalculatorTest extends TestCase
         $homeTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
         $awayTeam->players->map(static fn (Player $player) => $player->games()->attach($game));
 
-        $calculator = new RankingCalculator();
-        $rank = $calculator->calculate($league);
+        $calculator = app(RankingCalculatorInterface::class);
+        $calculator->calculate($league);
+        $rank = $calculator->get($league);
         Cache::clear();
 
         $this->assertSame(5, $rank[0]->total());

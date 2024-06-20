@@ -4,35 +4,21 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
-use App\Models\Prediction;
-use App\Modules\Auth\Models\User;
-use App\Modules\League\Models\League;
-
 final class UserRank
 {
-    public const TOP_SCORER_POINTS = 10;
-
-    private const WINNER_TEAM_POINTS = 15;
-
     public function __construct(
         public readonly int $userId,
         public readonly string $userName,
         public readonly int $leagueId,
-        private int $total = 0,
-        private int $numberOfResults = 0,
-        private int $numberOfSigns = 0,
-        private int $numberOfScorers = 0,
-        private int $finalBetTimestamp = 0,
-        private int $finalBetTotal = 0,
+        public int $total = 0,
+        public int $numberOfResults = 0,
+        public int $numberOfSigns = 0,
+        public int $numberOfScorers = 0,
+        public int $finalBetTimestamp = 0,
+        public int $finalBetTotal = 0,
+        public bool $winner = false,
+        public bool $topScorer = false
     ) {
-    }
-
-    public function calculate(): self
-    {
-        $this->calculateResult();
-        $this->addWinnerAndTopScorerScores();
-
-        return $this;
     }
 
     public function finalPredictionTimestamp(): int
@@ -75,68 +61,13 @@ final class UserRank
         return $this->userId;
     }
 
-    private function calculateResult(): void
+    public function winner(): bool
     {
-        $user = User::find($this->userId);
-        if (null === $user->predictions) {
-            return;
-        }
-
-        //TODO: Relation league_prediction
-        $predictions = $user->predictions->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status);
-        $predictions = $predictions->map(fn (Prediction $prediction) => PredictionScoreFactory::create($prediction));
-
-        $predictions->each(function (PredictionScore $prediction) {
-            if ($prediction->result) {
-                $this->numberOfResults++;
-            }
-
-            if ($prediction->sign) {
-                $this->numberOfSigns++;
-            }
-
-            if ($prediction->homeScorer) {
-                $this->numberOfScorers++;
-            }
-
-            if ($prediction->awayScorer) {
-                $this->numberOfScorers++;
-            }
-
-            if ($prediction->isFinal) {
-                $this->finalBetTimestamp = $prediction->timestamp;
-                $this->finalBetTotal = $prediction->total();
-            }
-
-            $this->total += $prediction->total();
-
-            return $this;
-        });
+        return $this->winner;
     }
 
-    private function addWinnerAndTopScorerScores(): void
+    public function topScorer(): bool
     {
-        $tournament = League::find($this->leagueId)->tournament;
-        $winner = $tournament->teams?->where('is_winner', true)?->first();
-        if (null === $winner) {
-            return;
-        }
-        $topScorer = $tournament->players?->where('is_top_scorer', true)?->first();
-
-        if (null === $topScorer) {
-            return;
-        }
-
-        $user = User::find($this->userId);
-        $champion = $user->champion;
-        if (null === $champion) {
-            return;
-        }
-        if ($champion->team_id === $winner->id) {
-            $this->total += self::WINNER_TEAM_POINTS;
-        }
-        if ($topScorer->id === $champion->player_id) {
-            $this->total += self::TOP_SCORER_POINTS;
-        }
+        return $this->topScorer;
     }
 }
