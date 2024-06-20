@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Console;
 
-use App\Models\Game;
+use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
 use App\Modules\ApiSport\Request\GetGamesRequest;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use Illuminate\Console\Command;
@@ -31,13 +31,13 @@ final class GetGamesCommand extends Command
     /**
      * @throws Throwable
      */
-    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
+    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger, ApiSportGameRepositoryInterface $gameRepository): int
     {
         $gamesDto = $apiSportService->getGamesBySeasonAndLeague(new GetGamesRequest(4, 2024));
 
         DB::beginTransaction();
         try {
-            Game::upsertMany($gamesDto);
+            $gameRepository->upsertMany($gamesDto);
         } catch (Throwable $e) {
             DB::rollBack();
             $this->error('Error updating games: ' . $e->getMessage());

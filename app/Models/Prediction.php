@@ -56,6 +56,9 @@ use Illuminate\Support\Carbon;
  *
  * @property-read mixed $away_scorer
  * @property-read mixed $home_scorer
+ * @property int $league_id
+ *
+ * @method static Builder|Prediction whereLeagueId($value)
  *
  * @mixin Eloquent
  */

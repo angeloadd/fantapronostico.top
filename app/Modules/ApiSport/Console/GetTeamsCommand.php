@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Modules\ApiSport\Console;
 
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
+use App\Modules\ApiSport\Repository\ApiSportTeamRepositoryInterface;
 use App\Modules\ApiSport\Request\GetTeamsRequest;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
-use App\Modules\Tournament\Models\Team;
 use ErrorException;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
@@ -35,14 +35,17 @@ final class GetTeamsCommand extends Command
      * @throws InvalidApisportTokenException
      * @throws ErrorException
      */
-    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
-    {
+    public function handle(
+        ApiSportServiceInterface $apiSportService,
+        LoggerInterface $logger,
+        ApiSportTeamRepositoryInterface $teamRepository
+    ): int {
         $teamsDto = $apiSportService->getTeamsBySeasonAndLeague(new GetTeamsRequest(4, 2024));
 
         DB::beginTransaction();
 
         try {
-            Team::upsertTeamsDto($teamsDto);
+            $teamRepository->upsertMany($teamsDto);
         } catch (Throwable $exception) {
             DB::rollBack();
             $this->error('Error updating teams: ' . $exception->getMessage());

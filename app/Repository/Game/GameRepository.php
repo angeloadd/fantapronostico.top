@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Repository\Game;
 
 use App\Models\Game;
+use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
 use DateTimeInterface;
 use Illuminate\Support\Collection;
 
-final class GameRepository implements GameRepositoryInterface
+final class GameRepository implements ApiSportGameRepositoryInterface, GameRepositoryInterface
 {
     public function getNextGame(): ?Game
     {
@@ -62,5 +64,10 @@ final class GameRepository implements GameRepositoryInterface
     public function getLastResults(DateTimeInterface $dateTime): Collection
     {
         return Game::lastResults($dateTime)->get();
+    }
+
+    public function upsertMany(GamesDto $games): void
+    {
+        Game::upsertMany($games);
     }
 }

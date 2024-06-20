@@ -8,7 +8,12 @@ use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Helpers\Ranking\Sorter;
 use App\Helpers\Ranking\SorterInterface;
+use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
+use App\Modules\ApiSport\Repository\ApiSportPlayerRepositoryInterface;
+use App\Modules\ApiSport\Repository\ApiSportTeamRepositoryInterface;
 use App\Modules\League\Models\League;
+use App\Modules\Tournament\Repository\PlayerRepository;
+use App\Modules\Tournament\Repository\TeamRepository;
 use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
@@ -27,16 +32,14 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
+        $this->app->bind(ApiSportGameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
-        $this->app->bind(SorterInterface::class, static fn () => new Sorter(
-            'total',
-            'numberOfResults',
-            'numberOfScorers',
-            'numberOfSigns',
-            'finalBetTotal',
-            'finalBetTimestamp',
-            'userName',
-        ));
+        $this->app->bind(
+            SorterInterface::class,
+            static fn () => new Sorter('total', 'numberOfResults', 'numberOfScorers', 'numberOfSigns', 'finalBetTotal', 'finalBetTimestamp', 'userName')
+        );
+        $this->app->bind(ApiSportTeamRepositoryInterface::class, TeamRepository::class);
+        $this->app->bind(ApiSportPlayerRepositoryInterface::class, PlayerRepository::class);
     }
 
     /**

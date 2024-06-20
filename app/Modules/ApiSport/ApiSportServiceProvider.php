@@ -7,10 +7,14 @@ namespace App\Modules\ApiSport;
 use App\Modules\ApiSport\Client\ApiSportClient;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Console\GetGamesCommand;
+use App\Modules\ApiSport\Console\GetPlayersByTeamCommand;
 use App\Modules\ApiSport\Console\GetTeamsCommand;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\ExceptionMapperDecorator;
 use App\Modules\ApiSport\Mapper\MapperInterface;
+use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
+use App\Modules\ApiSport\Repository\ApiSportPlayerRepositoryInterface;
+use App\Modules\ApiSport\Repository\ApiSportTeamRepositoryInterface;
 use App\Modules\ApiSport\Service\ApiSportService;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use Illuminate\Foundation\Application;
@@ -52,14 +56,24 @@ final class ApiSportServiceProvider extends ServiceProvider
             [GetTeamsCommand::class, 'handle'],
             static fn (GetTeamsCommand $command, Application $app) => $command->handle(
                 $app->make(ApiSportServiceInterface::class),
-                Log::channel('schedule')
+                Log::channel('schedule'),
+                $app->make(ApiSportTeamRepositoryInterface::class)
             )
         );
         $this->app->bindMethod(
             [GetGamesCommand::class, 'handle'],
             static fn (GetGamesCommand $command, Application $app) => $command->handle(
                 $app->make(ApiSportServiceInterface::class),
-                Log::channel('schedule')
+                Log::channel('schedule'),
+                $app->make(ApiSportGameRepositoryInterface::class)
+            )
+        );
+        $this->app->bindMethod(
+            [GetPlayersByTeamCommand::class, 'handle'],
+            static fn (GetPlayersByTeamCommand $command, Application $app) => $command->handle(
+                $app->make(ApiSportServiceInterface::class),
+                Log::channel('schedule'),
+                $app->make(ApiSportPlayerRepositoryInterface::class)
             )
         );
 

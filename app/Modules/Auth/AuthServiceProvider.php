@@ -8,7 +8,6 @@ use App\Modules\Auth\Fortify\CreateNewUser;
 use App\Modules\Auth\Fortify\ResetUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserProfileInformation;
-use App\Modules\Auth\Http\Routes\RouteMeta;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,10 +51,10 @@ final class AuthServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        Fortify::loginView(static fn () => view('auth::index', ['pageName' => RouteMeta::LOGIN]));
-        Fortify::registerView(static fn () => view('auth::index', ['pageName' => RouteMeta::REGISTER]));
-        Fortify::requestPasswordResetLinkView(static fn () => view('auth::index', ['pageName' => RouteMeta::REQUEST_PASSWORD_RESET]));
-        Fortify::resetPasswordView(static fn () => view('auth::index', ['pageName' => RouteMeta::RESET_PASSWORD]));
-        Fortify::verifyEmailView(static fn () => view('auth::index', ['pageName' => RouteMeta::VERIFY_EMAIL]));
+        Fortify::loginView(static fn () => view('auth::index', ['pageName' => 'login']));
+        Fortify::registerView(static fn () => view('auth::index', ['pageName' => 'register']));
+        Fortify::requestPasswordResetLinkView(static fn () => view('auth::index', ['pageName' => 'request-password-reset']));
+        Fortify::resetPasswordView(static fn () => view('auth::index', ['pageName' => 'reset-password']));
+        Fortify::verifyEmailView(static fn () => view('auth::index', ['pageName' => 'verify-email']));
     }
 }

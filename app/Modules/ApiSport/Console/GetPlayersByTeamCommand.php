@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Console;
 
-use App\Models\Player;
 use App\Modules\ApiSport\Dto\NationalDto;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
+use App\Modules\ApiSport\Repository\ApiSportPlayerRepositoryInterface;
 use App\Modules\ApiSport\Request\GetPlayersByNationalRequest;
 use App\Modules\ApiSport\Service\ApiSportServiceInterface;
 use App\Modules\League\Models\League;
@@ -31,7 +31,7 @@ final class GetPlayersByTeamCommand extends Command
      * @throws ConnectionException
      * @throws ErrorException
      */
-    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
+    public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger, ApiSportPlayerRepositoryInterface $playerRepository): int
     {
 
         /** @var ?GetPlayersByNationalRequest[] $requests */
@@ -51,7 +51,7 @@ final class GetPlayersByTeamCommand extends Command
 
         DB::beginTransaction();
         try {
-            Player::upsertMany($nationalsDto);
+            $playerRepository->upsertManyByNational($nationalsDto);
         } catch (Throwable $e) {
             DB::rollBack();
             $logger->error(

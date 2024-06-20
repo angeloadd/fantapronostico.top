@@ -10,8 +10,8 @@ use App\Models\Prediction;
 use App\Modules\Auth\Models\User;
 use App\Modules\League\Models\League;
 use App\Modules\Tournament\Models\Team;
-use DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 final readonly class RankingCalculator implements RankingCalculatorInterface
