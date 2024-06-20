@@ -56,5 +56,6 @@ final class GetPlayersByTeamCommandTest extends TestCase
 
         $this->assertDatabaseCount('players', 84);
         Sleep::assertSleptTimes(3);
+        Http::assertSentCount(3);
     }
 }
