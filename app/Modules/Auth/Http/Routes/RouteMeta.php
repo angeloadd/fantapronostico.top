@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\RouteMeta;
+namespace App\Modules\Auth\Http\Routes;
 
 final readonly class RouteMeta
 {

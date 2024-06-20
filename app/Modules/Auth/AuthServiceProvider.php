@@ -8,7 +8,7 @@ use App\Modules\Auth\Fortify\CreateNewUser;
 use App\Modules\Auth\Fortify\ResetUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserProfileInformation;
-use App\Shared\RouteMeta\RouteMeta;
+use App\Modules\Auth\Http\Routes\RouteMeta;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -51,8 +51,6 @@ final class AuthServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by($throttleKey);
         });
-
-        RateLimiter::for('two-factor', static fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
 
         Fortify::loginView(static fn () => view('auth::index', ['pageName' => RouteMeta::LOGIN]));
         Fortify::registerView(static fn () => view('auth::index', ['pageName' => RouteMeta::REGISTER]));

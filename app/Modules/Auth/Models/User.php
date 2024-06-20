@@ -67,6 +67,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, \App\Modules\Auth\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read bool $admin
+ * @property-read object{status: string} $pivot
  *
  * @mixin Eloquent
  */

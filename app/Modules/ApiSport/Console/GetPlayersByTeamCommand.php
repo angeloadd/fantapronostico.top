@@ -33,12 +33,21 @@ final class GetPlayersByTeamCommand extends Command
      */
     public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
     {
-        $requests = League::first()
-            ->tournament
-            ->teams
-            ->map(fn (Team $team) => new GetPlayersByNationalRequest($team->api_id));
 
-        $nationalsDto = $apiSportService->getPlayersByNational($requests->toArray(), 6);
+        /** @var ?GetPlayersByNationalRequest[] $requests */
+        $requests = League::first()
+            ?->tournament
+            ?->teams
+            ?->map(fn (Team $team) => new GetPlayersByNationalRequest($team->api_id))
+            ?->toArray();
+
+        if (null === $requests) {
+            $logger->warning('No league found');
+
+            return self::INVALID;
+        }
+
+        $nationalsDto = $apiSportService->getPlayersByNational($requests, 6);
 
         DB::beginTransaction();
         try {

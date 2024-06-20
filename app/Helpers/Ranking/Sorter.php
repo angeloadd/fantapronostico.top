@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 final class Sorter implements SorterInterface
 {
     /**
-     * @var array<int, string|Closure>
+     * @var array<int|string, string|Closure>
      */
     private array $sorters;
 
@@ -20,19 +20,22 @@ final class Sorter implements SorterInterface
     }
 
     /**
-     * @param Collection<UserRank $collection
-     * @return Collection<UserRank
+     * @param  Collection<int, UserRank>  $collection
+     * @return Collection<int, UserRank>
      */
     public function sortAggregate(Collection $collection): Collection
     {
-        return $this->sortCollectionByCallback($collection)
+        /** @var Collection<int, UserRank> $collection */
+        $collection = $this->sortCollectionByCallback($collection)
             ->flatten()
             ->values();
+
+        return $collection;
     }
 
     /**
-     * @param  Collection<mixed>  $collection
-     * @return Collection<mixed>
+     * @param  Collection<int, UserRank>  $collection
+     * @return Collection<int, UserRank>
      */
     private function sortCollectionByCallback(Collection $collection, int $index = 0): Collection
     {

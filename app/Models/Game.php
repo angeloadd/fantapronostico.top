@@ -59,7 +59,7 @@ use Illuminate\Support\Carbon;
  * @property-read int[] $away_scorers
  * @property-read int $home_score
  * @property-read int[] $home_scorers
- * @property-read string|null $sign
+ * @property-read string $sign
  * @property-read Carbon $predictable_from
  *
  * @mixin Eloquent
@@ -232,7 +232,7 @@ final class Game extends Model
     public function sign(): Attribute
     {
         return Attribute::get(
-            function (): ?string {
+            function (): string {
                 if ($this->home_score > $this->away_score) {
                     return '1';
                 }
