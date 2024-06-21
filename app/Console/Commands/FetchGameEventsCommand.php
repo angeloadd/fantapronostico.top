@@ -23,7 +23,7 @@ final class FetchGameEventsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'fp:fetch:games:events';
+    protected $signature = 'fp:fetch:games:events {--fixture=}';
 
     /**
      * The console command description.
@@ -34,9 +34,14 @@ final class FetchGameEventsCommand extends Command
 
     public function handle(ApiSportClientInterface $apisport): int
     {
+        $option = $this->option('fixture');
         $count = 0;
         try {
-            $games = Game::notCompletedToday();
+            if (is_int($option)) {
+                $games = collect([Game::find($option)]);
+            } else {
+                $games = Game::notCompletedToday();
+            }
 
             /** @var Game $game */
             foreach ($games as $key => $game) {
@@ -50,7 +55,7 @@ final class FetchGameEventsCommand extends Command
 
                 $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $isFinished = $apisport->get('fixtures', ['id' => $game->id]);
-                if ( ! in_array($isFinished['response']['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
+                if (!in_array($isFinished['response']['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
                 $response = $apisport->get('fixtures/events', ['fixture' => $game->id, 'type' => 'Goal']);
