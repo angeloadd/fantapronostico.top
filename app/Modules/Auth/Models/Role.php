@@ -6,18 +6,20 @@ namespace App\Modules\Auth\Models;
 
 use App\Modules\Auth\Enums\RoleEnum;
 use App\Modules\League\Models\League;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property RoleEnum $role
  * @property int|null $league_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read League|null $leagues
  * @property-read User $user
  *
@@ -31,7 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Role whereUpdatedAt($value)
  * @method static Builder|Role whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 final class Role extends Model
 {
