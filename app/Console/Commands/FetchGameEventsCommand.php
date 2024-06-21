@@ -37,8 +37,8 @@ final class FetchGameEventsCommand extends Command
         $option = $this->option('fixture');
         $count = 0;
         try {
-            if (is_int($option)) {
-                $games = collect([Game::find($option)]);
+            if (is_numeric($option)) {
+                $games = collect([Game::find((int) $option)]);
             } else {
                 $games = Game::notCompletedToday();
             }
@@ -55,7 +55,7 @@ final class FetchGameEventsCommand extends Command
 
                 $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $isFinished = $apisport->get('fixtures', ['id' => $game->id]);
-                if (!in_array($isFinished['response']['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
+                if (!in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
                 $response = $apisport->get('fixtures/events', ['fixture' => $game->id, 'type' => 'Goal']);
