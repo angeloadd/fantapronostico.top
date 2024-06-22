@@ -77,7 +77,11 @@ final class Tournament extends Model
 
     public static function attachByApiId(int $teamId, int $tournamentApiId): void
     {
-        self::whereApiId($tournamentApiId)->first()?->teams()?->attach($teamId);
+        $tournament = self::whereApiId($tournamentApiId)->first();
+
+        if($tournament?->teams->where('id', $teamId)->count() === 0) {
+            $tournament?->teams()?->attach($teamId);
+        }
     }
 
     /**
