@@ -97,7 +97,9 @@ final class Player extends Model
                     ]);
             }
 
-            $nationalModel->tournaments->first()?->players()->attach($player->apiId);
+            if ($nationalModel->tournaments->first()?->players->where('api_id', $player->apiId)->count() === 0) {
+                $nationalModel->tournaments->first()?->players()->attach($player->apiId);
+            }
         }
     }
 
@@ -153,7 +155,7 @@ final class Player extends Model
             }
 
             // We have to check national exists before the flag to avoid that a null is casted to boolean
-            if ($player->national && ! $player->national->is_national) {
+            if ($player->national && !$player->national->is_national) {
                 throw NationalTeamCannotBeClubException::forPlayerId($player->id);
             }
         });
