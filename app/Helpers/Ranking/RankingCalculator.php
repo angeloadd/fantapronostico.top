@@ -43,6 +43,8 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                             'top_scorer' => $rank->topScorer(),
                         ]
                     );
+
+                    unset($rank, $user->predictions);
                 }
             );
     }
