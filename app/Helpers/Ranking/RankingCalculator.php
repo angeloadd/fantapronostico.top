@@ -10,6 +10,7 @@ use App\Models\Prediction;
 use App\Modules\Auth\Models\User;
 use App\Modules\League\Models\League;
 use App\Modules\Tournament\Models\Team;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -41,6 +42,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                             'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : $rank->finalPredictionTimestamp(),
                             'winner' => $rank->winner(),
                             'top_scorer' => $rank->topScorer(),
+                            'from' => now(),
                         ]
                     );
 
@@ -99,6 +101,11 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
         return $user->predictions
             ->whereStrict('league_id', $league->id)
             ->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status)
+            ->filter(static function(Prediction $prediction): bool {
+                $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
+
+                return null !== $userRank && null !== $userRank->from && Carbon::parse($userRank->from)->lt($prediction->game->started_at);
+            })
             ->map(fn (Prediction $prediction) => PredictionScoreFactory::create($prediction))
             ->reduce(function (UserRank $rank, PredictionScore $prediction): UserRank {
                 if ($prediction->result) {
