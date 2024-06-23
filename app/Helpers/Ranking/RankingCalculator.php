@@ -29,15 +29,19 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 function (User $user) use ($league): void {
                     $rank = $this->calculateUserRank($user, $league);
 
+                    $oldRank = DB::table('ranks')
+                        ->where('user_id', $rank->userId())
+                        ->first();
+
                     DB::table('ranks')->updateOrInsert(
                         ['user_id' => $rank->userId()],
                         [
                             'user_id' => $rank->userId(),
                             'league_id' => $league->id,
-                            'total' => $rank->total(),
-                            'results' => $rank->results(),
-                            'scorers' => $rank->scorers(),
-                            'signs' => $rank->signs(),
+                            'total' => $rank->total() + ($oldRank?->total ?? 0),
+                            'results' => $rank->results() + ($oldRank?->results ?? 0),
+                            'scorers' => $rank->scorers() + ($oldRank?->scorers ?? 0),
+                            'signs' => $rank->signs() + ($oldRank?->signs ?? 0),
                             'final_total' => $rank->finalPredictionTotal(),
                             'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : $rank->finalPredictionTimestamp(),
                             'winner' => $rank->winner(),
@@ -46,7 +50,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                         ]
                     );
 
-                    unset($rank, $user->predictions);
+                    unset($rank, $oldRank, $user->predictions);
                 }
             );
     }
@@ -60,7 +64,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 static function (stdClass $rank) use ($league) {
                     $user = User::find($rank->user_id);
 
-                    if ( ! $user instanceof User) {
+                    if (!$user instanceof User) {
                         return new UserRank($rank->user_id, 'unknown', $league->id);
                     }
 
@@ -101,7 +105,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
         return $user->predictions
             ->whereStrict('league_id', $league->id)
             ->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status)
-            ->filter(static function(Prediction $prediction): bool {
+            ->filter(static function (Prediction $prediction): bool {
                 $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
 
                 return null !== $userRank && null !== $userRank->from && Carbon::parse($userRank->from)->lt($prediction->game->started_at);
@@ -139,17 +143,17 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     {
         $tournament = $league->tournament;
         $winner = $tournament->teams->firstWhere('is_winner', true);
-        if ( ! $winner instanceof Team) {
+        if (!$winner instanceof Team) {
             return $rank;
         }
         $topScorer = $tournament->players->firstWhere('is_top_scorer', true);
 
-        if ( ! $topScorer instanceof Player) {
+        if (!$topScorer instanceof Player) {
             return $rank;
         }
 
         $champion = $user->champion;
-        if ( ! $champion instanceof Champion) {
+        if (!$champion instanceof Champion) {
             return $rank;
         }
         if ($champion->team_id === $winner->id) {
