@@ -10,7 +10,7 @@ enum GameStatus: string
 
     case NOT_STARTED = 'not_started';
 
-    case STARTED = 'started';
+    case ONGOING = 'ongoing';
 
     case FINISHED = 'finished';
 }

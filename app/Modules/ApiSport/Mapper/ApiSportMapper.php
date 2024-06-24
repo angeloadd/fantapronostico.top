@@ -30,7 +30,6 @@ final class ApiSportMapper implements MapperInterface
         foreach ($this->mapperStrategies as $mapperStrategy) {
             if ($mapperStrategy->supports($externalResponse)) {
                 try {
-
                     return $mapperStrategy->map($externalResponse);
                 } catch (ErrorException $arrayParsingException) {
                     throw ApiSportParsingException::withCause($arrayParsingException);

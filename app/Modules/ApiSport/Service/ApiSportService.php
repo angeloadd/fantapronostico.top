@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Modules\ApiSport\Service;
 
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Dto\GameGoalsDto;
 use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Dto\GameStatusDto;
 use App\Modules\ApiSport\Dto\NationalDto;
 use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
 use App\Modules\ApiSport\Exceptions\InvalidMappingException;
 use App\Modules\ApiSport\Mapper\MapperInterface;
+use App\Modules\ApiSport\Request\GetGameEventsRequest;
 use App\Modules\ApiSport\Request\GetGamesRequest;
+use App\Modules\ApiSport\Request\GetGameStatusRequest;
 use App\Modules\ApiSport\Request\GetPlayersByNationalRequest;
 use App\Modules\ApiSport\Request\GetTeamsRequest;
 use ErrorException;
@@ -89,5 +93,32 @@ final readonly class ApiSportService implements ApiSportServiceInterface
         }
 
         return $nationals;
+    }
+
+    public function getGameStatus(GetGameStatusRequest $request): GameStatusDto
+    {
+        $mapping = $this->mapper->map($this->apiSportClient->get($request::ENDPOINT, $request->toQuery()));
+
+        if ( ! $mapping instanceof GameStatusDto) {
+            throw InvalidMappingException::create($mapping::class, GameStatusDto::class);
+        }
+
+        return $mapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGameGoals(GetGameEventsRequest $request): GameGoalsDto
+    {
+        $mapping = $this->mapper->map(
+            $this->apiSportClient->get($request::ENDPOINT, $request->toQuery())
+        );
+
+        if ( ! $mapping instanceof GameGoalsDto) {
+            throw InvalidMappingException::create($mapping::class, GameGoalsDto::class);
+        }
+
+        return $mapping;
     }
 }

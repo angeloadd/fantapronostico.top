@@ -12,7 +12,9 @@ use App\Modules\ApiSport\Console\GetTeamsCommand;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Mapper\MapperLoggerDecorator;
+use App\Modules\ApiSport\Mapper\Strategy\GameGoalsMapperStrategy;
 use App\Modules\ApiSport\Mapper\Strategy\GamesMapperStrategy;
+use App\Modules\ApiSport\Mapper\Strategy\GameStatusMapperStrategy;
 use App\Modules\ApiSport\Mapper\Strategy\NationalsMapperStrategy;
 use App\Modules\ApiSport\Mapper\Strategy\TeamsMapperStrategy;
 use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
@@ -43,7 +45,9 @@ final class ApiSportServiceProvider extends ServiceProvider
         $this->app->bind(MapperInterface::class, static fn (Application $app) => new ApiSportMapper(
             new GamesMapperStrategy(),
             new TeamsMapperStrategy(),
-            new NationalsMapperStrategy()
+            new NationalsMapperStrategy(),
+            new GameStatusMapperStrategy(),
+            new GameGoalsMapperStrategy()
         ));
         $this->app->extend(
             MapperInterface::class,

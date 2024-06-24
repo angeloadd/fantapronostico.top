@@ -43,6 +43,8 @@ final class GameGoal extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'game_id',

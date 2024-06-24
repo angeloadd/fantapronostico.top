@@ -8,8 +8,6 @@ use App\Models\Game;
 
 final class GameEventsMapper
 {
-    private const OWN_GOAL = 1000000000;
-
     public function __construct(private readonly array $gameEvents)
     {
     }
@@ -18,16 +16,10 @@ final class GameEventsMapper
     {
         $homeScorers = self::getList($response, $game->home_team->api_id);
         $awayScorers = self::getList($response, $game->away_team->api_id);
-        $homeResult = count($homeScorers);
-        $awayResult = count($awayScorers);
 
         return new self([
-            'home_score' => $homeResult,
-            'away_score' => $awayResult,
-            'sign' => self::getGameSign($homeResult, $awayResult),
             'home_scorers' => $homeScorers,
             'away_scorers' => $awayScorers,
-            'status' => 'completed',
         ]);
     }
 
@@ -58,22 +50,5 @@ final class GameEventsMapper
         }
 
         return $scorerList;
-    }
-
-    private static function getGameSign(?int $home, ?int $away): ?string
-    {
-        if (null === $home && null === $away) {
-            return null;
-        }
-
-        if ($home > $away) {
-            return '1';
-        }
-
-        if ($home < $away) {
-            return '2';
-        }
-
-        return 'x';
     }
 }

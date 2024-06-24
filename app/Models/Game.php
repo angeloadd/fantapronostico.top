@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Modules\ApiSport\Dto\GameGoalsDto;
 use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\Tournament\Models\Team;
 use Database\Factories\GameFactory;
@@ -333,25 +334,22 @@ final class Game extends Model
         return $goals;
     }
 
-    public function addGameEvent(array $toArray): void
+    public function addGameGoals(GameGoalsDto $gameGoals): void
     {
-        foreach ($toArray['home_scorers'] as $scorer) {
-            $this->goals()->create([
-                'player_id' => $scorer['id'],
-                'is_autogoal' => $scorer['is_autogoal'] ?? false,
-                'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
-            ]);
+        foreach ($gameGoals->gameGoals() as $gameGoal) {
+            $this->goals()->firstOrCreate(
+                [
+                    'game_id' => $this->id,
+                    'player_id' => $gameGoal->playerApiId,
+                    'scored_at' => $gameGoal->scoredAt,
+                ],
+                [
+                    'player_id' => $gameGoal->playerApiId,
+                    'is_autogoal' => $gameGoal->isOwnGoal,
+                    'scored_at' => $gameGoal->scoredAt,
+                ]
+            );
         }
-        foreach ($toArray['away_scorers'] as $scorer) {
-            $this->goals()->create([
-                'player_id' => $scorer['id'],
-                'is_autogoal' => $scorer['is_autogoal'] ?? false,
-                'scored_at' => $this->started_at->addMinutes($scorer['scored_at']),
-            ]);
-        }
-
-        $this->status = 'finished';
-        $this->save();
     }
 
     public function isNotPredictableYet(): bool

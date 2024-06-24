@@ -16,11 +16,19 @@ final class GamesMapperStrategy implements MapperStrategyInterface
      */
     public function supports(array $externalResponse): bool
     {
-        if (array_key_exists('get', $externalResponse)) {
-            return 'fixtures' === $externalResponse['get'];
+        if ( ! array_key_exists('get', $externalResponse)) {
+            return false;
+        }
+        if ('fixtures' !== $externalResponse['get']) {
+            return false;
         }
 
-        return false;
+        if ( ! array_key_exists('parameters', $externalResponse)) {
+            return false;
+        }
+
+        return ! ( ! array_key_exists('league', $externalResponse['parameters']));
+
     }
 
     /**
