@@ -64,6 +64,6 @@ final class BotCommand extends Command
     {
         $now = now();
 
-        return  Game::whereBetween('started_at', [$now->addMinutes($from), $now->addMinutes($to)])->get();
+        return Game::whereBetween('started_at', [$now->addMinutes($from), $now->addMinutes($to)])->get();
     }
 }

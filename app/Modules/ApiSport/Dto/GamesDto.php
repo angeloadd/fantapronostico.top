@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Dto;
 
-final class GamesDto
+final class GamesDto implements ApiSportDto
 {
     /**
      * @var GameDto[]

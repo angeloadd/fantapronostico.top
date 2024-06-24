@@ -4,63 +4,20 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Mapper;
 
-use App\Modules\ApiSport\Dto\GamesDto;
-use App\Modules\ApiSport\Dto\NationalDto;
-use App\Modules\ApiSport\Dto\TeamsDto;
-use ErrorException;
+use App\Modules\ApiSport\Dto\ApiSportDto;
+use App\Modules\ApiSport\Exceptions\ApiSportParsingException;
+use App\Modules\ApiSport\Exceptions\NoMapperStrategyFoundException;
 
 interface MapperInterface
 {
     /**
-     * @param array{
-     *       parameters: array{
-     *           league: int
-     *       },
-     *       response: list<array{
-     *           team: array{
-     *               id: int,
-     *               name: string,
-     *               code: string,
-     *               logo: string,
-     *               national: bool
-     *           }
-     *       }>
-     *   } $externalResponse
+     *  Throws ApiSportParsingException if array keys are not correct and the response does not follow the expected format.
+     *  Throws NoStrategyFoundException if the mapper does not support the response with any strategy.
      *
-     * @throws ErrorException
-     */
-    public function mapTeamsResponse(array $externalResponse): TeamsDto;
-
-    /**
-     * @param array{
-     *       parameters: array{
-     *           league: int
-     *       },
-     *       response: list<array{
-     *           fixture: array{
-     *               id: int,
-     *               timestamp: int,
-     *               status: array{
-     *                   short: string
-     *               }
-     *           },
-     *           league: array{
-     *               round: string
-     *           },
-     *           teams: array{
-     *               home: array{
-     *                   id: int
-     *               },
-     *               away: array{
-     *                   id: int
-     *               },
-     *           }
-     *       }>
-     *   } $externalResponse
+     * @param  mixed[]  $externalResponse
      *
-     * @throws ErrorException
+     * @throws NoMapperStrategyFoundException
+     * @throws ApiSportParsingException
      */
-    public function mapGamesResponse(array $externalResponse): GamesDto;
-
-    public function mapPlayersResponse(array $response): NationalDto;
+    public function map(array $externalResponse): ApiSportDto;
 }

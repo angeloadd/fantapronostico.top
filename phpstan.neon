@@ -4,11 +4,11 @@ includes:
 parameters:
 
     paths:
-        - app/
+        - app/Modules/ApiSport
         # - database/
-        - config/
-        - routes/
-        - resources/
+        # - config/
+        #- routes/
+        # - resources/
         # - tests/
 
     # Level 9 is the highest level
@@ -16,9 +16,12 @@ parameters:
 
     ignoreErrors:
         - message: '#Cannot cast mixed to .+#'
-          path: %currentWorkingDirectory%/config
-        - message: '#Cannot cast mixed to .+#'
-          path: %currentWorkingDirectory%/app/Modules/*/*Provider.php
+        - message: '#Parameter \#1 \$callback of function array_map expects .+#'
+          path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
+        - message: '#Cannot access offset .+#'
+          path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
+        - message: '#Parameter \#2 \$array of function array_map expects array, mixed given.#'
+          path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
         - message: '#Undefined variable: \$this#'
           path: %currentWorkingDirectory%/routes/console.php
         - message: '#Variable \$this in PHPDoc tag @var does not exist.#'

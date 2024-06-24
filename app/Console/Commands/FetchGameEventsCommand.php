@@ -55,7 +55,7 @@ final class FetchGameEventsCommand extends Command
 
                 $this->info('Call ' . ($key + 1) . ' out of ' . $games->count() . ': ' . $game->home_team->name . ' vs ' . $game->away_team->name);
                 $isFinished = $apisport->get('fixtures', ['id' => $game->id]);
-                if (!in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
+                if ( ! in_array($isFinished['response'][0]['fixture']['status']['short'], ['FT', 'AET', 'PEN'])) {
                     continue;
                 }
                 $response = $apisport->get('fixtures/events', ['fixture' => $game->id, 'type' => 'Goal']);

@@ -79,7 +79,7 @@ final class Tournament extends Model
     {
         $tournament = self::whereApiId($tournamentApiId)->first();
 
-        if($tournament?->teams->where('id', $teamId)->count() === 0) {
+        if (0 === $tournament?->teams->where('id', $teamId)->count()) {
             $tournament?->teams()?->attach($teamId);
         }
     }

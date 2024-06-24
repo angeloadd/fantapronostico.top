@@ -6,9 +6,11 @@ namespace App\Modules\ApiSport\Service;
 
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Dto\GamesDto;
+use App\Modules\ApiSport\Dto\NationalDto;
 use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Exceptions\InvalidApisportTokenException;
+use App\Modules\ApiSport\Exceptions\InvalidMappingException;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Request\GetGamesRequest;
 use App\Modules\ApiSport\Request\GetPlayersByNationalRequest;
@@ -32,64 +34,32 @@ final readonly class ApiSportService implements ApiSportServiceInterface
      */
     public function getTeamsBySeasonAndLeague(GetTeamsRequest $request): TeamsDto
     {
-        /**
-         * @var array{
-         *        parameters: array{
-         *            league: int
-         *        },
-         *        response: list<array{
-         *            team: array{
-         *                id: int,
-         *                name: string,
-         *                code: string,
-         *                logo: string,
-         *                national: bool
-         *            }
-         *        }>
-         *    } $response
-         */
         $response = $this->apiSportClient->get($request::ENDPOINT, $request->toQuery());
 
-        return $this->mapper->mapTeamsResponse($response);
+        $gamesDto = $this->mapper->map($response);
+
+        if ( ! $gamesDto instanceof TeamsDto) {
+            throw InvalidMappingException::create($gamesDto::class, TeamsDto::class);
+        }
+
+        return $gamesDto;
     }
 
     /**
-     * @throws InvalidApisportTokenException
      * @throws ErrorException
      * @throws ConnectionException
+     * @throws InvalidApisportTokenException
      */
     public function getGamesBySeasonAndLeague(GetGamesRequest $request): GamesDto
     {
-        /**
-         * @var array{
-         *        parameters: array{
-         *            league: int
-         *        },
-         *        response: list<array{
-         *            fixture: array{
-         *                id: int,
-         *                timestamp: int,
-         *                status: array{
-         *                    short: string
-         *                }
-         *            },
-         *            league: array{
-         *                round: string
-         *            },
-         *            teams: array{
-         *                home: array{
-         *                    id: int
-         *                },
-         *                away: array{
-         *                    id: int
-         *                },
-         *            }
-         *        }>
-         *    } $response
-         */
         $response = $this->apiSportClient->get($request::ENDPOINT, $request->toQuery());
 
-        return $this->mapper->mapGamesResponse($response);
+        $gamesDto = $this->mapper->map($response);
+        if ( ! $gamesDto instanceof GamesDto) {
+            throw InvalidMappingException::create($gamesDto::class, GamesDto::class);
+        }
+
+        return $gamesDto;
     }
 
     /**
@@ -105,7 +75,13 @@ final readonly class ApiSportService implements ApiSportServiceInterface
         foreach ($requests as $request) {
             $response = $this->apiSportClient->get($request::ENDPOINT, $request->toQuery());
 
-            $nationals->add($this->mapper->mapPlayersResponse($response));
+            $national = $this->mapper->map($response);
+
+            if ( ! $national instanceof NationalDto) {
+                throw InvalidMappingException::create($national::class, NationalDto::class);
+            }
+
+            $nationals->add($national);
 
             if ($rateInSeconds > 0) {
                 Sleep::for($rateInSeconds)->seconds();

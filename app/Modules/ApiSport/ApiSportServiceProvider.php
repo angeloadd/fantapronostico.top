@@ -10,8 +10,11 @@ use App\Modules\ApiSport\Console\GetGamesCommand;
 use App\Modules\ApiSport\Console\GetPlayersByTeamCommand;
 use App\Modules\ApiSport\Console\GetTeamsCommand;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
-use App\Modules\ApiSport\Mapper\ExceptionMapperDecorator;
 use App\Modules\ApiSport\Mapper\MapperInterface;
+use App\Modules\ApiSport\Mapper\MapperLoggerDecorator;
+use App\Modules\ApiSport\Mapper\Strategy\GamesMapperStrategy;
+use App\Modules\ApiSport\Mapper\Strategy\NationalsMapperStrategy;
+use App\Modules\ApiSport\Mapper\Strategy\TeamsMapperStrategy;
 use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
 use App\Modules\ApiSport\Repository\ApiSportPlayerRepositoryInterface;
 use App\Modules\ApiSport\Repository\ApiSportTeamRepositoryInterface;
@@ -37,10 +40,14 @@ final class ApiSportServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(ApiSportServiceInterface::class, ApiSportService::class);
-        $this->app->bind(MapperInterface::class, ApiSportMapper::class);
+        $this->app->bind(MapperInterface::class, static fn (Application $app) => new ApiSportMapper(
+            new GamesMapperStrategy(),
+            new TeamsMapperStrategy(),
+            new NationalsMapperStrategy()
+        ));
         $this->app->extend(
             MapperInterface::class,
-            static fn (MapperInterface $mapper) => new ExceptionMapperDecorator($mapper, Log::channel('schedule'))
+            static fn (MapperInterface $mapper) => new MapperLoggerDecorator($mapper, Log::channel('schedule'))
         );
 
         $this->provideScheduleLogger();
@@ -77,7 +84,7 @@ final class ApiSportServiceProvider extends ServiceProvider
             )
         );
 
-        $this->app->when(ExceptionMapperDecorator::class)
+        $this->app->when(MapperLoggerDecorator::class)
             ->needs(LoggerInterface::class)
             ->give(static fn (Application $app) => Log::channel('schedule'));
 

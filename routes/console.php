@@ -31,6 +31,5 @@ Schedule::command('fp:fetch:champions')
             Game::all()->every('status', '=', 'finished')
     );
 
-
 Schedule::command('fp:bot:telegram')
     ->everyThirtyMinutes();

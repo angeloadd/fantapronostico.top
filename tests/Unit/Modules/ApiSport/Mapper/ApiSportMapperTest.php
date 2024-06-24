@@ -4,25 +4,60 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\ApiSport\Mapper;
 
-use App\Modules\ApiSport\Dto\TeamDto;
-use App\Modules\ApiSport\Dto\TeamsDto;
+use App\Modules\ApiSport\Dto\ApiSportDto;
+use App\Modules\ApiSport\Exceptions\NoMapperStrategyFoundException;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
+use App\Modules\ApiSport\Mapper\Strategy\MapperStrategyInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Unit\UnitTestCase;
 
 final class ApiSportMapperTest extends UnitTestCase
 {
-    public function test_mapTeamsResponse_returns_a_dto(): void
+    private MapperStrategyInterface&MockObject $mapperStrategy;
+
+    private ApiSportMapper $apiSportMapper;
+
+    protected function setUp(): void
     {
-        $teamDto = new TeamDto(1, 'name', 'code', 'logo', false);
-        $teamDto2 = new TeamDto(2, 'name', 'code', 'logo', true);
-        $dto = new TeamsDto(4, $teamDto, $teamDto2);
-        $response = [
-            'parameters' => ['league' => 4],
-            'response' => [
-                ['team' => ['id' => $teamDto->apiId, 'name' => $teamDto->name, 'code' => $teamDto->code, 'logo' => $teamDto->logo, 'national' => $teamDto->isNational]],
-                ['team' => ['id' => $teamDto2->apiId, 'name' => $teamDto2->name, 'code' => $teamDto2->code, 'logo' => $teamDto2->logo, 'national' => $teamDto2->isNational]],
-            ],
-        ];
-        $this->assertEquals($dto, (new ApiSportMapper())->mapTeamsResponse($response));
+        parent::setUp();
+
+        $this->mapperStrategy = $this->createMock(MapperStrategyInterface::class);
+        $this->apiSportMapper = new ApiSportMapper($this->mapperStrategy);
+    }
+
+    public function test_map_returns_a_dto(): void
+    {
+        $this->mapperStrategy
+            ->expects(self::once())->method('supports')
+            ->with(['get' => 'teams'])
+            ->willReturn(true);
+
+        $this->mapperStrategy
+            ->expects(self::once())
+            ->method('map')
+            ->with(['get' => 'teams'])
+            ->willReturn(new class() implements ApiSportDto
+            {
+            });
+        $this->apiSportMapper = new ApiSportMapper($this->mapperStrategy);
+        $this->apiSportMapper->map(['get' => 'teams']);
+    }
+
+    public function test_map_throws_exception_if_no_strategy_supports(): void
+    {
+        $this->expectException(NoMapperStrategyFoundException::class);
+        $this->mapperStrategy->expects(self::once())
+            ->method('supports')
+            ->with(['get' => 'teams'])
+            ->willReturn(false);
+
+        $this->apiSportMapper->map(['get' => 'teams']);
+    }
+
+    public function test_map_throws_if_no_strategy_provided(): void
+    {
+        $this->expectException(NoMapperStrategyFoundException::class);
+
+        (new ApiSportMapper())->map(['get' => 'teams']);
     }
 }
