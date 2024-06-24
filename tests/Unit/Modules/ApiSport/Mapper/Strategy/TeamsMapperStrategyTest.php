@@ -13,6 +13,8 @@ use Tests\Unit\UnitTestCase;
 
 final class TeamsMapperStrategyTest extends UnitTestCase
 {
+    private TeamsMapperStrategy $subject;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,7 +43,7 @@ final class TeamsMapperStrategyTest extends UnitTestCase
                 ['team' => ['id' => $teamDto2->apiId, 'name' => $teamDto2->name, 'code' => $teamDto2->code, 'logo' => $teamDto2->logo, 'national' => $teamDto2->isNational]],
             ],
         ];
-        $this->assertEquals($dto, (new TeamsMapperStrategy())->map($response));
+        $this->assertEquals($dto, $this->subject->map($response));
     }
 
     public static function externalResponseProvider(): iterable

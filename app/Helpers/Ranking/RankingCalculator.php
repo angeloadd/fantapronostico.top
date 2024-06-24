@@ -108,7 +108,11 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
             ->filter(static function (Prediction $prediction): bool {
                 $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
 
-                return null !== $userRank && null !== $userRank->from && Carbon::parse($userRank->from)->lt($prediction->game->started_at);
+                if(null === $userRank || null === $userRank->from){
+                    return true;
+                }
+
+                return Carbon::parse($userRank->from)->lt($prediction->game->started_at);
             })
             ->map(fn (Prediction $prediction) => PredictionScoreFactory::create($prediction))
             ->reduce(function (UserRank $rank, PredictionScore $prediction): UserRank {

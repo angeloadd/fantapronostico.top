@@ -7,12 +7,14 @@ namespace Tests\Unit\Modules\ApiSport\Service;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\ApiSport\Dto\NationalDto;
+use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Request\GetGamesRequest;
 use App\Modules\ApiSport\Request\GetPlayersByNationalRequest;
 use App\Modules\ApiSport\Request\GetTeamsRequest;
 use App\Modules\ApiSport\Service\ApiSportService;
+use Illuminate\Support\Sleep;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Unit\UnitTestCase;
 
@@ -39,7 +41,7 @@ final class ApiSportServiceTest extends UnitTestCase
         $this->client->expects($this->once())->method('get')
             ->with('teams', ['league' => 1, 'season' => 2050])
             ->willReturn($response);
-        $this->mapper->expects($this->once())->method('mapTeamsResponse')
+        $this->mapper->expects($this->once())->method('map')
             ->with($response)
             ->willReturn(new TeamsDto($response['parameters']['league']));
         $this->subject->getTeamsBySeasonAndLeague(new GetTeamsRequest(1, 2050));
@@ -51,7 +53,7 @@ final class ApiSportServiceTest extends UnitTestCase
         $this->client->expects($this->once())->method('get')
             ->with('fixtures', ['league' => 1, 'season' => 2050])
             ->willReturn($response);
-        $this->mapper->expects($this->once())->method('mapGamesResponse')
+        $this->mapper->expects($this->once())->method('map')
             ->with($response)
             ->willReturn(new GamesDto());
         $this->subject->getGamesBySeasonAndLeague(new GetGamesRequest(1, 2050));
@@ -59,13 +61,16 @@ final class ApiSportServiceTest extends UnitTestCase
 
     public function test_getPlayersByNational_returns_a_dto(): void
     {
+        Sleep::fake();
         $response = ['parameters' => ['national' => 1], 'response' => ['players' => ['ok']]];
         $this->client->expects($this->once())->method('get')
             ->with('/players/squads', ['team' => 1])
             ->willReturn($response);
-        $this->mapper->expects($this->once())->method('mapPlayersResponse')
+        $this->mapper->expects($this->once())->method('map')
             ->with($response)
             ->willReturn(new NationalDto($response['parameters']['national']));
-        $this->subject->getPlayersByNational([new GetPlayersByNationalRequest(1)]);
+        $nationalsDto = $this->subject->getPlayersByNational([new GetPlayersByNationalRequest(1)], 2);
+        $this->assertCount(1, $nationalsDto->nationals());
+        Sleep::assertSleptTimes(1);
     }
 }

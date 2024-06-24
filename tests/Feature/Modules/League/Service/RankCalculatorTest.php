@@ -49,6 +49,7 @@ final class RankCalculatorTest extends TestCase
         $game = Game::factory()->create([
             'tournament_id' => $this->tournament->id,
             'status' => 'finished',
+            'started_at' => today()->startOfDay()
         ]);
         $homeTeam = Team::factory()
             ->create(['is_national' => true]);
