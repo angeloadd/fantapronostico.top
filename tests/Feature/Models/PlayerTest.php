@@ -92,7 +92,7 @@ final class PlayerTest extends TestCase
         $gameGoal = GameGoal::factory([
             'game_id' => $game->id,
             'player_id' => $player->id,
-            'scored_at' => now(),
+            'scored_at' => 42,
         ])->create();
 
         $game->fresh();

@@ -18,8 +18,6 @@ final class GameStatusMapperStrategy implements MapperStrategyInterface
 
     private const ONGOING_STATUSES = ['1H', 'HT', '2H', 'ET', 'BT', 'P', 'SUSP', 'INT', 'LIVE'];
 
-    private const NOT_STARTED_STATUSES = ['NS', 'TBD'];
-
     /**
      * {@inheritDoc}
      */
@@ -56,7 +54,7 @@ final class GameStatusMapperStrategy implements MapperStrategyInterface
         }
 
         return new GameStatusDto(
-            $externalResponse['response'][0]['fixture']['id'],
+            (int) $externalResponse['response'][0]['fixture']['id'],
             $status
         );
     }

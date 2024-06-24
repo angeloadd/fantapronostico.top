@@ -24,7 +24,7 @@ final class GameGoalsDto implements ApiSportDto
     }
 
     /**
-     * @return GameGoalsDto[]
+     * @return GameGoalDto[]
      */
     public function gameGoals(): array
     {

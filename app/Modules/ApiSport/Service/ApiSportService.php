@@ -97,7 +97,9 @@ final readonly class ApiSportService implements ApiSportServiceInterface
 
     public function getGameStatus(GetGameStatusRequest $request): GameStatusDto
     {
-        $mapping = $this->mapper->map($this->apiSportClient->get($request::ENDPOINT, $request->toQuery()));
+        $externalResponse = $this->apiSportClient->get($request::ENDPOINT, $request->toQuery());
+
+        $mapping = $this->mapper->map($externalResponse);
 
         if ( ! $mapping instanceof GameStatusDto) {
             throw InvalidMappingException::create($mapping::class, GameStatusDto::class);
@@ -111,9 +113,9 @@ final readonly class ApiSportService implements ApiSportServiceInterface
      */
     public function getGameGoals(GetGameEventsRequest $request): GameGoalsDto
     {
-        $mapping = $this->mapper->map(
-            $this->apiSportClient->get($request::ENDPOINT, $request->toQuery())
-        );
+        $externalResponse = $this->apiSportClient->get($request::ENDPOINT, $request->toQuery());
+
+        $mapping = $this->mapper->map($externalResponse);
 
         if ( ! $mapping instanceof GameGoalsDto) {
             throw InvalidMappingException::create($mapping::class, GameGoalsDto::class);

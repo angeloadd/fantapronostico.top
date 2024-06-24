@@ -28,8 +28,28 @@ final class GamesMapperStrategyTest extends UnitTestCase
         yield 'has get and get is fixtures' => [
             [
                 'get' => 'fixtures',
+                'parameters' => [
+                    'league' => 1,
+                ],
             ],
             true,
+        ];
+
+        yield 'has no parameter league' => [
+            [
+                'get' => 'fixtures',
+                'parameters' => [
+                    'other' => 1,
+                ],
+            ],
+            false,
+        ];
+
+        yield 'has no parameter prop' => [
+            [
+                'get' => 'fixtures',
+            ],
+            false,
         ];
 
         yield 'has get and get is not fixtures' => [

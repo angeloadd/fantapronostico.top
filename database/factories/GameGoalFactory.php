@@ -19,7 +19,7 @@ final class GameGoalFactory extends Factory
     public function definition(): array
     {
         return [
-            'scored_at' => $this->faker->iso8601,
+            'scored_at' => $this->faker->numberBetween(1, 128),
         ];
     }
 }

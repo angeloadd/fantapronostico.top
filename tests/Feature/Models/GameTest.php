@@ -7,11 +7,11 @@ namespace Tests\Feature\Models;
 use App\Models\Game;
 use App\Models\Player;
 use DateTimeImmutable;
-use Exception;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\Helpers\FactoryHelper;
 use Tests\TestCase;
+use ValueError;
 
 final class GameTest extends TestCase
 {
@@ -104,7 +104,7 @@ final class GameTest extends TestCase
     public function test_game_status_is_enum(string $status): void
     {
         if ('invalid' === $status) {
-            $this->expectException(Exception::class);
+            $this->expectException(ValueError::class);
         }
 
         Game::create([

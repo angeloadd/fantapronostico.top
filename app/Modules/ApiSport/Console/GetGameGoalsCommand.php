@@ -42,7 +42,6 @@ final class GetGameGoalsCommand extends Command
 
         foreach ($games as $game) {
             try {
-
                 $gameStatus = $apiSportService->getGameStatus(new GetGameStatusRequest($game->id));
                 if (GameStatus::FINISHED !== $gameStatus->status) {
                     continue;
@@ -59,6 +58,7 @@ final class GetGameGoalsCommand extends Command
                 $logger->info('Updated game goals: ' . $game->home_team . ' vs ' . $game->away_team);
                 $this->info('Updated game goals: ' . $game->home_team . ' vs ' . $game->away_team);
             } catch (Throwable $e) {
+                dd($e);
                 $logger->error('Error updating game goals: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
                 $this->error('Error updating game goals: ' . $e->getMessage());
 

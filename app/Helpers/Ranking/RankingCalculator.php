@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
+use App\Enums\GameStatus;
 use App\Models\Champion;
 use App\Models\Player;
 use App\Models\Prediction;
@@ -104,7 +105,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     {
         return $user->predictions
             ->whereStrict('league_id', $league->id)
-            ->filter(fn (Prediction $prediction) => 'finished' === $prediction->game->status)
+            ->filter(fn (Prediction $prediction) => GameStatus::FINISHED === $prediction->game->status)
             ->filter(static function (Prediction $prediction): bool {
                 $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
 

@@ -15,7 +15,7 @@ final class GameGoalTest extends TestCase
         $game = FactoryHelper::makeGame(FactoryHelper::makeTournament());
         $player = FactoryHelper::makePlayer();
 
-        $scoredAt = '2023-12-31T23:00:00.000000Z';
+        $scoredAt = 18;
         $gameGoal = GameGoal::create([
             'game_id' => $game->id,
             'player_id' => $player->id,
@@ -37,7 +37,7 @@ final class GameGoalTest extends TestCase
         $gameGoal = GameGoal::create([
             'game_id' => $game->id,
             'player_id' => $player->id,
-            'scored_at' => now(),
+            'scored_at' => 118,
         ]);
 
         $gameGoal->refresh();

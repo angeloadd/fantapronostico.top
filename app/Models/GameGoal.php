@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $game_id
  * @property int $player_id
- * @property string $scored_at
+ * @property int $scored_at
  * @property int $is_autogoal
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

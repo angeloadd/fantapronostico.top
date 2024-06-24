@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\GameStatus;
 use App\Modules\ApiSport\Dto\GameGoalsDto;
 use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\Tournament\Models\Team;
@@ -27,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property int $tournament_id
  * @property Carbon $started_at
  * @property string $stage
- * @property string $status
+ * @property GameStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Team|null $away_team
@@ -73,8 +74,6 @@ final class Game extends Model
 
     private const GROUP = 'group';
 
-    private const TWENTY_FOUR_HOURS_IN_SECONDS = 60 * 60 * 24;
-
     public mixed $timestamp;
 
     protected $fillable = [
@@ -90,7 +89,7 @@ final class Game extends Model
      */
     protected $appends = ['home_team', 'away_team', 'away_score', 'home_score', 'sign'];
 
-    public static function scopeLastResults($query, DateTimeInterface $now): Builder
+    public static function scopeLastResults(Builder $query, DateTimeInterface $now): Builder
     {
         return $query->fromLatest()
             ->where('started_at', '<', $now)
@@ -148,6 +147,7 @@ final class Game extends Model
     {
         return [
             'started_at' => 'datetime',
+            'status' => GameStatus::class,
         ];
     }
 

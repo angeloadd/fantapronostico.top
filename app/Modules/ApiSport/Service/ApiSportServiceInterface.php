@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Service;
 
+use App\Modules\ApiSport\Dto\GameGoalsDto;
 use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\ApiSport\Dto\GameStatusDto;
 use App\Modules\ApiSport\Dto\NationalsDto;
@@ -54,5 +55,5 @@ interface ApiSportServiceInterface
      * @throws ConnectionException
      * @throws ErrorException
      */
-    public function getGameGoals(GetGameEventsRequest $request);
+    public function getGameGoals(GetGameEventsRequest $request): GameGoalsDto;
 }

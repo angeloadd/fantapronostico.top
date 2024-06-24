@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\ApiSport\Console;
 
+use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Modules\League\Models\League;
 use Illuminate\Console\Command;
@@ -33,14 +34,16 @@ final class SetGameOngoingCommand extends Command
 
         try {
             $games = Game::whereTournamentId($league->tournament->id)
-                ->where('status', 'not_started')
+                ->whereStatus(GameStatus::NOT_STARTED)
                 ->where('started_at', '<', now())
                 ->get();
 
             foreach ($games as $game) {
-                $game->status = 'ongoing';
-                $game->save();
+                $game->update([
+                    'status' => GameStatus::ONGOING,
+                ]);
             }
+
         } catch (Throwable $e) {
             $logger->error('Error updating games: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
             $this->error('Error updating games: ' . $e->getMessage());

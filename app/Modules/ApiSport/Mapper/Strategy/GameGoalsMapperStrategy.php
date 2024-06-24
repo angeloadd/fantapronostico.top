@@ -29,20 +29,24 @@ final class GameGoalsMapperStrategy implements MapperStrategyInterface
     {
         $gameGoals = new GameGoalsDto();
 
+        if ( ! is_array($externalResponse['response'])) {
+            return $gameGoals;
+        }
+
         foreach ($externalResponse['response'] as $event) {
             // If a goal is a penalty in the shootouts skip
-            if (120 === $event['time']['elapsed'] && null !== $event['time']['extra'] && str_contains($event['comments'], 'Penalty')) {
+            if (120 === ($event['time']['elapsed'] ?? null) && null !== $event['time']['extra'] && str_contains((string) $event['comments'], 'Penalty')) {
                 continue;
             }
 
             // if a player missed a penalty we don't care
-            if (str_contains($event['detail'], 'Missed')) {
+            if (str_contains((string) $event['detail'], 'Missed')) {
                 continue;
             }
 
             $gameGoals->add(new GameGoalDto(
-                $event['player']['id'],
-                str_contains($event['detail'], 'Own'),
+                (int) $event['player']['id'],
+                str_contains((string) $event['detail'], 'Own'),
                 $event['time']['elapsed'] + ($event['time']['extra'] ?? 0)
             ));
         }

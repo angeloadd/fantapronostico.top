@@ -31,10 +31,10 @@ Schedule::command('fp:games:goals:get')
 Schedule::command('fp:fetch:champions')
     ->everyTenMinutes()
     ->when(
-        static fn () => Tournament::first()?->final_started_at?->isPast() && Tournament::first()
-            ?->final_started_at
-            ?->addHours(6)
-            ?->isFuture() &&
+        static fn () => Tournament::first()?->final_started_at->isPast() && Tournament::first()
+            ->final_started_at
+            ->addHours(6)
+            ->isFuture() &&
             Game::all()->every('status', '=', 'finished')
     );
 

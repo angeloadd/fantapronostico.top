@@ -5,16 +5,21 @@ parameters:
 
     paths:
         - app/
-        # - database/
-        # - config/
-        #- routes/
-        # - resources/
-        # - tests/
+        - database/
+        - config/
+        - routes/
+        - resources/
+        - tests/
 
     # Level 9 is the highest level
     level: 9
 
     ignoreErrors:
+        - message:  '#Method Tests\\.+\:\:.+Provider\(\) return type has no value type specified in iterable type iterable.#'
+          path: %currentWorkingDirectory%/tests
+        - message:  '#Tests\\.+::test.+\(\) has parameter \$.+ with no value type specified in iterable type array.#'
+          path: %currentWorkingDirectory%/tests
+        - message: '#Method .+\:\:casts\(\) return type has no value type specified in iterable type array.#'
         - message: '#Cannot cast mixed to .+#'
         - message: '#Parameter \#1 \$callback of function array_map expects .+#'
           path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
@@ -22,10 +27,6 @@ parameters:
           path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
         - message: '#Parameter \#2 \$array of function array_map expects array, mixed given.#'
           path: %currentWorkingDirectory%/app/Modules/ApiSport/Mapper/Strategy
-        - message: '#Undefined variable: \$this#'
-          path: %currentWorkingDirectory%/routes/console.php
-        - message: '#Variable \$this in PHPDoc tag @var does not exist.#'
-          path: %currentWorkingDirectory%/routes/console.php
         - message: '#Parameter \#1 \$callback of method Illuminate\\Support\\Collection.+#'
         - message: '#Method .+\:\:toQuery\(\) should return array<string, int\|string> but returns array<string, mixed>.#'
 #

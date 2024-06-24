@@ -25,7 +25,7 @@ final readonly class ApiSportClient implements ApiSportClientInterface
     }
 
     /**
-     * @param  array<string, int>  $query
+     * @param  array<string, int|string>  $query
      * @return array<string, array<string, int|string>>
      *
      * @throws ConnectionException
