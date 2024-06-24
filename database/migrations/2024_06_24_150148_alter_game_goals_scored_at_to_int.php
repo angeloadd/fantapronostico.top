@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->dropColumn('updated_at');
         });
         Schema::table('game_goals', function (Blueprint $table) {
-            $table->integer('scored_at');
+            $table->integer('scored_at')->nullable();
         });
     }
 
