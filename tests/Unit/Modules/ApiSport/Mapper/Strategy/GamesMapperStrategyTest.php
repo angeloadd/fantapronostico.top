@@ -7,10 +7,7 @@ namespace Tests\Unit\Modules\ApiSport\Mapper\Strategy;
 use App\Enums\GameStatus;
 use App\Modules\ApiSport\Dto\GameDto;
 use App\Modules\ApiSport\Dto\GamesDto;
-use App\Modules\ApiSport\Dto\TeamDto;
-use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Mapper\Strategy\GamesMapperStrategy;
-use App\Modules\ApiSport\Mapper\Strategy\TeamsMapperStrategy;
 use ErrorException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\UnitTestCase;
@@ -24,6 +21,28 @@ final class GamesMapperStrategyTest extends UnitTestCase
         parent::setUp();
 
         $this->subject = new GamesMapperStrategy();
+    }
+
+    public static function externalResponseProvider(): iterable
+    {
+        yield 'has get and get is fixtures' => [
+            [
+                'get' => 'fixtures',
+            ],
+            true,
+        ];
+
+        yield 'has get and get is not fixtures' => [
+            [
+                'get' => 'other',
+            ],
+            false,
+        ];
+
+        yield 'has no get' => [
+            [],
+            false,
+        ];
     }
 
     #[DataProvider('externalResponseProvider')]
@@ -50,12 +69,12 @@ final class GamesMapperStrategyTest extends UnitTestCase
                         'status' => ['short' => 'FT'],
                     ],
                     'teams' => [
-                        'home' => ["id" => 1],
-                        'away' => ["id" => 2],
+                        'home' => ['id' => 1],
+                        'away' => ['id' => 2],
                     ],
                     'league' => [
                         'round' => 'Group E',
-                    ]
+                    ],
                 ],
                 [
                     'fixture' => [
@@ -64,37 +83,15 @@ final class GamesMapperStrategyTest extends UnitTestCase
                         'status' => ['short' => 'NS'],
                     ],
                     'teams' => [
-                        'home' => ["id" => 3],
-                        'away' => ["id" => 4],
+                        'home' => ['id' => 3],
+                        'away' => ['id' => 4],
                     ],
                     'league' => [
                         'round' => 'Round of sixteen',
-                    ]
+                    ],
                 ],
             ],
         ];
         $this->assertEquals($dto, $this->subject->map($response));
-    }
-
-    public static function externalResponseProvider(): iterable
-    {
-        yield 'has get and get is fixtures' => [
-            [
-                'get' => 'fixtures',
-            ],
-            true,
-        ];
-
-        yield 'has get and get is not fixtures' => [
-            [
-                'get' => 'other',
-            ],
-            false,
-        ];
-
-        yield 'has no get' => [
-            [],
-            false,
-        ];
     }
 }

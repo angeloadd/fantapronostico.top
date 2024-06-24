@@ -7,7 +7,6 @@ namespace Tests\Unit\Modules\ApiSport\Service;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
 use App\Modules\ApiSport\Dto\GamesDto;
 use App\Modules\ApiSport\Dto\NationalDto;
-use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\ApiSport\Dto\TeamsDto;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Request\GetGamesRequest;

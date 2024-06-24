@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Modules\ApiSport\Mapper\Strategy;
 
 use App\Modules\ApiSport\Dto\NationalDto;
-use App\Modules\ApiSport\Dto\NationalsDto;
 use App\Modules\ApiSport\Dto\PlayerDto;
 use App\Modules\ApiSport\Mapper\Strategy\NationalsMapperStrategy;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,6 +19,28 @@ final class NationalsMapperStrategyTest extends UnitTestCase
         parent::setUp();
 
         $this->subject = new NationalsMapperStrategy();
+    }
+
+    public static function externalResponseProvider(): iterable
+    {
+        yield 'has get and get is players by national team' => [
+            [
+                'get' => 'players/squads',
+            ],
+            true,
+        ];
+
+        yield 'has get and get is not players by national team' => [
+            [
+                'get' => 'other',
+            ],
+            false,
+        ];
+
+        yield 'has no get' => [
+            [],
+            false,
+        ];
     }
 
     #[DataProvider('externalResponseProvider')]
@@ -51,27 +72,5 @@ final class NationalsMapperStrategyTest extends UnitTestCase
         ];
 
         $this->assertEquals($dto, $this->subject->map($response));
-    }
-
-    public static function externalResponseProvider(): iterable
-    {
-        yield 'has get and get is players by national team' => [
-            [
-                'get' => 'players/squads',
-            ],
-            true,
-        ];
-
-        yield 'has get and get is not players by national team' => [
-            [
-                'get' => 'other',
-            ],
-            false,
-        ];
-
-        yield 'has no get' => [
-            [],
-            false,
-        ];
     }
 }

@@ -108,7 +108,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
             ->filter(static function (Prediction $prediction): bool {
                 $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
 
-                if(null === $userRank || null === $userRank->from){
+                if (null === $userRank || null === $userRank->from) {
                     return true;
                 }
 

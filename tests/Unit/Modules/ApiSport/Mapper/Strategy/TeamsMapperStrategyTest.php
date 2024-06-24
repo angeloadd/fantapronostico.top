@@ -22,6 +22,28 @@ final class TeamsMapperStrategyTest extends UnitTestCase
         $this->subject = new TeamsMapperStrategy();
     }
 
+    public static function externalResponseProvider(): iterable
+    {
+        yield 'has get and get is teams' => [
+            [
+                'get' => 'teams',
+            ],
+            true,
+        ];
+
+        yield 'has get and get is not teams' => [
+            [
+                'get' => 'other',
+            ],
+            false,
+        ];
+
+        yield 'has no get' => [
+            [],
+            false,
+        ];
+    }
+
     #[DataProvider('externalResponseProvider')]
     public function test_supports_returns_true_for_teams_response_and_false_for_other_responses_or_get_prop_is_missing(array $externalResponse, bool $expected): void
     {
@@ -44,27 +66,5 @@ final class TeamsMapperStrategyTest extends UnitTestCase
             ],
         ];
         $this->assertEquals($dto, $this->subject->map($response));
-    }
-
-    public static function externalResponseProvider(): iterable
-    {
-        yield 'has get and get is teams' => [
-            [
-                'get' => 'teams',
-            ],
-            true,
-        ];
-
-        yield 'has get and get is not teams' => [
-            [
-                'get' => 'other',
-            ],
-            false,
-        ];
-
-        yield 'has no get' => [
-            [],
-            false,
-        ];
     }
 }

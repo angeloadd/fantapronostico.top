@@ -4,7 +4,7 @@ includes:
 parameters:
 
     paths:
-        - app/Modules/ApiSport
+        - app/
         # - database/
         # - config/
         #- routes/
