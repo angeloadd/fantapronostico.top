@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helpers\Ranking;
 
+use DateTimeInterface;
+
 final class UserRank
 {
     public function __construct(
@@ -17,7 +19,8 @@ final class UserRank
         public int $finalBetTimestamp = 0,
         public int $finalBetTotal = 0,
         public bool $winner = false,
-        public bool $topScorer = false
+        public bool $topScorer = false,
+        public ?DateTimeInterface $latestGameStartedAt = null
     ) {
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\ApiSport\Console;
 
 use App\Enums\GameStatus;
-use App\Helpers\Ranking\RankingCalculatorInterface;
+use App\Events\GameGoalsUpdated;
 use App\Models\Game;
 use App\Modules\ApiSport\Request\GetGameEventsRequest;
 use App\Modules\ApiSport\Request\GetGameStatusRequest;
@@ -30,6 +30,7 @@ final class GetGameGoalsCommand extends Command
     public function handle(ApiSportServiceInterface $apiSportService, LoggerInterface $logger): int
     {
         $league = League::first();
+
         if (null === $league) {
             $logger->error('No league found');
 
@@ -37,28 +38,28 @@ final class GetGameGoalsCommand extends Command
         }
 
         $games = Game::whereTournamentId($league->tournament->id)
-            ->where('status', GameStatus::ONGOING)
+            ->whereStatus(GameStatus::ONGOING)
             ->get();
 
         foreach ($games as $game) {
             try {
                 $gameStatus = $apiSportService->getGameStatus(new GetGameStatusRequest($game->id));
+
                 if (GameStatus::FINISHED !== $gameStatus->status) {
                     continue;
                 }
 
-                $response = $apiSportService->getGameGoals(new GetGameEventsRequest($game->id));
+                $gameGoals = $apiSportService->getGameGoals(new GetGameEventsRequest($game->id));
 
-                $game->addGameGoals($response);
+                $game->addGameGoals($gameGoals);
 
-                $game->status = GameStatus::FINISHED;
+                $game->update([
+                    'status' => GameStatus::FINISHED,
+                ]);
 
-                $game->save();
-
-                $logger->info('Updated game goals: ' . $game->home_team . ' vs ' . $game->away_team);
-                $this->info('Updated game goals: ' . $game->home_team . ' vs ' . $game->away_team);
+                $logger->info('Updated game goals: ' . $game->home_team->name . ' vs ' . $game->away_team->name);
+                $this->info('Updated game goals: ' . $game->home_team->name . ' vs ' . $game->away_team->name);
             } catch (Throwable $e) {
-                dd($e);
                 $logger->error('Error updating game goals: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
                 $this->error('Error updating game goals: ' . $e->getMessage());
 
@@ -66,14 +67,7 @@ final class GetGameGoalsCommand extends Command
             }
         }
 
-        try {
-            app(RankingCalculatorInterface::class)->calculate($league);
-            $logger->info('Updated rankings: ' . $league->id);
-            $this->info('Updated rankings: ' . $league->id);
-        } catch (Throwable $e) {
-            $logger->error('Error updating rankings: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            $this->error('Error updating rankings: ' . $e->getMessage());
-        }
+        GameGoalsUpdated::dispatch($league);
 
         return 0;
     }

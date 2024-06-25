@@ -6,9 +6,11 @@ namespace App\Modules\ApiSport;
 
 use App\Modules\ApiSport\Client\ApiSportClient;
 use App\Modules\ApiSport\Client\ApiSportClientInterface;
+use App\Modules\ApiSport\Console\GetGameGoalsCommand;
 use App\Modules\ApiSport\Console\GetGamesCommand;
 use App\Modules\ApiSport\Console\GetPlayersByTeamCommand;
 use App\Modules\ApiSport\Console\GetTeamsCommand;
+use App\Modules\ApiSport\Console\SetGameOngoingCommand;
 use App\Modules\ApiSport\Mapper\ApiSportMapper;
 use App\Modules\ApiSport\Mapper\MapperInterface;
 use App\Modules\ApiSport\Mapper\MapperLoggerDecorator;
@@ -85,6 +87,19 @@ final class ApiSportServiceProvider extends ServiceProvider
                 $app->make(ApiSportServiceInterface::class),
                 Log::channel('schedule'),
                 $app->make(ApiSportPlayerRepositoryInterface::class)
+            )
+        );
+        $this->app->bindMethod(
+            [GetGameGoalsCommand::class, 'handle'],
+            static fn (GetGameGoalsCommand $command, Application $app) => $command->handle(
+                $app->make(ApiSportServiceInterface::class),
+                Log::channel('schedule'),
+            )
+        );
+        $this->app->bindMethod(
+            [SetGameOngoingCommand::class, 'handle'],
+            static fn (SetGameOngoingCommand $command, Application $app) => $command->handle(
+                Log::channel('schedule')
             )
         );
 

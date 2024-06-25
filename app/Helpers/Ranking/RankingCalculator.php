@@ -6,6 +6,7 @@ namespace App\Helpers\Ranking;
 
 use App\Enums\GameStatus;
 use App\Models\Champion;
+use App\Models\Game;
 use App\Models\Player;
 use App\Models\Prediction;
 use App\Modules\Auth\Models\User;
@@ -30,6 +31,10 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 function (User $user) use ($league): void {
                     $rank = $this->calculateUserRank($user, $league);
 
+                    if ($rank->total > 0) {
+                        dump(sprintf('%s[%d]: total[%d]', $user->name, $user->id, $rank->total));
+                    }
+
                     $oldRank = DB::table('ranks')
                         ->where('user_id', $rank->userId())
                         ->first();
@@ -47,7 +52,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                             'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : $rank->finalPredictionTimestamp(),
                             'winner' => $rank->winner(),
                             'top_scorer' => $rank->topScorer(),
-                            'from' => now(),
+                            'from' => $rank->latestGameStartedAt ?? $oldRank?->from,
                         ]
                     );
 
@@ -103,45 +108,53 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
 
     private function calculatePredictionScores(User $user, League $league, UserRank $rank): UserRank
     {
-        return $user->predictions
+        $predictions = $user->predictions
             ->whereStrict('league_id', $league->id)
             ->filter(fn (Prediction $prediction) => GameStatus::FINISHED === $prediction->game->status)
             ->filter(static function (Prediction $prediction): bool {
                 $userRank = DB::table('ranks')->where('user_id', $prediction->user_id)->first();
 
-                if (null === $userRank || null === $userRank->from) {
-                    return true;
-                }
-
-                return Carbon::parse($userRank->from)->lt($prediction->game->started_at);
+                return null === $userRank ||
+                    null === $userRank->from ||
+                    Carbon::parse($userRank->from)->lt($prediction->game->started_at);
             })
-            ->map(fn (Prediction $prediction) => PredictionScoreFactory::create($prediction))
-            ->reduce(function (UserRank $rank, PredictionScore $prediction): UserRank {
-                if ($prediction->result) {
-                    $rank->numberOfResults++;
-                }
+            ->map(fn (Prediction $prediction) => [
+                'latest_game_started_at' => Game::whereStatus(GameStatus::FINISHED)
+                    ->whereTournamentId($league->tournament_id)
+                    ->orderBy('started_at', 'desc')
+                    ->first()->started_at,
+                'score' => PredictionScoreFactory::create($prediction),
+            ]);
 
-                if ($prediction->sign) {
-                    $rank->numberOfSigns++;
-                }
+        return $predictions->reduce(function (UserRank $rank, array $result): UserRank {
+            $prediction = $result['score'];
+            if ($prediction->result) {
+                $rank->numberOfResults++;
+            }
 
-                if ($prediction->homeScorer) {
-                    $rank->numberOfScorers++;
-                }
+            if ($prediction->sign) {
+                $rank->numberOfSigns++;
+            }
 
-                if ($prediction->awayScorer) {
-                    $rank->numberOfScorers++;
-                }
+            if ($prediction->homeScorer) {
+                $rank->numberOfScorers++;
+            }
 
-                if ($prediction->isFinal) {
-                    $rank->finalBetTimestamp = $prediction->timestamp;
-                    $rank->finalBetTotal = $prediction->total();
-                }
+            if ($prediction->awayScorer) {
+                $rank->numberOfScorers++;
+            }
 
-                $rank->total += $prediction->total();
+            if ($prediction->isFinal) {
+                $rank->finalBetTimestamp = $prediction->timestamp;
+                $rank->finalBetTotal = $prediction->total();
+            }
 
-                return $rank;
-            }, $rank);
+            $rank->total += $prediction->total();
+
+            $rank->latestGameStartedAt = $result['latest_game_started_at'];
+
+            return $rank;
+        }, $rank);
     }
 
     private function addWinnerAndTopScorerScores(User $user, League $league, UserRank $rank): UserRank

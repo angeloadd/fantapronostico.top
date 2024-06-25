@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Events\GameGoalsUpdated;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Helpers\Ranking\Sorter;
@@ -18,6 +19,7 @@ use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
+use Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -50,6 +52,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->registerPagesNamespace();
 
         $this->registerRequestMacro();
+
+        Event::listen(GameGoalsUpdated::class, GameGoalsUpdated::class);
     }
 
     private function registerPagesNamespace(): void
