@@ -14,6 +14,8 @@ use App\Modules\ApiSport\Repository\ApiSportGameRepositoryInterface;
 use App\Modules\ApiSport\Repository\ApiSportPlayerRepositoryInterface;
 use App\Modules\ApiSport\Repository\ApiSportTeamRepositoryInterface;
 use App\Modules\League\Models\League;
+use App\Modules\League\Service\Telegram\TelegramService;
+use App\Modules\League\Service\Telegram\TelegramServiceInterface;
 use App\Modules\Tournament\Repository\PlayerRepository;
 use App\Modules\Tournament\Repository\TeamRepository;
 use App\Repository\Game\GameRepository;
@@ -57,6 +59,8 @@ final class AppServiceProvider extends ServiceProvider
                 $app->make(RankingCalculatorInterface::class)
             )
         );
+
+        $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
     }
 
     /**

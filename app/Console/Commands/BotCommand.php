@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Game;
+use App\Modules\League\Dto\TelegramReminderViewDto;
+use App\Modules\League\Service\Telegram\TelegramServiceInterface;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
 final class BotCommand extends Command
 {
@@ -30,7 +31,7 @@ final class BotCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(TelegramServiceInterface $telegramService): int
     {
         if ($this->argument('gameId')) {
             $games = collect([Game::find(1189852)]);
@@ -47,18 +48,21 @@ final class BotCommand extends Command
             }
         }
 
+        $dtos = $games->map(
+            static fn (Game $game) => new TelegramReminderViewDto(
+                $game->id,
+                $game->home_team->name,
+                $game->away_team->name,
+                (string) str($game->started_at->isoFormat('\e\n\t\r\o \i\l D MMMM YYYY \a\l\l\e HH:mm'))->title()
+            )
+        )->toArray();
+
         try {
-            $bot = Telegram::bot('fpbot');
-            foreach ($games as $game) {
-                $bot->sendMessage([
-                    'chat_id' => -1001766446905,
-                    'text' => view('telegram.game', compact('game'))->render(),
-                    'parse_mode' => 'HTML',
-                ]);
-            }
+            $telegramService->sendReminder(-1001766446905, $dtos);
 
             return self::SUCCESS;
         } catch (Exception $e) {
+            $this->error($e->getMessage());
             Log::channel('schedule')->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
 
             return self::FAILURE;
@@ -67,8 +71,6 @@ final class BotCommand extends Command
 
     private function getGamesFromTo(int $from, int $to): Collection
     {
-        $now = now();
-
-        return Game::whereBetween('started_at', [$now->addMinutes($from), $now->addMinutes($to)])->get();
+        return Game::whereBetween('started_at', [now()->addMinutes($from), now()->addMinutes($to)])->get();
     }
 }
