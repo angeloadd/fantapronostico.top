@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 final class GameGoalsUpdated implements ShouldQueue
 {
@@ -25,5 +26,7 @@ final class GameGoalsUpdated implements ShouldQueue
     public function handle(GameGoalsUpdated $event): void
     {
         Artisan::call('fp:ranking:calculate', ['--leagueId' => $event->league->id]);
+
+        Log::channel('worker')->info('ranking for league ' . $event->league->name . '[id=' . $event->league->id . '] updated');
     }
 }
