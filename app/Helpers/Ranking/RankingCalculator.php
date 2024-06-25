@@ -15,11 +15,12 @@ use App\Modules\Tournament\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 final readonly class RankingCalculator implements RankingCalculatorInterface
 {
-    public function __construct(private SorterInterface $sorter)
+    public function __construct(private SorterInterface $sorter, private LoggerInterface $logger)
     {
     }
 
@@ -31,13 +32,21 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 function (User $user) use ($league): void {
                     $rank = $this->calculateUserRank($user, $league);
 
-                    if ($rank->total > 0) {
-                        dump(sprintf('%s[%d]: total[%d]', $user->name, $user->id, $rank->total));
-                    }
-
                     $oldRank = DB::table('ranks')
                         ->where('user_id', $rank->userId())
                         ->first();
+
+                    if ($rank->total > 0) {
+                        $this->logger->info(
+                            sprintf(
+                                'Updating user %s rank current %d + new %d = %d',
+                                $user->name,
+                                $oldRank?->total ?? 0,
+                                $rank->total(),
+                                $rank->total() + ($oldRank?->total ?? 0)
+                            )
+                        );
+                    }
 
                     DB::table('ranks')->updateOrInsert(
                         ['user_id' => $rank->userId()],
@@ -70,7 +79,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 static function (stdClass $rank) use ($league) {
                     $user = User::find($rank->user_id);
 
-                    if ( ! $user instanceof User) {
+                    if (!$user instanceof User) {
                         return new UserRank($rank->user_id, 'unknown', $league->id);
                     }
 
@@ -161,17 +170,17 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     {
         $tournament = $league->tournament;
         $winner = $tournament->teams->firstWhere('is_winner', true);
-        if ( ! $winner instanceof Team) {
+        if (!$winner instanceof Team) {
             return $rank;
         }
         $topScorer = $tournament->players->firstWhere('is_top_scorer', true);
 
-        if ( ! $topScorer instanceof Player) {
+        if (!$topScorer instanceof Player) {
             return $rank;
         }
 
         $champion = $user->champion;
-        if ( ! $champion instanceof Champion) {
+        if (!$champion instanceof Champion) {
             return $rank;
         }
         if ($champion->team_id === $winner->id) {

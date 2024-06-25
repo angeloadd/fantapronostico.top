@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Console\Commands\CalculateRanking;
 use App\Events\GameGoalsUpdated;
 use App\Helpers\Ranking\RankingCalculator;
 use App\Helpers\Ranking\RankingCalculatorInterface;
@@ -20,8 +21,10 @@ use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
 use Event;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 
@@ -35,13 +38,25 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(ApiSportGameRepositoryInterface::class, GameRepository::class);
-        $this->app->bind(RankingCalculatorInterface::class, RankingCalculator::class);
+        $this->app->bind(RankingCalculatorInterface::class,
+        static fn(Application $app) => new RankingCalculator(
+            $app->make(SorterInterface::class),
+            Log::channel('worker')
+        ));
         $this->app->bind(
             SorterInterface::class,
             static fn () => new Sorter('total', 'numberOfResults', 'numberOfScorers', 'numberOfSigns', 'finalBetTotal', 'finalBetTimestamp', 'userName')
         );
         $this->app->bind(ApiSportTeamRepositoryInterface::class, TeamRepository::class);
         $this->app->bind(ApiSportPlayerRepositoryInterface::class, PlayerRepository::class);
+
+        $this->app->bindMethod(
+            [CalculateRanking::class, 'handle'],
+            static fn (CalculateRanking $command, Application $app) => $command->handle(
+                Log::channel('worker'),
+                $app->make(RankingCalculatorInterface::class)
+            )
+        );
     }
 
     /**
