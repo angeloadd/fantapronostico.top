@@ -37,11 +37,11 @@ final class GetGameGoalsCommand extends Command
             return 1;
         }
 
-        $games = Game::whereTournamentId($league->tournament->id)
+        $ongoingGames = Game::whereTournamentId($league->tournament->id)
             ->whereStatus(GameStatus::ONGOING)
             ->get();
 
-        foreach ($games as $game) {
+        foreach ($ongoingGames as $game) {
             try {
                 $gameStatus = $apiSportService->getGameStatus(new GetGameStatusRequest($game->id));
 
@@ -67,7 +67,9 @@ final class GetGameGoalsCommand extends Command
             }
         }
 
-        GameGoalsUpdated::dispatch($league);
+        if ($ongoingGames->count() > 0) {
+            GameGoalsUpdated::dispatch($league);
+        }
 
         return 0;
     }
