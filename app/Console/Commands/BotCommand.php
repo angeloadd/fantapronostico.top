@@ -18,7 +18,7 @@ final class BotCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'fp:bot:telegram';
+    protected $signature = 'fp:bot:telegram {gameId?}';
 
     /**
      * The console command description.
@@ -32,14 +32,19 @@ final class BotCommand extends Command
      */
     public function handle(): int
     {
-        $games = $this->getGamesFromTo(59, 60);
+        if ($this->argument('gameId')) {
+            $games = collect([Game::find(1189852)]);
+        } else {
 
-        if ($games->isEmpty()) {
-            $games = $this->getGamesFromTo((60 * 23) + 59, 60 * 24);
-        }
+            $games = $this->getGamesFromTo(59, 60);
 
-        if ($games->isEmpty()) {
-            return 1;
+            if ($games->isEmpty()) {
+                $games = $this->getGamesFromTo((60 * 23) + 59, 60 * 24);
+            }
+
+            if ($games->isEmpty()) {
+                return 1;
+            }
         }
 
         try {
