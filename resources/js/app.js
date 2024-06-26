@@ -1,6 +1,5 @@
 import htmx from "htmx.org";
 import "./alpine";
-import "./gameNav";
 import "./util";
 
 import.meta.glob(["../assets/images/**", "../img/**", "../assets/favicon/**"]);
