@@ -15,12 +15,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('selected_league_id')->nullable();
         });
-
-        User::all()->each(function (User $user) {
-           $user->selected_league_id = $user->leagues->first()?->id;
-
-            $user->save();
-        });
     }
 
     /**
