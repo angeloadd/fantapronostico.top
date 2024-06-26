@@ -11,7 +11,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 final class TelegramService implements TelegramServiceInterface
 {
     /**
-     * @param TelegramReminderViewDto[] $dtos
+     * @param  TelegramReminderViewDto[]  $dtos
      *
      * @throws TelegramSDKException
      */

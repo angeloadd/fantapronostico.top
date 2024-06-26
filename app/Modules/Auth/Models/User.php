@@ -68,6 +68,10 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $roles_count
  * @property-read bool $admin
  * @property-read object{status: string} $pivot
+ * @property int|null $selected_league_id
+ * @property-read League|null $selectedLeague
+ *
+ * @method static Builder|User whereSelectedLeagueId($value)
  *
  * @mixin Eloquent
  */

@@ -79,7 +79,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                 static function (stdClass $rank) use ($league) {
                     $user = User::find($rank->user_id);
 
-                    if (!$user instanceof User) {
+                    if ( ! $user instanceof User) {
                         return new UserRank($rank->user_id, 'unknown', $league->id);
                     }
 
@@ -172,17 +172,17 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     {
         $tournament = $league->tournament;
         $winner = $tournament->teams->firstWhere('is_winner', true);
-        if (!$winner instanceof Team) {
+        if ( ! $winner instanceof Team) {
             return $rank;
         }
         $topScorer = $tournament->players->firstWhere('is_top_scorer', true);
 
-        if (!$topScorer instanceof Player) {
+        if ( ! $topScorer instanceof Player) {
             return $rank;
         }
 
         $champion = $user->champion;
-        if (!$champion instanceof Champion) {
+        if ( ! $champion instanceof Champion) {
             return $rank;
         }
         if ($champion->team_id === $winner->id) {

@@ -8,14 +8,11 @@ use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Helpers\Ranking\UserRank;
 use App\Models\Game;
 use App\Models\Tournament;
-use App\Modules\Auth\Models\User;
 use App\Modules\Auth\Repository\UserRepositoryInterface;
 use App\Modules\League\Models\League;
 use App\Repository\Game\GameRepositoryInterface;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 final class HomeController extends Controller
@@ -31,18 +28,24 @@ final class HomeController extends Controller
     {
         $user = $this->userRepository->getAuthenticatedUser();
 
-        $league = $request->league;
+        $league = $user->selectedLeague;
 
-        if (!$user instanceof User || !$league instanceof League) {
+        if ( ! $league instanceof League) {
             throw new UnauthorizedHttpException('You shall not pass!!');
         }
 
         $tournament = $league->tournament;
         $ranking = $this->calculator->get($league);
-        $nextGame = Game::where('started_at', '>', now())
+
+        $latestGames = Game::where('started_at', '>', now())
             ->get()
-            ->filter(static fn (Game $game) => $game->predictions->firstWhere('user_id', $user->id) === null)
+            ->groupBy('started_at')
             ->first();
+
+        $nextGame = $latestGames->filter(
+            static fn (Game $game) => null === $game->predictions->firstWhere('user_id', $user->id)
+        )
+            ->first() ?? $latestGames->last();
 
         return view('pages.home.index', [
             'ranking' => $ranking->filter(static fn (UserRank $rank, int $index) => $user->id === $rank->userId() || $index <= 12),

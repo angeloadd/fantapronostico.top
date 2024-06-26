@@ -42,11 +42,13 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(PredictionRepositoryInterface::class, PredictionRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(ApiSportGameRepositoryInterface::class, GameRepository::class);
-        $this->app->bind(RankingCalculatorInterface::class,
-        static fn(Application $app) => new RankingCalculator(
-            $app->make(SorterInterface::class),
-            Log::channel('worker')
-        ));
+        $this->app->bind(
+            RankingCalculatorInterface::class,
+            static fn (Application $app) => new RankingCalculator(
+                $app->make(SorterInterface::class),
+                Log::channel('worker')
+            )
+        );
         $this->app->bind(
             SorterInterface::class,
             static fn () => new Sorter('total', 'numberOfResults', 'numberOfScorers', 'numberOfSigns', 'finalBetTotal', 'finalBetTimestamp', 'userName')

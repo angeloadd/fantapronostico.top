@@ -21,8 +21,8 @@ final readonly class UserRepository implements UserRepositoryInterface
     {
         $user = $this->requestProviderService->request()->user() ?? $this->auth->user();
 
-        if (!$user instanceof User) {
-            throw  NoAuthenticatedUserFound::create();
+        if ( ! $user instanceof User) {
+            throw NoAuthenticatedUserFound::create();
         }
 
         return $user;
