@@ -73,7 +73,7 @@
         "deploy":[
             "git pull",
             "composer install --no-dev --optimize-autoloader -q",
-            "php artisan migrate",
+            "php artisan migrate --force",
             "php artisan optimize",
             "npm run build",
             "chown -R www-data:www-data storage/ bootstrap/cache/"
