@@ -160,7 +160,9 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
 
             $rank->total += $prediction->total();
 
-            $rank->latestGameStartedAt = $result['latest_game_started_at'];
+            if ($rank->total > 0) {
+                $rank->latestGameStartedAt = $result['latest_game_started_at'];
+            }
 
             return $rank;
         }, $rank);

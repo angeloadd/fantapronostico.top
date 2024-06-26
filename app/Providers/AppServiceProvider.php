@@ -22,6 +22,8 @@ use App\Repository\Game\GameRepository;
 use App\Repository\Game\GameRepositoryInterface;
 use App\Repository\Prediction\PredictionRepository;
 use App\Repository\Prediction\PredictionRepositoryInterface;
+use App\Service\RequestProvider\RequestProviderService;
+use App\Service\RequestProvider\RequestProviderServiceInterface;
 use Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -61,6 +63,7 @@ final class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
+        $this->app->bind(RequestProviderServiceInterface::class, RequestProviderService::class);
     }
 
     /**

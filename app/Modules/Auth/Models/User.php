@@ -133,4 +133,9 @@ final class User extends Authenticatable implements MustVerifyEmail
             fn (): bool => $this->roles->some(fn (Role $role) => RoleEnum::ADMIN === $role->role)
         );
     }
+
+    public function selectedLeague(): HasOne
+    {
+        return $this->hasOne(League::class, 'id', 'selected_league_id');
+    }
 }

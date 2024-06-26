@@ -8,6 +8,8 @@ use App\Modules\Auth\Fortify\CreateNewUser;
 use App\Modules\Auth\Fortify\ResetUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserPassword;
 use App\Modules\Auth\Fortify\UpdateUserProfileInformation;
+use App\Modules\Auth\Repository\UserRepository;
+use App\Modules\Auth\Repository\UserRepositoryInterface;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +36,8 @@ final class AuthServiceProvider extends ServiceProvider
                 }
             }
         );
+
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     public function boot(): void
