@@ -24,11 +24,11 @@ final class HomeController extends Controller
     ) {
     }
 
-    public function index(Request $request): Renderable
+    public function index(): Renderable
     {
         $user = $this->userRepository->getAuthenticatedUser();
 
-        $league = $user->selectedLeague;
+        $league = $user->selectedLeague ?? $user->leagues->first();
 
         if ( ! $league instanceof League) {
             throw new UnauthorizedHttpException('You shall not pass!!');
