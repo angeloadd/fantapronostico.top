@@ -41,7 +41,9 @@ final class HomeController extends Controller
         $ranking = $this->calculator->get($league);
         $nextGame = Game::where('started_at', '>', now())
             ->get()
-            ->filter(static fn (Game $game) => $game->predictions->firstWhere('user_id', $user->id) === null)
+            ->groupBy('started_at')
+            ->first()
+            ?->filter(static fn (Game $game) => $game->predictions->firstWhere('user_id', $user->id) === null)
             ->first();
 
         return view('pages.home.index', [
