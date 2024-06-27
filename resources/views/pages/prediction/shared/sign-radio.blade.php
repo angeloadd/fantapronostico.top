@@ -5,7 +5,7 @@
         value="{{$value}}"
         name="sign"
         class="radio bg-white @error('sign') border-error @enderror"
-        @checked(null !== $prediction && old('sign', $prediction->sign) === $value)
+        @checked(old('sign', $prediction?->sign) === $value)
     />
     <label for="{{$label}}">{{strtoupper($value)}}: {{__($teamName)}}</label>
 </div>

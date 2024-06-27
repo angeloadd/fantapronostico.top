@@ -1,3 +1,4 @@
+@if(!isset($validation))
 @if(null !== session($sessionKey ?? 'message'))
     <template x-teleport="#toastWrapper">
         <x-partials.notifications.toast :text="session($sessionKey ?? 'message')" type="success"/>
@@ -13,5 +14,11 @@
 @elseif(null !== session($infoKey ?? 'info_message'))
     <template x-teleport="#toastWrapper">
         <x-partials.notifications.toast :text="session($infoKey ?? 'info_message')" type="info"/>
+    </template>
+@endif
+@endif
+@if(null !== $validation)
+    <template x-teleport="#toastWrapper">
+        <x-partials.notifications.toast :text="$validation" type="error"/>
     </template>
 @endif

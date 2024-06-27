@@ -12,13 +12,18 @@ final class ScorerRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $model = Game::where('stage', 'group')->orderBy('started_at', 'desc')->first();
-        if (now()->lte($model?->started_at)) {
+        $game = request()?->route()?->parameter('game');
+
+        if(! $game instanceof Game){
             return;
         }
 
-        if (empty($value)) {
-            $fail('ciao');
+        if ($value !== null && $game->isGroupStage()) {
+            $fail('Pronostico gol non valido nella fase a gironi');
+        }
+
+        if (empty($value) && $value !== "0" && !$game->isGroupStage()) {
+            $fail('Scorer Value is not valid');
         }
     }
 }

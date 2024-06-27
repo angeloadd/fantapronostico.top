@@ -11,5 +11,5 @@
     name="{{$label}}"
     class="input bg-white input-bordered input-sm text-lg w-16 @error($label) border-error @enderror"
     id="{{$label}}"
-    @if(null !== $prediction) value="{{old($label, $prediction->{$label})}}" @endif
+    value="{{old($label, $prediction?->{$label})}}"
 >
