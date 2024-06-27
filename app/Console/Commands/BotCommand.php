@@ -9,6 +9,7 @@ use App\Modules\League\Dto\TelegramReminderViewDto;
 use App\Modules\League\Service\Telegram\TelegramServiceInterface;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -60,6 +61,13 @@ final class BotCommand extends Command
         try {
             $telegramService->sendReminder(-1001766446905, $dtos);
 
+            foreach ($this->getRoundPhaseReminderTimes() as $roundPhaseReminderTime) {
+                if(abs(now()->unix() - $roundPhaseReminderTime->unix()) < 60) {
+                    $telegramService->sendRoundPhaseReminder(-1001766446905);
+
+                }
+            }
+
             return self::SUCCESS;
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -67,6 +75,16 @@ final class BotCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    private function getRoundPhaseReminderTimes(): array
+    {
+        return [
+            Carbon::parse('2024-06-27 21:00:00'),
+            Carbon::parse('2024-06-28 09:00:00'),
+            Carbon::parse('2024-06-29 09:00:00'),
+        ];
+
     }
 
     private function getGamesFromTo(int $from, int $to): Collection

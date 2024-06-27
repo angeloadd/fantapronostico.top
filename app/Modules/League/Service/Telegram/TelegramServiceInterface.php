@@ -15,4 +15,6 @@ interface TelegramServiceInterface
      * @throws TelegramSDKException
      */
     public function sendReminder(int $chatId, array $dtos): void;
+
+    public function sendRoundPhaseReminder(int $chatId): void;
 }
