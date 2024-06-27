@@ -15,12 +15,17 @@ final class LeagueEnricherMiddleware
 {
     public function handle(Request $request, Closure $next): RedirectResponse|Response
     {
-        /** @var User $user */
         $user = $request->user();
 
-        $hasUserALeague = $user->leagues->filter(static fn (League $league) => $league->pivot->user_id === $user->id && 'pending' !== $league->pivot->status)->count() > 0;
-        if ($hasUserALeague) {
-            $request->merge(['league' => $user->leagues->first()]);
+        if (!$user instanceof User || $user->selectedLeague instanceof League) {
+            return $next($request);
+        }
+
+        $leagues = $user->leagues->filter(static fn (League $league) => $league->pivot->user_id === $user->id && 'pending' !== $league->pivot->status);
+
+        if ($leagues->count() > 0) {
+            $user->selected_league_id = $leagues->first()->id;
+            $user->save();
 
             return $next($request);
         }

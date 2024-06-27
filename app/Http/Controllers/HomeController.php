@@ -30,7 +30,7 @@ final class HomeController extends Controller
 
         $league = $user->selectedLeague ?? $user->leagues->first();
 
-        if ( ! $league instanceof League) {
+        if (!$league instanceof League) {
             throw new UnauthorizedHttpException('You shall not pass!!');
         }
 
@@ -44,8 +44,7 @@ final class HomeController extends Controller
 
         $nextGame = $latestGames->filter(
             static fn (Game $game) => null === $game->predictions->firstWhere('user_id', $user->id)
-        )
-            ->first() ?? $latestGames->last();
+        )->first() ?? $latestGames->last();
 
         return view('pages.home.index', [
             'ranking' => $ranking->filter(static fn (UserRank $rank, int $index) => $user->id === $rank->userId() || $index <= 12),

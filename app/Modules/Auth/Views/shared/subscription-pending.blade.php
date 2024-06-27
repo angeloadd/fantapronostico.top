@@ -1,7 +1,7 @@
 <x-partials.notifications.toast-message sessionKey="status"/>
 
 <div class="flex flex-col justify-center items-center w-full space-y-1">
-    <h2 class="text-xl">
+    <h2 class="text-xl text-center">
         La tua richiesta è stata inviata!
     </h2>
     <p class="text-center text-lg">
