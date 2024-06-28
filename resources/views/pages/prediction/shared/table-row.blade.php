@@ -1,7 +1,7 @@
 <tr
     @class([
         '[&>*]:bg-primary text-base-100' => Auth::user()?->id === $prediction->user->id && ($isIndex ?? false),
-        '[&>*]:text-lg [&>*]:text-center overflow-x-auto'
+        '[&>*]:text-lg [&>*]:text-center'
     ])
 >
     <td>
