@@ -17,7 +17,7 @@
     </template>
 @endif
 @endif
-@if(null !== $validation)
+@if(null !== ($validation ?? null))
     <template x-teleport="#toastWrapper">
         <x-partials.notifications.toast :text="$validation" type="error"/>
     </template>
