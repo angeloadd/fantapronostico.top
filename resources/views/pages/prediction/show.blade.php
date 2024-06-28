@@ -1,6 +1,6 @@
 <x-prediction::shared.layout>
     <x-prediction::shared.game-bar :games="$games" :game="$game"/>
-    <x-prediction::shared.card>
+    <x-prediction::shared.card :large="true">
         <x-prediction::shared.deadline :startedAt="$game->started_at"/>
         <x-prediction::shared.table
             :$game
