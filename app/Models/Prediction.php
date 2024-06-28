@@ -107,7 +107,7 @@ final class Prediction extends Model
     public function homeScorer(): Attribute
     {
         return Attribute::get(
-            get: $this->mapScorer($this->away_scorer_id),
+            get: $this->mapScorer($this->home_scorer_id),
         );
     }
 
