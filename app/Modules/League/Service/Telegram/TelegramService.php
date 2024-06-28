@@ -30,18 +30,24 @@ final class TelegramService implements TelegramServiceInterface
 
     public function sendRoundPhaseReminder(int $chatId): void
     {
-        $bot = Telegram::bot('fpbot');
+        try{
+
+            $bot = Telegram::bot('fpbot');
             $bot->sendMessage([
                 'chat_id' => -1001766446905,
                 'text' => <<<TEXT
-Sabato alle 18 inizierà la fase finale dell'Europeo 2024.
+<strong>Sabato alle 18 inizierà la fase finale dell'Europeo 2024.</strong>
+
 Ricordo che dalla prima partita Svizzera Italia alle 18 si potrà pronosticare per ogni partita, oltre che al risultato e segno,
 anche un gol per squadra. Si potrà quindi indicare un giocatore dalla lista squadra disponibile per ogni pronostico o in alternativa
 la possibilità che una squadra non segni o che faccia un gol grazie all'autogol di un giocatore avversario.
-I risultati esatti delle partite varranno inoltre sui 120' esclusi eventuali rigori.
+I risultati esatti delle partite varranno inoltre sui 120' escludendo quindi eventuali rigori.
 Per ulteriori informazioni vi invito a visitare la sezione regolamento: https://fantapronostico.top/terms
 TEXT,
                 'parse_mode' => 'HTML',
             ]);
+        }catch (\Throwable $e){
+            dump($e);
+        }
     }
 }

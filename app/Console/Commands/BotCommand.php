@@ -34,8 +34,14 @@ final class BotCommand extends Command
      */
     public function handle(TelegramServiceInterface $telegramService): int
     {
+        foreach ($this->getRoundPhaseReminderTimes() as $roundPhaseReminderTime) {
+            if(abs(now()->unix() - $roundPhaseReminderTime->unix()) < 60) {
+                $telegramService->sendRoundPhaseReminder(-1001766446905);
+            }
+        }
+
         if ($this->argument('gameId')) {
-            $games = collect([Game::find(1189852)]);
+            $games = collect([Game::find($this->argument('gameId'))]);
         } else {
 
             $games = $this->getGamesFromTo(59, 60);
@@ -60,13 +66,6 @@ final class BotCommand extends Command
 
         try {
             $telegramService->sendReminder(-1001766446905, $dtos);
-
-            foreach ($this->getRoundPhaseReminderTimes() as $roundPhaseReminderTime) {
-                if(abs(now()->unix() - $roundPhaseReminderTime->unix()) < 60) {
-                    $telegramService->sendRoundPhaseReminder(-1001766446905);
-
-                }
-            }
 
             return self::SUCCESS;
         } catch (Exception $e) {
