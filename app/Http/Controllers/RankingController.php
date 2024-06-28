@@ -19,7 +19,7 @@ final class RankingController extends Controller
     public function officialStanding(Request $request): View
     {
         return view('pages.ranking.index', [
-            'ranking' => $this->calculator->get($request->input('league')),
+            'ranking' => $this->calculator->get($request->user()->selectedLeague),
         ]);
     }
 }
