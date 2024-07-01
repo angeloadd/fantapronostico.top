@@ -25,19 +25,11 @@ final readonly class PredictionScoreFactory
 
     private static function getHomeScorerPredictionResult(Prediction $prediction, Game $game): bool
     {
-        if (-1 === $prediction->home_scorer_id) {
-            return in_array($prediction->home_scorer_id, $game->away_scorers, true);
-        }
-
         return in_array($prediction->home_scorer_id, $game->home_scorers, true);
     }
 
     private static function getAwayScorerPredictionResult(Prediction $prediction, Game $game): bool
     {
-        if (-1 === $prediction->away_scorer_id) {
-            return in_array($prediction->away_scorer_id, $game->home_scorers, true);
-        }
-
         return in_array($prediction->away_scorer_id, $game->away_scorers, true);
     }
 }
