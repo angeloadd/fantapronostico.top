@@ -42,9 +42,9 @@ final class HomeController extends Controller
             ->groupBy('started_at')
             ->first();
 
-        $nextGame = $latestGames->filter(
+        $nextGame = $latestGames?->filter(
             static fn (Game $game) => null === $game->predictions->firstWhere('user_id', $user->id)
-        )->first() ?? $latestGames->last();
+        )?->first() ?? $latestGames->last();
 
         return view('pages.home.index', [
             'ranking' => $ranking->filter(static fn (UserRank $rank, int $index) => $user->id === $rank->userId() || $index <= 12),
