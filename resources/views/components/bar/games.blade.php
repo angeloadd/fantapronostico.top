@@ -5,7 +5,7 @@
     ])>
         <a
             @class([
-                'text-accent-content bg-accent' => $game->id === $gameInBar->id,
+                'text-accent-content bg-accent' => $game?->id === $gameInBar?->id,
             ])
             href="{{route('prediction.index', ['game' => $gameInBar])}}"
         >
