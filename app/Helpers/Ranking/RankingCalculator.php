@@ -92,7 +92,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                         $rank->signs,
                         $rank->scorers,
                         $rank->final_total ?? 0,
-                        $rank->final_timestamp ?? 0,
+                        null !== $rank->final_timestamp ? Carbon::parse($rank->final_timestamp)->unix() : 0,
                         $rank->winner,
                         $rank->top_scorer
                     );
