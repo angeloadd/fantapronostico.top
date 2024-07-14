@@ -172,6 +172,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     {
         $tournament = $league->tournament;
         $winner = $tournament->teams->firstWhere(static function(Team $team) use ($user): bool {
+            dd($team->pivot);
             return $team->pivot->is_winner;
         });
         if ( ! $winner instanceof Team) {
