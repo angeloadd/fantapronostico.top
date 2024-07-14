@@ -180,7 +180,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
         if ( ! $champion instanceof Champion) {
             return $rank;
         }
-        if ($champion->team_id === $winner->id) {
+        if (4 === $winner->id) {
             $rank->winner = true;
             $rank->total += 15;
         }
