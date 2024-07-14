@@ -8,6 +8,7 @@ use App\Models\Exceptions\ClubAndNationalTeamsCannotBeTheSameException;
 use App\Models\Exceptions\ClubTeamCannotBeNationalException;
 use App\Models\Exceptions\NationalTeamCannotBeClubException;
 use App\Modules\ApiSport\Dto\NationalsDto;
+use App\Modules\ApiSport\Dto\PlayersDto;
 use App\Modules\Tournament\Models\Team;
 use Database\Factories\PlayerFactory;
 use Eloquent;
@@ -143,6 +144,13 @@ final class Player extends Model
         return $this->belongsToMany(Game::class);
     }
 
+    public static function setTopScorers(PlayersDto $dto, Tournament $tournament): void
+    {
+        foreach ($dto->players() as $player) {
+            $tournament->players()->updateExistingPivot($player->apiId, ['is_top_scorer' => true]);
+        }
+    }
+
     protected static function booted(): void
     {
         self::saving(static function (Player $player): void {
@@ -155,7 +163,7 @@ final class Player extends Model
             }
 
             // We have to check national exists before the flag to avoid that a null is casted to boolean
-            if ($player->national && ! $player->national->is_national) {
+            if ($player->national && !$player->national->is_national) {
                 throw NationalTeamCannotBeClubException::forPlayerId($player->id);
             }
         });

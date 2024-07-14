@@ -18,8 +18,6 @@ use Throwable;
 
 final class FetchWinnerAndTopScorerCommand extends Command
 {
-    private const TWO_HOURS_UNIX = 60 * 60 * 2;
-
     /**
      * The name and signature of the console command.
      *
@@ -36,12 +34,8 @@ final class FetchWinnerAndTopScorerCommand extends Command
 
     public function handle(ApiSportClientInterface $apisport): int
     {
-        $players = [];
         $winner = 0;
         try {
-            $response = $apisport->get('players/topscorers', ['league' => 4, 'season' => 2024]);
-            $players = TopScorers::fromArray($response['response']);
-            unset($response);
             $response = $apisport->get('fixtures', ['league' => 4, 'season' => 2024, 'round' => 'Final']);
             $winner = Winner::fromArray($response['response']);
             unset($response);
@@ -60,12 +54,6 @@ final class FetchWinnerAndTopScorerCommand extends Command
         }
 
         try {
-            foreach ($players->toArray() as $player) {
-                $player = Player::find($player['id']);
-                Tournament::first()?->players()->updateExistingPivot($player->id, ['is_top_scorer' => true]);
-
-                $player->save();
-            }
             if ($winner->toInt()) {
                 $winner = Team::find($winner->toInt());
                 Tournament::first()?->teams()->updateExistingPivot($winner->id, ['is_winner' => true]);

@@ -28,6 +28,15 @@ Schedule::command('fp:games:goals:get')
     ->hourly()
     ->when($doScheduleBeforeTournamentIsFinished);
 
+Schedule::command('fp:topscorers:get')
+    ->hourlyAt('10')
+    ->when(
+        static fn () => Tournament::first()?->final_started_at->isPast() && Tournament::first()
+            ->final_started_at
+            ->addHours(6)
+            ->isFuture() &&
+            Game::all()->every('status', '=', 'finished')
+    );
 Schedule::command('fp:fetch:champions')
     ->everyTenMinutes()
     ->when(

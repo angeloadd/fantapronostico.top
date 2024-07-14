@@ -58,7 +58,7 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
                             'scorers' => $rank->scorers() + ($oldRank?->scorers ?? 0),
                             'signs' => $rank->signs() + ($oldRank?->signs ?? 0),
                             'final_total' => $rank->finalPredictionTotal(),
-                            'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : $rank->finalPredictionTimestamp(),
+                            'final_timestamp' => 0 === $rank->finalPredictionTimestamp() ? null : Carbon::createFromTimestamp($rank->finalPredictionTimestamp()),
                             'winner' => $rank->winner(),
                             'top_scorer' => $rank->topScorer(),
                             'from' => $rank->latestGameStartedAt ?? $oldRank?->from,
