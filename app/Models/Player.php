@@ -146,8 +146,14 @@ final class Player extends Model
 
     public static function setTopScorers(PlayersDto $dto, Tournament $tournament): void
     {
+        Player::all()->each(
+            function (Player $player) use ($dto, $tournament): void {
+                $player->tournaments()->attach($tournament->id);
+            }
+        );
         foreach ($dto->players() as $player) {
             $tournament->players()->updateExistingPivot($player->apiId, ['is_top_scorer' => true]);
+            $tournament->save();
         }
     }
 

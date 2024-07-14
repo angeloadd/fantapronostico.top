@@ -27,6 +27,7 @@ final class TopScorersMapperStrategy implements MapperStrategyInterface
         $players = [];
         $maxGoals = 0;
 
+
         foreach ($externalResponse['response'] as $player) {
             if($player['statistics'][0]['goals']['total'] < $maxGoals) {
                 break;
@@ -34,9 +35,9 @@ final class TopScorersMapperStrategy implements MapperStrategyInterface
 
             $maxGoals = max($player['statistics'][0]['goals']['total'], $maxGoals);
 
-            $players[] = new PlayersDto(
-                $players['player']['id'],
-                $players['player']['name'],
+            $players[] = new PlayerDto(
+                $player['player']['id'],
+                $player['player']['name'],
             );
 
         }
