@@ -171,11 +171,15 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
     private function addWinnerAndTopScorerScores(User $user, League $league, UserRank $rank): UserRank
     {
         $tournament = $league->tournament;
-        $winner = $tournament->teams->firstWhere('is_winner', true);
+        $winner = $tournament->teams->firstWhere(static function(Team $team) use ($user): bool {
+            return $team->pivot->is_winner;
+        });
         if ( ! $winner instanceof Team) {
             return $rank;
         }
-        $topScorer = $tournament->players->firstWhere('is_top_scorer', true);
+        $topScorer = $tournament->players->firstWhere(static function(Player $player) use ($user): bool {
+            return $player->pivot->is_top_scorer;
+        });
 
         if ( ! $topScorer instanceof Player) {
             return $rank;
