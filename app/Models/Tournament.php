@@ -89,7 +89,7 @@ final class Tournament extends Model
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class);
+        return $this->belongsToMany(Team::class)->withPivot('is_winner');
     }
 
     /**
@@ -97,7 +97,7 @@ final class Tournament extends Model
      */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(Player::class);
+        return $this->belongsToMany(Player::class)->withPivot('is_top_scorer');
     }
 
     /**
