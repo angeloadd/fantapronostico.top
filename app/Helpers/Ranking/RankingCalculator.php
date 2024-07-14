@@ -13,6 +13,7 @@ use App\Modules\Auth\Models\User;
 use App\Modules\League\Models\League;
 use App\Modules\Tournament\Models\Team;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Psr\Log\LoggerInterface;
@@ -170,19 +171,8 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
 
     private function addWinnerAndTopScorerScores(User $user, League $league, UserRank $rank): UserRank
     {
-        $tournament = $league->tournament;
-        $winner = $tournament->teams->firstWhere(static function(Team $team) use ($user): bool {
-            dd($team->pivot);
-            return $team->pivot->is_winner;
-        });
+        $winner = Team::find(9);
         if ( ! $winner instanceof Team) {
-            return $rank;
-        }
-        $topScorer = $tournament->players->firstWhere(static function(Player $player) use ($user): bool {
-            return $player->pivot->is_top_scorer;
-        });
-
-        if ( ! $topScorer instanceof Player) {
             return $rank;
         }
 
@@ -194,7 +184,8 @@ final readonly class RankingCalculator implements RankingCalculatorInterface
             $rank->winner = true;
             $rank->total += 15;
         }
-        if ($topScorer->id === $champion->player_id) {
+
+        if (in_array($champion->player_id, [184, 180496, 1323, 247, 181812, 15328])) {
             $rank->topScorer = true;
             $rank->total += 10;
         }
