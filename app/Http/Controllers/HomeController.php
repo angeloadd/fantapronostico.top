@@ -63,7 +63,7 @@ final class HomeController extends Controller
     private function isWinnerDeclared(Tournament $tournament): bool
     {
         return $tournament->final_started_at->isPast() &&
-            $tournament->games->every('status', '=', 'completed');
+            $tournament->games->every('status', '=', 'finished');
     }
 
     private function hasTournamentStarted(Tournament $tournament): bool
