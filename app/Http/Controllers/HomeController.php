@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\GameStatus;
 use App\Helpers\Ranking\RankingCalculatorInterface;
 use App\Helpers\Ranking\UserRank;
 use App\Models\Game;
@@ -63,7 +64,7 @@ final class HomeController extends Controller
     private function isWinnerDeclared(Tournament $tournament): bool
     {
         return $tournament->final_started_at->isPast() &&
-            $tournament->games->every('status', '=', 'finished');
+            $tournament->games->every('status', '=', GameStatus::FINISHED);
     }
 
     private function hasTournamentStarted(Tournament $tournament): bool
